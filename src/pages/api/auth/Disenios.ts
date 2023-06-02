@@ -1,8 +1,10 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import { isBoolean, isbase64, userExists, isEmpty, isNullorUndefined, checkEmail, coleccionExists, coleccionIsFromUser, isInt, hasAccesToken, renewTokens } from "../functions";
+import { tidyBase64, isbase64, userExists, isEmpty, isNullorUndefined, checkEmail, coleccionExists, coleccionIsFromUser, isInt, hasAccesToken, renewTokens } from "../functions";
+import { v2 } from "cloudinary";
 
 const prisma = new PrismaClient();
+const cloudinary = v2;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { cookies } = req;
@@ -93,14 +95,11 @@ async function diseños(req: NextApiRequest, res: NextApiResponse, email: string
 async function crearDisenio(req: NextApiRequest, res: NextApiResponse, email: string){
     const body = req.body;
 
-    if(isNullorUndefined(body.nombre) || isNullorUndefined(email || isNullorUndefined(body.favorito))){
+    if(isNullorUndefined(body.nombre) || isNullorUndefined(email)){
         res.status(400).json({message: "Algun parametro enviado es undefined o null"});
     }
     if(isEmpty(email) || isEmpty(body.nombre)){
         res.status(400).json({message: "O el usuario o el nombre de la coleccion estan vacios"});
-    }
-    if(!isBoolean(body.favorito)){
-        res.status(400).json({message: "El parametro de favorito no fue recibido como bool, tiene que serlo"});
     }
     if(!checkEmail(email)){
         res.status(400).json({message: "El usuario no es valido"});
@@ -113,9 +112,27 @@ async function crearDisenio(req: NextApiRequest, res: NextApiResponse, email: st
         res.status(400).json({message: "El usuario enviado no existe, quizas escribiste algun parametro mal"});
     }
     const coleccionExistente: boolean = await coleccionExists(body.nombre, email);
-    if(coleccionExistente){
-        res.status(400).json({message: "La coleccion enviada ya existe"});
+    if(!coleccionExistente){
+        res.status(400).json({message: "La coleccion ingresada no existe"});
     }
 
+    const disenioURL = "";
+    const mascaraURL = "";
 
+    cloudinary.uploader.upload(tidyBase64(body.disenioImg), {
+        resource_type: "image"
+    }).then(result => {
+        console.log(result);
+    })
+    .catch(error => {
+        console.log(error);
+    });
+    cloudinary.uploader.upload(tidyBase64(body.mascaraImg), {
+        resource_type: "image"
+    }).then(result => {
+        console.log(result);
+    })
+    .catch(error => {
+        console.log(error);
+    });
 }

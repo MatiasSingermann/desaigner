@@ -141,6 +141,10 @@ function isbase64(variable: any): boolean{
     return base64RegEx.test(variable)
 }
 
+function tidyBase64(imagen: string): string{
+    return String(imagen.split(",")[1]);
+}
+
 export { checkEmail, isEmpty, isNullorUndefined, checkContrasenia, userExists, coleccionExists, coleccionIsFromUser,
-isInt, hasAccesToken, renewTokens, isBoolean, isbase64 };
+isInt, hasAccesToken, renewTokens, isBoolean, isbase64, tidyBase64 };
 
