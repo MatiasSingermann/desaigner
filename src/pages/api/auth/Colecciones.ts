@@ -82,7 +82,7 @@ async function colecciones(req: NextApiRequest, res: NextApiResponse, email: str
 async function crearColeccion(req: NextApiRequest, res: NextApiResponse, email: string){
     const body = req.body;
 
-    if(isNullorUndefined(body.nombre) || isNullorUndefined(email || isNullorUndefined(body.favorito))){
+    if(isNullorUndefined(body.nombre || isNullorUndefined(email) || isNullorUndefined(body.favorito))){
         res.status(400).json({message: "Algun parametro enviado es undefined o null"});
     }
     if(isEmpty(email) || isEmpty(body.nombre)){
