@@ -3,6 +3,13 @@ import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
 import { api } from "~/utils/api";
 import "~/styles/globals.css";
+import coolvetica from "next/font/local";
+
+const Coolvetica = coolvetica({
+  src: "../../public/fonts/CoolveticaLt-Regular.ttf",
+  display: "swap",
+  variable: "--font-coolvetica",
+});
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -10,7 +17,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <Component {...pageProps} />
+      <main className={Coolvetica.className}>
+        <Component {...pageProps} />
+      </main>
     </SessionProvider>
   );
 };

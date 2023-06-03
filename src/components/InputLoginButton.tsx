@@ -1,13 +1,20 @@
 interface InputLoginButtonProps {
-    // logo: string,
-    type: string
-    pholder: string
-}  
-
-function InputLoginButton({type, pholder} : InputLoginButtonProps) {
-  return (
-    <input className="border-2 border-[#E8E8E8] bg-[#FBF9FA] text-[#C4C4C4] w-[310px] h-[52px] rounded-[1.25rem] text-[20px] my-[6px]" type={type} placeholder={pholder}/>
-  )
+  icon: JSX.Element;
+  type: string;
+  pholder: string;
 }
 
-export default InputLoginButton
+function InputLoginButton({ icon, type, pholder }: InputLoginButtonProps) {
+  return (
+    <div className="flex justify-start items-center group">
+      <span className="absolute pl-2 pointer-events-none">{icon}</span>
+      <input
+        className="my-[6px] h-[52px] w-[310px] rounded-[1.25rem] border-2 border-[#E8E8E8] bg-[#FBF9FA] text-[20px] text-[#C4C4C4] placeholder:text-[#C4C4C4] pl-11 focus:placeholder:text-transparent appearance-none"
+        type={type}
+        placeholder={pholder}
+      />
+    </div>
+  );
+}
+
+export default InputLoginButton;

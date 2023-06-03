@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.coolvetica {
+    font-family: coolvetica, sans-serif;
+}
