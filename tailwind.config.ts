@@ -5,8 +5,10 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        coolvetica: [`var(--font-coolvetica)`, "sans-serif"],
-      },
+        coolveticaLight: "coolvetica-light, sans-serif",
+        coolveticaRegular: "coolvetica-regular, sans-serif",
+        coolveticaBook: "coolvetica-book, sans-serif",
+      }
     },
   },
   plugins: [],
