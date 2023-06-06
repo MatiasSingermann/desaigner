@@ -7,7 +7,7 @@ import TwitterLogo from "./TwitterLogo";
 
 function Footer() {
   return (
-    <footer className="absolute bottom-0 flex h-[140px] w-full bg-[#59C3C3] px-[14px] py-[16px] font-coolveticaBook">
+    <footer className="bottom-0 flex h-[140px] w-full bg-[#59C3C3] px-[14px] py-[16px] font-coolveticaBook">
       <div className="flex flex-col">
         <div className="flex w-full">
           <div className="flex flex-col">
