@@ -33,7 +33,7 @@ async function crearUsuario(req: NextApiRequest, res: NextApiResponse){
     try{
         const newUser = await prisma.usuario.create({
             data: {
-                email: body.email,
+                email: body.email.toLowerCase(),
                 contrasenia: body.contrasenia,
             }
         });
@@ -54,7 +54,7 @@ async function crearUsuario(req: NextApiRequest, res: NextApiResponse){
         try{
             const newUser = await prisma.usuario.create({
                 data: {
-                    email: body.email,
+                    email: body.email.toLowerCase(),
                     contrasenia: body.contrasenia,
                     rolUsuario: 1
                 }

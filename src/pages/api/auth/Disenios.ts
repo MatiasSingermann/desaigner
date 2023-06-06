@@ -1,7 +1,8 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import { tidyBase64, isbase64, userExists, isEmpty, isNullorUndefined, checkEmail, coleccionExists, coleccionIsFromUser, isInt, hasAccesToken, renewTokens } from "../functions";
+import { isbase64, userExists, isEmpty, isNullorUndefined, checkEmail, coleccionExists, coleccionIsFromUser, isInt, hasAccesToken, renewTokens } from "../functions";
 import { v2 } from "cloudinary";
+import { IsRestoringProvider } from "@tanstack/react-query";
 
 const prisma = new PrismaClient();
 const cloudinary = v2;
@@ -95,16 +96,16 @@ async function diseños(req: NextApiRequest, res: NextApiResponse, email: string
 async function crearDisenio(req: NextApiRequest, res: NextApiResponse, email: string){
     const body = req.body;
 
-    if(isNullorUndefined(body.nombre) || isNullorUndefined(email)){
+    if(isNullorUndefined(body.nombre) || isNullorUndefined(email) || isNullorUndefined(body.ambiente) || isNullorUndefined(body.disenioIMG) || isNullorUndefined(body.mascaraIMG) || isNullorUndefined(body.presupuesto || isNullorUndefined(body.estilo) || isNullorUndefined(body.links))){
         res.status(400).json({message: "Algun parametro enviado es undefined o null"});
     }
-    if(isEmpty(email) || isEmpty(body.nombre)){
-        res.status(400).json({message: "O el usuario o el nombre de la coleccion estan vacios"});
+    if(isEmpty(email) || isEmpty(body.nombre) || isEmpty(body.ambiente) || isEmpty(body.disenioIMG) || isEmpty(body.mascaraIMG) || isEmpty(body.presupuesto) || isEmpty(body.estilo) || isEmpty(body.links)){
+        res.status(400).json({message: "alguno de los parametros estan vacios"});
     }
     if(!checkEmail(email)){
         res.status(400).json({message: "El usuario no es valido"});
     }
-    if(!isbase64(body.disenioImg) || !isbase64(body.mascaraImg)){
+    if(!isbase64(body.disenioIMG) || !isbase64(body.mascaraIMG)){
         res.status(400).json({message: "Las imagenes enviadas no estan en base 64"});
     }
     const usuarioExistente: boolean = await userExists(email, body.contrasenia);
@@ -116,23 +117,35 @@ async function crearDisenio(req: NextApiRequest, res: NextApiResponse, email: st
         res.status(400).json({message: "La coleccion ingresada no existe"});
     }
 
-    const disenioURL = "";
-    const mascaraURL = "";
-
-    cloudinary.uploader.upload(tidyBase64(body.disenioImg), {
+    const disenioURL = await cloudinary.uploader.upload(body.disenioIMG, {
         resource_type: "image"
-    }).then(result => {
-        console.log(result);
     })
-    .catch(error => {
-        console.log(error);
-    });
-    cloudinary.uploader.upload(tidyBase64(body.mascaraImg), {
+    const mascaraURL = await cloudinary.uploader.upload(body.mascaraIMG, {
         resource_type: "image"
-    }).then(result => {
-        console.log(result);
     })
-    .catch(error => {
-        console.log(error);
-    });
+    
+    if(disenioURL.error || mascaraURL.error){
+        return res.status(500);
+    }
+    else if(disenioURL.status == 200){
+        try{
+            const newDisenio = await prisma.disenio.create({
+                data: {
+                    duenio_id: email,
+                    colecciones: body.nombre,
+                    imagen: disenioURL.url,
+                    mascara: mascaraURL.url,
+                    ambiente: body.ambiente,
+                    presupuesto: body.presupuesto,
+                    estilo: body.estilo,
+                    link: body.links
+                }
+            })
+            if(newDisenio){
+                return res.status(200).json({message: "Nuevo disenio creado con exito"});
+            }
+        } catch {
+            return res.status(500).end();
+        }
+    }
 }

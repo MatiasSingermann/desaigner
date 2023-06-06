@@ -35,18 +35,18 @@ async function revisarDatos(req: NextApiRequest, res: NextApiResponse) {
     try{
         const user = await prisma.usuario.findFirst({
             where: {
-                email: body.email,
+                email: body.email.toLowerCase(),
                 contrasenia: body.contrasenia
             }
         })
         if(user){
             console.log(user);
             const token = jwt.sign({
-                email: body.email
+                email: body.email.toLowerCase()
             }, String(process.env.JWT_SECRET), { expiresIn: "15m"})
 
             const refreshToken = jwt.sign({
-                email: body.email,
+                email: body.email.toLowerCase(),
                 token: token
             },  String(process.env.RJWT_SECRET), { expiresIn: "30m"})
 

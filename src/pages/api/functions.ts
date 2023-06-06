@@ -138,13 +138,10 @@ function renewTokens(refreshToken: any, res: NextApiResponse): Object{
 
 function isbase64(variable: any): boolean{
     const base64RegEx = /^(?:[A-Za-z0-9+\/]{4})*(?:[A-Za-z0-9+\/]{4}|[A-Za-z0-9+\/]{3}=|[A-Za-z0-9+\/]{2}={2})$/g;
-    return base64RegEx.test(variable)
-}
-
-function tidyBase64(imagen: string): string{
-    return String(imagen.split(",")[1]);
+    const [metadata, base64] = variable.split(",");
+    return base64RegEx.test(base64) && "data:image/jpeg;base64" === metadata;
 }
 
 export { checkEmail, isEmpty, isNullorUndefined, checkContrasenia, userExists, coleccionExists, coleccionIsFromUser,
-isInt, hasAccesToken, renewTokens, isBoolean, isbase64, tidyBase64 };
+isInt, hasAccesToken, renewTokens, isBoolean, isbase64 };
 
