@@ -1,5 +1,5 @@
 interface SignButtonProps {
-    type: string
+    type?: 'submit' | 'reset' | 'button';
     text: string
 }  
 
