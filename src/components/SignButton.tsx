@@ -8,13 +8,14 @@ const handleSignClick = () => {
     // email: InputLoginButton.value,
     // password: InputLoginButton.value
   }
-  fetch("/api", {
-    method: "POST",
-    headers: {
-      "Content-type":"application/json"
-    },
-    body:JSON.stringify(obj)
-  })
+  // fetch("/api", {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-type":"application/json"
+  //   },
+  //   body:JSON.stringify(obj)
+  // })
+  console.log("handleSignClick");
 }
 
 function SignButton({type, text} : SignButtonProps) {
