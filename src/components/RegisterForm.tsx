@@ -36,7 +36,7 @@ function RegisterForm() {
         email: inputData[0]![1],
         contrasenia: inputData[1]![1]
       }
-      fetch("/api", {
+      fetch("/api/auth/register.ts", {
         method: "POST",
         headers: {
           "Content-type":"application/json"
