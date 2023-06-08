@@ -31,12 +31,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 }
             }
             else{
-                res.status(403).end();
+                return res.status(403).end();
             }
         }
     }
     else{
-        res.status(405).end();
+        return res.status(405).end();
     }
 }
 
@@ -45,17 +45,17 @@ async function colecciones(req: NextApiRequest, res: NextApiResponse, email: str
 
     //chequeos de informacion
     if(isNullorUndefined(email)){
-        res.status(400).json({message: "El usuario es undefined o null"});
+        return res.status(400).json({message: "El usuario es undefined o null"});
     }
     if(isEmpty(email)){
-        res.status(400).json({message: "El usuario enviado estaba vacio"});
+        return res.status(400).json({message: "El usuario enviado estaba vacio"});
     }
     if(!checkEmail(email)){
-        res.status(400).json({message: "El usuario no es valido"});
+        return res.status(400).json({message: "El usuario no es valido"});
     }
     const usuarioExistente: boolean = await userExists(email, body.contrasenia);
     if(!usuarioExistente){
-        res.status(400).json({message: "El usuario enviado no existe, quizas escribiste algun parametro mal"});
+        return res.status(400).json({message: "El usuario enviado no existe, quizas escribiste algun parametro mal"});
     }
 
     //la query en si
@@ -83,24 +83,24 @@ async function crearColeccion(req: NextApiRequest, res: NextApiResponse, email: 
     const body = req.body;
 
     if(isNullorUndefined(body.nombre || isNullorUndefined(email) || isNullorUndefined(body.favorito))){
-        res.status(400).json({message: "Algun parametro enviado es undefined o null"});
+        return res.status(400).json({message: "Algun parametro enviado es undefined o null"});
     }
     if(isEmpty(email) || isEmpty(body.nombre)){
-        res.status(400).json({message: "O el usuario o el nombre de la coleccion estan vacios"});
+        return res.status(400).json({message: "O el usuario o el nombre de la coleccion estan vacios"});
     }
     if(!isBoolean(body.favorito)){
-        res.status(400).json({message: "El parametro de favorito no fue recibido como bool, tiene que serlo"});
+        return res.status(400).json({message: "El parametro de favorito no fue recibido como bool, tiene que serlo"});
     }
     if(!checkEmail(email)){
-        res.status(400).json({message: "El usuario no es valido"});
+        return res.status(400).json({message: "El usuario no es valido"});
     }
     const usuarioExistente: boolean = await userExists(email, body.contrasenia);
     if(!usuarioExistente){
-        res.status(400).json({message: "El usuario enviado no existe, quizas escribiste algun parametro mal"});
+        return res.status(400).json({message: "El usuario enviado no existe, quizas escribiste algun parametro mal"});
     }
     const coleccionExistente: boolean = await coleccionExists(body.nombre, email);
     if(coleccionExistente){
-        res.status(400).json({message: "La coleccion enviada ya existe"});
+        return res.status(400).json({message: "La coleccion enviada ya existe"});
     }
 
 

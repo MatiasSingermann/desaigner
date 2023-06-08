@@ -11,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return await revisarDatos(req, res);
     }
     else{
-        res.status(405).end();
+        return res.status(405).end();
     }
 }
 
@@ -21,16 +21,16 @@ async function revisarDatos(req: NextApiRequest, res: NextApiResponse) {
         return res.status(400).json({message: "Falta el mail o la contraseña"});
     }
     if(isNullorUndefined(body.email) || isNullorUndefined(body.contrasenia)){
-        res.status(400).json({message: "Algun parametro es null o undefined"});
+        return res.status(400).json({message: "Algun parametro es null o undefined"});
     }
     if(isEmpty(body.email) || isEmpty(body.contrasenia)){
-        res.status(400).json({message: "Algun parametro esta vacio"});
+        return res.status(400).json({message: "Algun parametro esta vacio"});
     }
     if(!checkContrasenia(body.contrasenia)){
-        res.status(400).json({message: "La contrasenia no es valida"});
+        return res.status(400).json({message: "La contrasenia no es valida"});
     }
     if(!checkEmail(body.email)){
-        res.status(400).json({message: "El email no es valido"});
+        return res.status(400).json({message: "El email no es valido"});
     }
     try{
         const user = await prisma.usuario.findFirst({

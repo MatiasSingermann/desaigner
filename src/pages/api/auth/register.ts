@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return await crearUsuario(req, res);
     }
     else{
-        res.status(405).end();
+        return res.status(405).end();
     }
 }
 
@@ -19,16 +19,16 @@ async function crearUsuario(req: NextApiRequest, res: NextApiResponse){
         return res.status(400).json({message: "Falta el mail o la contraseña"});
     }
     if(isNullorUndefined(body.email) || isNullorUndefined(body.contrasenia)){
-        res.status(400).json({message: "Algun parametro es null o undefined"});
+        return res.status(400).json({message: "Algun parametro es null o undefined"});
     }
     if(isEmpty(body.email) || isEmpty(body.contrasenia)){
-        res.status(400).json({message: "Algun parametro esta vacio"});
+        return res.status(400).json({message: "Algun parametro esta vacio"});
     }
     if(!checkEmail(body.email)){
-        res.status(400).json({message: "El email no es valido"});
+        return res.status(400).json({message: "El email no es valido"});
     }
     if(!checkContrasenia(body.contrasenia)){
-        res.status(400).json({message: "La contrasenia no cumple con los parametros requeridos"});
+        return res.status(400).json({message: "La contrasenia no cumple con los parametros requeridos"});
     }
     try{
         const newUser = await prisma.usuario.create({
