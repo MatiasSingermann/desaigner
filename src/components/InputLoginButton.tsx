@@ -5,9 +5,10 @@ interface InputLoginButtonProps {
   type: string;
   pholder: string;
   mlength: number;
+  name: string;
 }
 
-function InputLoginButton({ icon, type, pholder, mlength }: InputLoginButtonProps) {
+function InputLoginButton({ icon, type, pholder, mlength, name }: InputLoginButtonProps) {
   const [invalid, setInvalid] = useState(true);
 
   return (
@@ -26,6 +27,7 @@ function InputLoginButton({ icon, type, pholder, mlength }: InputLoginButtonProp
         placeholder={pholder}
         required
         minLength={mlength}
+        name={name}
       />
     </div>
   );

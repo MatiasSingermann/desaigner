@@ -9,15 +9,41 @@ import { useRef } from 'react';
 
 // https://stackoverflow.com/questions/43137275/how-to-get-values-from-input-types-using-this-refs-in-reactjs
 
+// https://javascript.plainenglish.io/how-to-get-html-form-values-with-javascript-b4869bc5e889
 
 function RegisterForm() {
     
-    const formRef = useRef(null);
+    const formRef = useRef<HTMLFormElement>(null);
 
     const handleSubmit = (e: React.ChangeEvent<any>) => {
         e.preventDefault();
         
-        console.log(formRef.current);
+        const formData = new FormData(e.currentTarget);
+        
+      console.log(formData.entries());
+
+      let inputData = [];
+
+        for (const pair of formData.entries()) {
+          console.log(pair);
+          inputData.push(pair);
+        }
+
+      console.log("Hola")
+      console.log(inputData[0]![1])
+      
+      let obj = {
+        email: inputData[0]![1],
+        contrasenia: inputData[1]![1]
+      }
+      fetch("/api", {
+        method: "POST",
+        headers: {
+          "Content-type":"application/json"
+        },
+        body:JSON.stringify(obj)
+      })
+      console.log("handleSignClick2");
     }
 
   return (
@@ -37,18 +63,21 @@ function RegisterForm() {
           type="email"
           pholder="Email"
           mlength={1}
+          name="email"
         />
         <InputLoginButton
           icon={<PasswordLogo />}
           type="password"
           pholder="Contraseña"
           mlength={9}
+          name="passw"
         />
         <InputLoginButton
           icon={<PasswordLogo />}
           type="password"
           pholder="Repetir contraseña"
           mlength={9}
+          name="repeatPassw"
         />
         <SignButton type="submit" text="Regístrate" />
       </div>
