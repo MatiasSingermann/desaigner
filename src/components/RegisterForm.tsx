@@ -5,46 +5,61 @@ import InputLoginButton from "~/components/InputLoginButton";
 import PasswordLogo from "~/components/PasswordLogo";
 import SignButton from "~/components/SignButton";
 
-import { useRef } from 'react';
+import { useRef } from "react";
 
 // https://stackoverflow.com/questions/43137275/how-to-get-values-from-input-types-using-this-refs-in-reactjs
 
 // https://javascript.plainenglish.io/how-to-get-html-form-values-with-javascript-b4869bc5e889
 
 function RegisterForm() {
-    
-    const formRef = useRef<HTMLFormElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
-    const handleSubmit = (e: React.ChangeEvent<any>) => {
-        e.preventDefault();
-        
-        const formData = new FormData(e.currentTarget);
-        
-      console.log(formData.entries());
+  const handleSubmit = (e: React.ChangeEvent<any>) => {
+    e.preventDefault();
 
-      let inputData = [];
+    const formData = new FormData(e.currentTarget);
 
-        for (const pair of formData.entries()) {
-          console.log(pair);
-          inputData.push(pair);
-        }
+    console.log(formData.entries());
 
-      console.log("Hola")
-      console.log(inputData[0]![1])
-      
-      let obj = {
-        email: inputData[0]![1],
-        contrasenia: inputData[1]![1]
-      }
-      fetch("/api/auth/register.ts", {
-        method: "POST",
-        headers: {
-          "Content-type":"application/json"
-        },
-        body:JSON.stringify(obj)
-      })
-      console.log("handleSignClick2");
+    let inputData = [];
+
+    for (const pair of formData.entries()) {
+      console.log(pair);
+      inputData.push(pair);
     }
+
+    let userEmail = inputData[0]![1];
+    let userPassword = inputData[1]![1];
+    let userRepeatPassword = inputData[2]![1];
+
+    if (
+      typeof userEmail === "string" &&
+      typeof userPassword === "string" &&
+      typeof userRepeatPassword === "string"
+    ) {
+      if (userPassword !== userRepeatPassword && userPassword.length < 9) {
+        console.log(
+          "La contraseña debe ser igual en ambos inputs y/o la contraseña es menor a 9 caracteres"
+        );
+      } else {
+        let obj = {
+          email: userEmail.toLocaleLowerCase(),
+          contrasenia: userPassword,
+        };
+        fetch("api/auth/register.ts", {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify(obj),
+        }).then(data => console.log(data))
+        .catch(error => {
+          console.log("Hola")
+          console.log(error)
+        });
+      }
+    }
+  };
 
   return (
     <form
