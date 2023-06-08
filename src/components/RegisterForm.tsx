@@ -17,7 +17,7 @@ function RegisterForm() {
     const handleSubmit = (e: React.ChangeEvent<any>) => {
         e.preventDefault();
         
-        console.log(formRef.current)
+        console.log(formRef.current);
     }
 
   return (
