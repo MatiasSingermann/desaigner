@@ -24,7 +24,6 @@ function RegisterForm() {
     let inputData = [];
 
     for (const pair of formData.entries()) {
-      console.log(pair);
       inputData.push(pair);
     }
 
@@ -37,26 +36,41 @@ function RegisterForm() {
       typeof userPassword === "string" &&
       typeof userRepeatPassword === "string"
     ) {
-      if (userPassword !== userRepeatPassword && userPassword.length < 9) {
+      let equalPassword = userPassword !== userRepeatPassword;
+      let minusMinLenPassword = userPassword.length < 9;
+      let hasSpecialChar = !/[#_@$!%*?&]/.test(userPassword); // /[!@$%&#]/
+      let hasUpperCase = userPassword.match(/[A-Z]/)!.length == 0;
+
+      if (
+        equalPassword &&
+        minusMinLenPassword &&
+        hasSpecialChar &&
+        hasUpperCase
+      ) {
         console.log(
-          "La contraseña debe ser igual en ambos inputs y/o la contraseña es menor a 9 caracteres"
+          "La contraseña debe ser igual en ambos inputs, la contraseña es menor a 9 caracteres, "
         );
       } else {
         let obj = {
           email: userEmail.toLocaleLowerCase(),
           contrasenia: userPassword,
         };
-        fetch("api/auth/register.ts", {
+        fetch("api/auth/register", {
           method: "POST",
           headers: {
             "Content-type": "application/json",
           },
           body: JSON.stringify(obj),
-        }).then(data => console.log(data))
-        .catch(error => {
-          console.log("Hola")
-          console.log(error)
-        });
+        })
+          .then((response) => response.json())
+          .then((data) => console.log(data))
+          .catch((error) => {
+            console.log("Hola");
+            console.log(error);
+          });
+        // fetch('/api/hola')
+        //   .then(response => response.json())
+        //   .then(data => console.log(data));
       }
     }
   };

@@ -17,7 +17,7 @@ function Footer() {
               </div>
               <ul className="-mx-[2px] flex h-[34px] w-[100px] items-center justify-between">
                 <SocialMedia
-                  hlink="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                  hlink="https://www.youtube.com/watch?v=mSUNnCwj1WY"
                   icon={<TwitterLogo />}
                 />
 
@@ -27,7 +27,7 @@ function Footer() {
                 />
 
                 <SocialMedia
-                  hlink="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                  hlink="https://www.youtube.com/watch?v=qPCf1tS_AwM"
                   icon={<FacebookLogo />}
                 />
               </ul>
