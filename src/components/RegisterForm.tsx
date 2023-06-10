@@ -6,6 +6,9 @@ import PasswordInput from "~/components/PasswordInput";
 import PasswordLogo from "~/components/PasswordLogo";
 import SignButton from "~/components/SignButton";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import { useRef } from "react";
 
 // https://stackoverflow.com/questions/43137275/how-to-get-values-from-input-types-using-this-refs-in-reactjs
@@ -40,17 +43,68 @@ function RegisterForm() {
       let equalPassword = userPassword !== userRepeatPassword;
       let minusMinLenPassword = userPassword.length < 9;
       let hasSpecialChar = !/[#_@$!%*?&]/.test(userPassword); // /[!@$%&#]/
-      let hasUpperCase = userPassword.match(/[A-Z]/)!.length == 0;
+      // let hasUpperCase = userPassword.match(/[A-Z]/)!.length != 0;
 
       if (
-        equalPassword &&
-        minusMinLenPassword &&
-        hasSpecialChar &&
-        hasUpperCase
+        equalPassword ||
+        minusMinLenPassword ||
+        hasSpecialChar // ||
+        // hasUpperCase
       ) {
-        console.log(
-          "La contraseña debe ser igual en ambos inputs, la contraseña es menor a 9 caracteres, "
-        );
+        if (equalPassword) {
+          console.log(
+            "La contraseña debe ser igual en ambos inputs"
+          );
+          toast.error(
+            "La contraseña debe ser igual en ambos inputs",
+            {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            }
+          );
+        }
+        if (minusMinLenPassword) {
+          console.log(
+            "La contraseña debe tener al menos 9 caracteres"
+          );
+          toast.error(
+            "La contraseña debe tener al menos 9 caracteres",
+            {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            }
+          );
+        }
+        if (hasSpecialChar) {
+          console.log(
+            "La contraseña debe tener como mínimo 1 caracter especial (#,_,@,$,!,%,*,?,&)"
+          );
+          toast.error(
+            "La contraseña debe tener como mínimo 1 caracter especial (#,_,@,$,!,%,*,?,&)",
+            {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            }
+          );
+        }
       } else {
         let obj = {
           email: userEmail.toLocaleLowerCase(),
@@ -77,44 +131,47 @@ function RegisterForm() {
   };
 
   return (
-    <form
-      className="flex h-[568px] w-[336px] flex-col items-center justify-center"
-      action="/home"
-      method="POST"
-      onSubmit={handleSubmit}
-      ref={formRef}
-    >
-      <h2 className="h-[88px] w-[266px] text-center font-coolveticaRegular text-[35px] leading-none text-white">
-        Regístrate en DesAIgner
-      </h2>
-      <div className="mb-[52px] mt-[33px] flex flex-col items-center justify-center">
-        <EmailInput
-          icon={<EmailLogo />}
-          pholder="Email"
-          mlength={1}
-          name="email"
-        />
-        <PasswordInput
-          icon={<PasswordLogo />}
-          pholder="Contraseña"
-          mlength={9}
-          name="passw"
-        />
-        <PasswordInput
-          icon={<PasswordLogo />}
-          pholder="Repetir contraseña"
-          mlength={9}
-          name="repeatPassw"
-        />
-        <SignButton type="submit" text="Regístrate" />
-      </div>
-      <div className="mb-[30px] flex flex-row items-center justify-center">
-        <hr className="mr-2 w-[136px] border-white" />
-        <p className="pb-1 text-center text-[20px] text-white">o</p>
-        <hr className="ml-2 w-[136px] border-white" />
-      </div>
-      <GoogleButton icon={<GoogleLogo />} text="Registrarse con Google" />
-    </form>
+    <>
+      <form
+        className="flex h-[568px] w-[336px] flex-col items-center justify-center"
+        action="/home"
+        method="POST"
+        onSubmit={handleSubmit}
+        ref={formRef}
+      >
+        <h2 className="h-[88px] w-[266px] text-center font-coolveticaRegular text-[35px] leading-none text-white">
+          Regístrate en DesAIgner
+        </h2>
+        <div className="mb-[52px] mt-[33px] flex flex-col items-center justify-center">
+          <EmailInput
+            icon={<EmailLogo />}
+            pholder="Email"
+            mlength={1}
+            name="email"
+          />
+          <PasswordInput
+            icon={<PasswordLogo />}
+            pholder="Contraseña"
+            mlength={9}
+            name="passw"
+          />
+          <PasswordInput
+            icon={<PasswordLogo />}
+            pholder="Repetir contraseña"
+            mlength={9}
+            name="repeatPassw"
+          />
+          <SignButton type="submit" text="Regístrate" />
+        </div>
+        <div className="mb-[30px] flex flex-row items-center justify-center">
+          <hr className="mr-2 w-[136px] border-white" />
+          <p className="pb-1 text-center text-[20px] text-white">o</p>
+          <hr className="ml-2 w-[136px] border-white" />
+        </div>
+        <GoogleButton icon={<GoogleLogo />} text="Registrarse con Google" />
+      </form>
+      <ToastContainer />
+    </>
   );
 }
 
