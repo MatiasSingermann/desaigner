@@ -6,7 +6,7 @@ interface SocialMediaProps {
 function SocialMedia({ hlink, icon }: SocialMediaProps) {
   return (
     <li>
-      <a className="flex items-center justify-center p-[2px]" href={hlink}>
+      <a className="flex items-center justify-center p-[2px] md:scale-150" href={hlink}>
         {icon}
       </a>
     </li>

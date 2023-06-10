@@ -13,8 +13,10 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider session={session}>
       <MobileNavBar/>
-      <Component {...pageProps} />
-      <Footer/>
+      <div className="flex flex-col min-h-screen">
+        <Component {...pageProps} />
+        <Footer/>
+      </div>
     </SessionProvider>
   );
 };
