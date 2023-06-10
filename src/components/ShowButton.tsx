@@ -1,17 +1,17 @@
+import { boolean } from "zod";
 import EyeClosed from "./EyeClosed";
 import EyeOpen from "./EyeOpen";
-import { useState } from "react";
+import { MouseEventHandler, useState } from "react";
 
-function ShowButton() {
-  const [show, setShow] = useState(false);
+interface ShowButtonProps {
+  showPassword: boolean;
+  togglePassword: MouseEventHandler<HTMLButtonElement>;
+}
 
-  const handleButton = () => {
-    setShow(!show);
-  };
-
+function ShowButton({ showPassword, togglePassword }: ShowButtonProps) {
   return (
-    <button className={"flex justify-center items-center absolute mb-[12px] pr-3 right-0 h-[52px]"} onClick={handleButton}>
-      {show ? <EyeOpen /> : <EyeClosed />}
+    <button className={"flex justify-center items-center absolute mb-[12px] pr-3 right-0 h-[52px]"} onClick={togglePassword}>
+      {showPassword ? <EyeOpen /> : <EyeClosed />}
     </button>
   );
 }

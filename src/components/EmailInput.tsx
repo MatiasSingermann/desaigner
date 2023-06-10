@@ -1,15 +1,15 @@
 import { useState } from "react";
 import ShowButton from "./ShowButton";
 
-interface InputLoginButtonProps {
+interface EmailInputProps {
   icon: JSX.Element;
-  type: string;
   pholder: string;
   mlength: number;
   name: string;
 }
 
-function InputLoginButton({ icon, type, pholder, mlength, name }: InputLoginButtonProps) {
+function EmailInput({ icon, pholder, mlength, name }: EmailInputProps) {
+  
   const [invalid, setInvalid] = useState(false);
 
   return (
@@ -23,16 +23,15 @@ function InputLoginButton({ icon, type, pholder, mlength, name }: InputLoginButt
         {icon}
       </span>
       <input
-        className="disabled mb-[12px] h-[52px] w-[310px] appearance-none select-none rounded-[1.25rem] border-2 border-[#E8E8E8] bg-[#FBF9FA] pl-[44px] pr-[50px] text-[20px] text-black shadow-md placeholder:text-[#C4C4C4] invalid:border-[#FF8383] invalid:text-[#FF8383] focus:border-[2.5px] focus:outline-none focus:placeholder:text-transparent invalid:focus:text-[#FF8383] empty:border-[#E8E8E8]"
-        type={type}
+        className="disabled mb-[12px] h-[52px] w-[310px] appearance-none select-none rounded-[1.25rem] border-2 border-[#E8E8E8] bg-[#FBF9FA] pl-[44px] pr-[10px] text-[20px] text-black shadow-md placeholder:text-[#C4C4C4] invalid:border-[#FF8383] invalid:text-[#FF8383] focus:border-[2.5px] focus:outline-none focus:placeholder:text-transparent invalid:focus:text-[#FF8383] empty:border-[#E8E8E8]"
+        type= "email"
         placeholder={pholder}
         required
         minLength={mlength}
         name={name}
       />
-      <ShowButton/>
     </div>
   );
 }
 
-export default InputLoginButton;
+export default EmailInput;

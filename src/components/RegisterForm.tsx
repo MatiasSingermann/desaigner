@@ -1,7 +1,8 @@
 import EmailLogo from "~/components/EmailLogo";
 import GoogleButton from "~/components/GoogleButton";
 import GoogleLogo from "~/components/GoogleLogo";
-import InputLoginButton from "~/components/InputLoginButton";
+import EmailInput from "~/components/EmailInput";
+import PasswordInput from "~/components/PasswordInput";
 import PasswordLogo from "~/components/PasswordLogo";
 import SignButton from "~/components/SignButton";
 
@@ -87,23 +88,20 @@ function RegisterForm() {
         Regístrate en DesAIgner
       </h2>
       <div className="mb-[52px] mt-[33px] flex flex-col items-center justify-center">
-        <InputLoginButton
+        <EmailInput
           icon={<EmailLogo />}
-          type="email"
           pholder="Email"
           mlength={1}
           name="email"
         />
-        <InputLoginButton
+        <PasswordInput
           icon={<PasswordLogo />}
-          type="password"
           pholder="Contraseña"
           mlength={9}
           name="passw"
         />
-        <InputLoginButton
+        <PasswordInput
           icon={<PasswordLogo />}
-          type="password"
           pholder="Repetir contraseña"
           mlength={9}
           name="repeatPassw"
