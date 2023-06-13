@@ -41,70 +41,85 @@ function RegisterForm() {
       typeof userRepeatPassword === "string"
     ) {
       let equalPassword = userPassword !== userRepeatPassword;
-      let minusMinLenPassword = userPassword.length < 9;
-      let hasSpecialChar = !/[#_@$!%*?&]/.test(userPassword); // /[!@$%&#]/
-      // let hasUpperCase = userPassword.match(/[A-Z]/)!.length != 0;
+      let minusMinLenPassword = (userPassword.length < 9) || (userRepeatPassword.length < 9);
+      let hasSpecialChar = (!/[#_@$!%*?&]/.test(userPassword)) || (!/[#_@$!%*?&]/.test(userRepeatPassword)); // /[!@$%&#]/
+      let hasUpperCase = (userPassword.match(/[A-Z]/) == null) || (userRepeatPassword.match(/[A-Z]/) == null);
+      let hasSpace = (userPassword.includes(" ")) || (userRepeatPassword.includes(" "));
 
-      if (
-        equalPassword ||
-        minusMinLenPassword ||
-        hasSpecialChar // ||
-        // hasUpperCase
-      ) {
-        if (equalPassword) {
-          console.log(
-            "La contraseña debe ser igual en ambos inputs"
-          );
-          toast.error(
-            "La contraseña debe ser igual en ambos inputs",
-            {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            }
-          );
-        }
-        if (minusMinLenPassword) {
-          console.log(
-            "La contraseña debe tener al menos 9 caracteres"
-          );
-          toast.error(
-            "La contraseña debe tener al menos 9 caracteres",
-            {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            }
-          );
-        }
-        if (hasSpecialChar) {
-          console.log(
-            "La contraseña debe tener como mínimo 1 caracter especial (#,_,@,$,!,%,*,?,&)"
-          );
-          toast.error(
-            "La contraseña debe tener como mínimo 1 caracter especial (#,_,@,$,!,%,*,?,&)",
-            {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            }
-          );
-        }
+      if (equalPassword) {
+        console.log("La contraseña debe ser igual en ambos inputs");
+        toast.error("La contraseña debe ser igual en ambos inputs", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      }
+      if (minusMinLenPassword) {
+        console.log("La contraseña debe tener al menos 9 caracteres");
+        toast.error("La contraseña debe tener al menos 9 caracteres", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      }
+      if (hasSpecialChar) {
+        console.log(
+          "La contraseña debe tener como mínimo 1 caracter especial (#,_,@,$,!,%,*,?,&)"
+        );
+        toast.error(
+          "La contraseña debe tener como mínimo 1 caracter especial (#,_,@,$,!,%,*,?,&)",
+          {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          }
+        );
+      }
+      if (hasUpperCase) {
+        console.log(
+          "La contraseña debe tener al menos un caracter en mayúscula"
+        );
+        toast.error(
+          "La contraseña debe tener al menos un caracter en mayúscula",
+          {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          }
+        );
+      }
+      if (hasSpace) {
+        console.log("La contraseña no debe contener espacios");
+        toast.error("La contraseña no debe contener espacios", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       } else {
         let obj = {
           email: userEmail.toLocaleLowerCase(),
@@ -138,6 +153,7 @@ function RegisterForm() {
         method="POST"
         onSubmit={handleSubmit}
         ref={formRef}
+        noValidate
       >
         <h2 className="h-[88px] w-[266px] text-center font-coolveticaRegular text-[35px] leading-none text-white">
           Regístrate en DesAIgner
