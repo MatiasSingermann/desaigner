@@ -12,7 +12,7 @@ function Footer() {
           <div className="flex w-full">
             <div className="flex flex-col">
               <div className="flex flex-col">
-                <div className="relative font-coolveticaRegular text-[22.5px] text-[#FBF9FA] md:text-[30px]">
+                <div className="relative font-coolveticaRegular text-[22.5px] text-[#FBF9FA] md:text-[30px] hover:text-[#E8E8E8]">
                   <a className="p-[8px] -m-[8px]" href="/landing">
                     DesAIgner
                   </a>
@@ -20,16 +20,19 @@ function Footer() {
                 <ul className="-mx-[2px] flex h-[34px] w-[100px] items-center justify-between md:mx-[2px] md:my-[14px] md:w-[130px]">
                   <SocialMedia
                     hlink="https://www.youtube.com/watch?v=mSUNnCwj1WY"
+                    alabel="Visita nuestro Twitter"
                     icon={<TwitterLogo />}
                   />
 
                   <SocialMedia
                     hlink="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                    alabel="Visita nuestro Instagram"
                     icon={<InstagramLogo />}
                   />
 
                   <SocialMedia
                     hlink="https://www.youtube.com/watch?v=qPCf1tS_AwM"
+                    alabel="Visita nuestro Facebook"
                     icon={<FacebookLogo />}
                   />
                 </ul>

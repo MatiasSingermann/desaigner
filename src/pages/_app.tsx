@@ -6,18 +6,22 @@ import "~/styles/globals.css";
 import Footer from "~/components/Footer";
 import MobileNavBar from "~/components/MobileNavBar";
 
+import { ThemeProvider } from "next-themes";
+
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
   return (
-    <SessionProvider session={session}>
-      <MobileNavBar/>
-      <div className="flex flex-col min-h-screen">
-        <Component {...pageProps} />
-        <Footer/>
-      </div>
-    </SessionProvider>
+    <ThemeProvider attribute="class">
+      <SessionProvider session={session}>
+        <MobileNavBar />
+        <div className="flex min-h-screen flex-col">
+          <Component {...pageProps} />
+          <Footer />
+        </div>
+      </SessionProvider>
+    </ThemeProvider>
   );
 };
 

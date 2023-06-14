@@ -1,4 +1,5 @@
 import Head from "next/head";
+import ThemeButton from "~/components/ThemeButton";
 
 function index() {
   return (
@@ -9,7 +10,8 @@ function index() {
         <link rel="icon" href="/DesAIgnerIco.ico" />
       </Head>
       <main>
-        <div>Settings</div>
+        <div className="mt-[500px]">Settings</div>
+        <ThemeButton/>
       </main>
     </>
   );

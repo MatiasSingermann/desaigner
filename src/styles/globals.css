@@ -25,3 +25,20 @@
         font-style: normal;
     }
 }
+
+:root {
+    --background-hex: #FBF9FA;
+    --foreground-hex: #292F2D;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-hex: #292F2D;
+        --foreground-hex: #FBF9FA;
+    }
+}
+  
+body {
+    background: var(--background-hex);
+    color: var(--foreground-hex);
+}

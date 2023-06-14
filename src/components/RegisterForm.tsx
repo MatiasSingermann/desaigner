@@ -40,71 +40,100 @@ function RegisterForm() {
       typeof userPassword === "string" &&
       typeof userRepeatPassword === "string"
     ) {
-      let equalPassword = userPassword !== userRepeatPassword;
-      let minusMinLenPassword = userPassword.length < 9;
-      let hasSpecialChar = !/[#_@$!%*?&]/.test(userPassword); // /[!@$%&#]/
-      // let hasUpperCase = userPassword.match(/[A-Z]/)!.length != 0;
+      let noValidEmail = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail);
+      let notEqualPassword = userPassword !== userRepeatPassword;
+      let minusMinLenPassword = (userPassword.length < 9) || (userRepeatPassword.length < 9);
+      let hasNoSpecialChar = (!/[#_@$!%*?&]/.test(userPassword)) || (!/[#_@$!%*?&]/.test(userRepeatPassword)); // /[!@$%&#]/
+      let hasNoUpperCase = (userPassword.match(/[A-Z]/) == null) || (userRepeatPassword.match(/[A-Z]/) == null);
+      let hasNoSpace = (userPassword.includes(" ")) || (userRepeatPassword.includes(" "));
 
-      if (
-        equalPassword ||
-        minusMinLenPassword ||
-        hasSpecialChar // ||
-        // hasUpperCase
-      ) {
-        if (equalPassword) {
-          console.log(
-            "La contraseña debe ser igual en ambos inputs"
-          );
-          toast.error(
-            "La contraseña debe ser igual en ambos inputs",
-            {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            }
-          );
-        }
-        if (minusMinLenPassword) {
-          console.log(
-            "La contraseña debe tener al menos 9 caracteres"
-          );
-          toast.error(
-            "La contraseña debe tener al menos 9 caracteres",
-            {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            }
-          );
-        }
-        if (hasSpecialChar) {
-          console.log(
-            "La contraseña debe tener como mínimo 1 caracter especial (#,_,@,$,!,%,*,?,&)"
-          );
-          toast.error(
-            "La contraseña debe tener como mínimo 1 caracter especial (#,_,@,$,!,%,*,?,&)",
-            {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            }
-          );
-        }
+      if (noValidEmail) {
+        console.log("El Email no es válido");
+        toast.error("El Email no es válido", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      }
+      if (notEqualPassword) {
+        console.log("La contraseña debe ser igual en ambos inputs");
+        toast.error("La contraseña debe ser igual en ambos inputs", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      }
+      if (minusMinLenPassword) {
+        console.log("La contraseña debe tener al menos 9 caracteres");
+        toast.error("La contraseña debe tener al menos 9 caracteres", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      }
+      if (hasNoSpecialChar) {
+        console.log(
+          "La contraseña debe tener como mínimo 1 caracter especial (#,_,@,$,!,%,*,?,&)"
+        );
+        toast.error(
+          "La contraseña debe tener como mínimo 1 caracter especial (#,_,@,$,!,%,*,?,&)",
+          {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          }
+        );
+      }
+      if (hasNoUpperCase) {
+        console.log(
+          "La contraseña debe tener al menos un caracter en mayúscula"
+        );
+        toast.error(
+          "La contraseña debe tener al menos un caracter en mayúscula",
+          {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          }
+        );
+      }
+      if (hasNoSpace) {
+        console.log("La contraseña no debe contener espacios");
+        toast.error("La contraseña no debe contener espacios", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       } else {
         let obj = {
           email: userEmail.toLocaleLowerCase(),
@@ -138,6 +167,7 @@ function RegisterForm() {
         method="POST"
         onSubmit={handleSubmit}
         ref={formRef}
+        noValidate
       >
         <h2 className="h-[88px] w-[266px] text-center font-coolveticaRegular text-[35px] leading-none text-white">
           Regístrate en DesAIgner
@@ -170,7 +200,7 @@ function RegisterForm() {
         </div>
         <GoogleButton icon={<GoogleLogo />} text="Registrarse con Google" />
       </form>
-      <ToastContainer />
+      <ToastContainer limit={3}/>
     </>
   );
 }
