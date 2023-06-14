@@ -40,13 +40,27 @@ function RegisterForm() {
       typeof userPassword === "string" &&
       typeof userRepeatPassword === "string"
     ) {
-      let equalPassword = userPassword !== userRepeatPassword;
+      let noValidEmail = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail);
+      let notEqualPassword = userPassword !== userRepeatPassword;
       let minusMinLenPassword = (userPassword.length < 9) || (userRepeatPassword.length < 9);
-      let hasSpecialChar = (!/[#_@$!%*?&]/.test(userPassword)) || (!/[#_@$!%*?&]/.test(userRepeatPassword)); // /[!@$%&#]/
-      let hasUpperCase = (userPassword.match(/[A-Z]/) == null) || (userRepeatPassword.match(/[A-Z]/) == null);
-      let hasSpace = (userPassword.includes(" ")) || (userRepeatPassword.includes(" "));
+      let hasNoSpecialChar = (!/[#_@$!%*?&]/.test(userPassword)) || (!/[#_@$!%*?&]/.test(userRepeatPassword)); // /[!@$%&#]/
+      let hasNoUpperCase = (userPassword.match(/[A-Z]/) == null) || (userRepeatPassword.match(/[A-Z]/) == null);
+      let hasNoSpace = (userPassword.includes(" ")) || (userRepeatPassword.includes(" "));
 
-      if (equalPassword) {
+      if (noValidEmail) {
+        console.log("El Email no es válido");
+        toast.error("El Email no es válido", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      }
+      if (notEqualPassword) {
         console.log("La contraseña debe ser igual en ambos inputs");
         toast.error("La contraseña debe ser igual en ambos inputs", {
           position: "top-center",
@@ -72,7 +86,7 @@ function RegisterForm() {
           theme: "colored",
         });
       }
-      if (hasSpecialChar) {
+      if (hasNoSpecialChar) {
         console.log(
           "La contraseña debe tener como mínimo 1 caracter especial (#,_,@,$,!,%,*,?,&)"
         );
@@ -90,7 +104,7 @@ function RegisterForm() {
           }
         );
       }
-      if (hasUpperCase) {
+      if (hasNoUpperCase) {
         console.log(
           "La contraseña debe tener al menos un caracter en mayúscula"
         );
@@ -108,7 +122,7 @@ function RegisterForm() {
           }
         );
       }
-      if (hasSpace) {
+      if (hasNoSpace) {
         console.log("La contraseña no debe contener espacios");
         toast.error("La contraseña no debe contener espacios", {
           position: "top-center",
@@ -186,7 +200,7 @@ function RegisterForm() {
         </div>
         <GoogleButton icon={<GoogleLogo />} text="Registrarse con Google" />
       </form>
-      <ToastContainer />
+      <ToastContainer limit={3}/>
     </>
   );
 }

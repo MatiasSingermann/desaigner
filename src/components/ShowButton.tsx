@@ -1,7 +1,7 @@
 import { boolean } from "zod";
 import EyeClosed from "./EyeClosed";
 import EyeOpen from "./EyeOpen";
-import { MouseEventHandler, useState } from "react";
+import { MouseEventHandler } from "react";
 
 interface ShowButtonProps {
   showPassword: boolean;
@@ -10,7 +10,7 @@ interface ShowButtonProps {
 
 function ShowButton({ showPassword, togglePassword }: ShowButtonProps) {
   return (
-    <button className={"flex justify-center items-center absolute mb-[12px] pr-3 right-0 h-[52px]"} onClick={togglePassword}>
+    <button className={"flex justify-center items-center absolute mb-[12px] pr-3 right-0 h-[52px]"} aria-label={`${showPassword ? "Contraseña visible" : "Contraseña invisible"}`} onClick={togglePassword}>
       {showPassword ? <EyeOpen /> : <EyeClosed />}
     </button>
   );
