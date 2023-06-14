@@ -1,7 +1,7 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import { useRouter } from "next/router";
-import { isbase64, userExists, isEmpty, isNullorUndefined, checkEmail, coleccionExists, coleccionIsFromUser, isInt, hasAccesToken, renewTokens } from "../functions";
+import { disenioExists, isbase64, userExists, isEmpty, isNullorUndefined, checkEmail, coleccionExists, coleccionIsFromUser, isInt, hasAccesToken, renewTokens } from "../functions";
 import { v2 } from "cloudinary";
 
 const prisma = new PrismaClient();
@@ -52,6 +52,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const data = renewTokens(RT, res);
             if(Object.keys(data).length != 0){
                 const email = Object(data).email;
+                return await viewDisenio(req, res, email, id);
+            }
+            else{
+                return res.status(403).end();
             }
         }
     }
@@ -180,6 +184,10 @@ async function viewDisenio(req: NextApiRequest, res: NextApiResponse, email: str
     if(!usuarioExistente){
         return res.status(400).json({message: "El usuario enviado no existe, quizas escribiste algun parametro mal"});
     }
+    const disenioExistente: boolean = await disenioExists(id);
+    if(!disenioExistente){
+        return res.status(404).json({message: "El disenio que se quiere visualizar no existe"});
+    } 
 
     const duenio = !!await prisma.disenio.findFirst({
         where: {
@@ -187,15 +195,26 @@ async function viewDisenio(req: NextApiRequest, res: NextApiResponse, email: str
             duenio_id: email 
         }
     })
-    const permiso = !!await prisma.disenio.findFirst({
+    const permiso = !!await prisma.autorizados.findFirst({
         where: {
-            id: id,
-            permitidos: email //no va bien
+            disenio_id: id,
+            usuario_email: email
         }
     })
 
-    if()
+    if(!duenio || !permiso){
+        return res.status(400).json({message: "No tienes acceso a este disenio"});
+    }
     try{
-
+        const data = await prisma.disenio.findFirst({
+            where: {
+                id: id
+            }
+        })
+        if(data){
+            return res.status(200).json(data);
+        }
+    } catch{
+        return res.status(500).end();
     }
 }

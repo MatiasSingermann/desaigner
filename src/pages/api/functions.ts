@@ -142,6 +142,22 @@ function isbase64(variable: any): boolean{
     return base64RegEx.test(base64) && "data:image/jpeg;base64" === metadata;
 }
 
+async function disenioExists(id: number): Promise<boolean>{
+    try{
+        const existe = await prisma.disenio.findFirst({
+            where: {
+                id: id
+            }
+        })
+        if(existe){
+            return true;
+        }
+        return false;
+    } catch {
+        return false;
+    }
+}
+
 export { checkEmail, isEmpty, isNullorUndefined, checkContrasenia, userExists, coleccionExists, coleccionIsFromUser,
-isInt, hasAccesToken, renewTokens, isBoolean, isbase64 };
+isInt, hasAccesToken, renewTokens, isBoolean, isbase64, disenioExists };
 

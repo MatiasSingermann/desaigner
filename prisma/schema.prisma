@@ -65,7 +65,6 @@ model usuario {
   contrasenia String @db.VarChar(30)
   rolUsuario  Int?   @default(0)
   idioma      Int?   @default(0)
-  estilo      Int?   @default(0)
   font        Int?   @default(0)
   disenio     disenio[]
   accesibles  autorizados[] 
