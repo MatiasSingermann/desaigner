@@ -73,6 +73,6 @@ async function revisarDatos(req: NextApiRequest, res: NextApiResponse) {
             return res.status(401).end();
         }   
     } catch {
-        return res.status(500).end();
+        return res.status(400).end(); //puede ser un 500 tmb asi que no se
     }
 }

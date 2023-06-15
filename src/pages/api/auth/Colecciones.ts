@@ -53,7 +53,7 @@ async function colecciones(req: NextApiRequest, res: NextApiResponse, email: str
     if(!checkEmail(email)){
         return res.status(400).json({message: "El usuario no es valido"});
     }
-    const usuarioExistente: boolean = await userExists(email, body.contrasenia);
+    const usuarioExistente: boolean = await userExists(email);
     if(!usuarioExistente){
         return res.status(400).json({message: "El usuario enviado no existe, quizas escribiste algun parametro mal"});
     }
@@ -94,7 +94,7 @@ async function crearColeccion(req: NextApiRequest, res: NextApiResponse, email: 
     if(!checkEmail(email)){
         return res.status(400).json({message: "El usuario no es valido"});
     }
-    const usuarioExistente: boolean = await userExists(email, body.contrasenia);
+    const usuarioExistente: boolean = await userExists(email);
     if(!usuarioExistente){
         return res.status(400).json({message: "El usuario enviado no existe, quizas escribiste algun parametro mal"});
     }

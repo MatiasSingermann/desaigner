@@ -23,12 +23,11 @@ function checkContrasenia(contrasenia: string): boolean{
     return contraseniaRegEx.test(contrasenia);
 }
 
-async function userExists(usuario: string, contrasenia: string): Promise<boolean>{
+async function userExists(usuario: string): Promise<boolean>{
     try{
         const existe = await prisma.usuario.findFirst({
             where: {
                 email: usuario,
-                contrasenia: contrasenia
             }
         })
         if (existe){
