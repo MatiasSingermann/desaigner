@@ -23,7 +23,7 @@ function EmailInput({ icon, pholder, mlength, name }: EmailInputProps) {
         {icon}
       </span>
       <input
-        className="disabled mb-[12px] h-[52px] w-[310px] appearance-none select-none rounded-[1.25rem] border-2 border-[#E8E8E8] bg-[#FBF9FA] pl-[44px] pr-[10px] text-[20px] text-black shadow-md placeholder:text-[#C4C4C4] invalid:border-[#FF8383] invalid:text-[#FF8383] focus:border-[2.5px] focus:outline-none focus:placeholder:text-transparent invalid:focus:text-[#FF8383] empty:border-[#E8E8E8]"
+        className="disabled mb-[12px] h-[52px] w-[310px] appearance-none select-none rounded-[1.25rem] border-2 border-[#E8E8E8] dark:border-[#228187] bg-[#FBF9FA] dark:bg-[#19201F] pl-[44px] pr-[10px] text-[20px] text-black shadow-md placeholder:text-[#C4C4C4] invalid:border-[#FF8383] invalid:text-[#FF8383] focus:border-[2.5px] focus:outline-none focus:placeholder:text-transparent invalid:focus:text-[#FF8383] empty:border-[#E8E8E8]"
         type= "email"
         placeholder={pholder}
         required

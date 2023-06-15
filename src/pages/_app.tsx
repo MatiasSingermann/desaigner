@@ -16,7 +16,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <ThemeProvider attribute="class">
       <SessionProvider session={session}>
         <MobileNavBar />
-        <div className="flex min-h-screen flex-col">
+        <div className="flex min-h-screen flex-col bg-[#FBF9FA] text-black dark:bg-[#1B1F1F] dark:text-[#FBF9FA]">
           <Component {...pageProps} />
           <Footer />
         </div>

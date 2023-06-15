@@ -10,7 +10,7 @@ function LoginSwitch({login, toggleSwitch} : LoginSwitchProps) {
   return (
     <div className="relative flex h-[38px] w-[250px] items-center justify-center my-[20px]">
       <button
-        className="relative flex h-[38px] w-[250px] items-center rounded-3xl bg-[#228187] shadow-lg"
+        className="relative flex h-[38px] w-[250px] items-center rounded-3xl bg-[#228187] dark:bg-[#293433] shadow-lg"
         onClick={toggleSwitch}
       >
         <div

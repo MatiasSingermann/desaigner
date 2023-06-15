@@ -39,20 +39,3 @@
         font-style: normal;
     }
 }
-
-/* :root {
-    --background-hex: #FBF9FA;
-    --foreground-hex: #000;
-}
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --background-hex: #012121;
-        --foreground-hex: #FBF9FA;
-    }
-}
-  
-body {
-    background: var(--background-hex);
-    color: var(--foreground-hex);
-} */

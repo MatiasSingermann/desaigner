@@ -12,8 +12,15 @@ function EyeOpen() {
         stroke="#C4C4C4"
         strokeWidth="2"
         strokeLinejoin="round"
+        className="dark:stroke-[#228187]"
       />
-      <circle cx="17" cy="17" r="3" fill="#C4C4C4" />
+      <circle
+        cx="17"
+        cy="17"
+        r="3"
+        fill="#C4C4C4"
+        className="dark:fill-[#228187]"
+      />
     </svg>
   );
 }
