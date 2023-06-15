@@ -11,10 +11,6 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { useRef } from "react";
 
-// https://stackoverflow.com/questions/43137275/how-to-get-values-from-input-types-using-this-refs-in-reactjs
-
-// https://javascript.plainenglish.io/how-to-get-html-form-values-with-javascript-b4869bc5e889
-
 function LoginForm() {
   const formRef = useRef<HTMLFormElement>(null);
 

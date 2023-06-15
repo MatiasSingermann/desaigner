@@ -11,10 +11,6 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { useRef } from "react";
 
-// https://stackoverflow.com/questions/43137275/how-to-get-values-from-input-types-using-this-refs-in-reactjs
-
-// https://javascript.plainenglish.io/how-to-get-html-form-values-with-javascript-b4869bc5e889
-
 function RegisterForm() {
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -43,7 +39,7 @@ function RegisterForm() {
       let noValidEmail = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail);
       let notEqualPassword = userPassword !== userRepeatPassword;
       let minusMinLenPassword =
-        userPassword.length < 9 || userRepeatPassword.length < 9;
+        userPassword.length < 8 || userRepeatPassword.length < 8;
       let hasNoSpecialChar =
         !/[#_@$!%*?&]/.test(userPassword) ||
         !/[#_@$!%*?&]/.test(userRepeatPassword); // /[!@$%&#]/
@@ -80,8 +76,8 @@ function RegisterForm() {
         });
       }
       if (minusMinLenPassword) {
-        console.log("La contraseña debe tener al menos 9 caracteres");
-        toast.error("La contraseña debe tener al menos 9 caracteres", {
+        console.log("La contraseña debe tener al menos 8 caracteres");
+        toast.error("La contraseña debe tener al menos 8 caracteres", {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
