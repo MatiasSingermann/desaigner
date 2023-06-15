@@ -9,7 +9,7 @@ function GoogleButton({icon, text} : GoogleButtonProps) {
       <span className="flex justify-start items-center pl-2 self-center relative w-[310px] h-[40px]">
         {icon}
       </span>
-      <span className="flex justify-self-center self-center absolute font-coolveticaBook font-extralight">
+      <span className="flex justify-self-center self-center absolute font-coolveticaBook font-extralight text-black">
         {text}
       </span>
     </button>

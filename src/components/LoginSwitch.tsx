@@ -1,21 +1,34 @@
-import { useState } from 'react'
+import { useState } from "react";
+import { MouseEventHandler } from "react";
 
-function LoginSwitch() {
-
-    const [login, setLogin] = useState(true)
-
-    const handleSwitch = () => {
-        setLogin(!login)
-        console.log(login)
-    }
-
-  return (
-    <div className="flex fixed justify-center items-center bottom-[245px]">
-        <div className="flex relative items-center w-[116px] h-[26px] bg-[#59C3C3] border-[3px] border-[#FBF9FA] shadow-lg rounded-3xl px-[8px]">
-            <button className={`flex relative justify-center items-center ${login ? "left-0" : "right-0"} w-[46px] h-[46px] bg-[#228187] border-[3px] border-[#FBF9FA] shadow-lg rounded-3xl transition-all`} onClick={handleSwitch}></button>
-        </div>
-    </div>
-  )
+interface LoginSwitchProps {
+  login: boolean;
+  toggleSwitch: MouseEventHandler<HTMLButtonElement>;
 }
 
-export default LoginSwitch
+function LoginSwitch({login, toggleSwitch} : LoginSwitchProps) {
+  return (
+    <div className="relative flex h-[38px] w-[250px] items-center justify-center my-[20px]">
+      <button
+        className="relative flex h-[38px] w-[250px] items-center rounded-3xl bg-[#228187] shadow-lg"
+        onClick={toggleSwitch}
+      >
+        <div
+          className={`absolute flex h-[38px] w-[124px] items-center justify-center rounded-3xl bg-[#009E95] shadow-lg transition-all ${
+            login ? "left-0" : "right-0"
+          }`}
+        ></div>
+        <div className="absolute flex h-[38px] w-[250px] items-center justify-between pl-[28px] pr-[16px] text-center font-coolveticaRegular text-[24px]">
+          <span className="flex h-[24px] w-[68px] items-center justify-center text-[#FBF9FA]">
+            Login
+          </span>
+          <span className="flex h-[24px] w-[90px] items-center justify-center text-[#FBF9FA]">
+            Sign Up
+          </span>
+        </div>
+      </button>
+    </div>
+  );
+}
+
+export default LoginSwitch;

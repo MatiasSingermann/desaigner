@@ -9,6 +9,8 @@ export default {
         coolveticaLight: "coolvetica-light, sans-serif",
         coolveticaRegular: "coolvetica-regular, sans-serif",
         coolveticaBook: "coolvetica-book, sans-serif",
+        opendyslexicRegular: "opendyslexic-regular, sans-serif",
+        opendyslexicBold: "opendyslexic-bold, sans-serif",
       }
     },
   },

@@ -42,10 +42,16 @@ function RegisterForm() {
     ) {
       let noValidEmail = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail);
       let notEqualPassword = userPassword !== userRepeatPassword;
-      let minusMinLenPassword = (userPassword.length < 9) || (userRepeatPassword.length < 9);
-      let hasNoSpecialChar = (!/[#_@$!%*?&]/.test(userPassword)) || (!/[#_@$!%*?&]/.test(userRepeatPassword)); // /[!@$%&#]/
-      let hasNoUpperCase = (userPassword.match(/[A-Z]/) == null) || (userRepeatPassword.match(/[A-Z]/) == null);
-      let hasNoSpace = (userPassword.includes(" ")) || (userRepeatPassword.includes(" "));
+      let minusMinLenPassword =
+        userPassword.length < 9 || userRepeatPassword.length < 9;
+      let hasNoSpecialChar =
+        !/[#_@$!%*?&]/.test(userPassword) ||
+        !/[#_@$!%*?&]/.test(userRepeatPassword); // /[!@$%&#]/
+      let hasNoUpperCase =
+        userPassword.match(/[A-Z]/) == null ||
+        userRepeatPassword.match(/[A-Z]/) == null;
+      let hasNoSpace =
+        userPassword.includes(" ") || userRepeatPassword.includes(" ");
 
       if (noValidEmail) {
         console.log("El Email no es válido");
@@ -160,19 +166,19 @@ function RegisterForm() {
   };
 
   return (
-    <>
+    <div className="flex h-[514px] w-[340px] items-center justify-center rounded-3xl bg-[#009E95] px-[12px] dark:bg-[#293433]">
       <form
-        className="flex h-[568px] w-[336px] flex-col items-center justify-center"
+        className="flex flex-col items-center justify-center"
         action="/home"
         method="POST"
         onSubmit={handleSubmit}
         ref={formRef}
         noValidate
       >
-        <h2 className="h-[88px] w-[266px] text-center font-coolveticaRegular text-[35px] leading-none text-white">
+        <h2 className="h-[88px] w-[266px] text-center font-coolveticaRegular text-[35px] leading-none text-[#FBF9FA] mt-[20px]">
           Regístrate en DesAIgner
         </h2>
-        <div className="mb-[52px] mt-[33px] flex flex-col items-center justify-center">
+        <div className="mb-[22px] mt-[15px] flex flex-col items-center justify-center">
           <EmailInput
             icon={<EmailLogo />}
             pholder="Email"
@@ -193,15 +199,15 @@ function RegisterForm() {
           />
           <SignButton type="submit" text="Regístrate" />
         </div>
-        <div className="mb-[30px] flex flex-row items-center justify-center">
-          <hr className="mr-2 w-[136px] border-white" />
-          <p className="pb-1 text-center text-[20px] text-white">o</p>
-          <hr className="ml-2 w-[136px] border-white" />
+        <div className="mb-[22px] flex flex-row items-center justify-center">
+          <hr className="mr-2 w-[136px] border-[#FBF9FA]" />
+          <p className="pb-1 text-center text-[20px] text-[#FBF9FA]">o</p>
+          <hr className="ml-2 w-[136px] border-[#FBF9FA]" />
         </div>
         <GoogleButton icon={<GoogleLogo />} text="Registrarse con Google" />
       </form>
-      <ToastContainer limit={3}/>
-    </>
+      <ToastContainer limit={3} />
+    </div>
   );
 }
 
