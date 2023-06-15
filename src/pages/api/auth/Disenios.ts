@@ -3,6 +3,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { useRouter } from "next/router";
 import { disenioExists, isbase64, userExists, isEmpty, isNullorUndefined, checkEmail, coleccionExists, coleccionIsFromUser, isInt, hasAccesToken, renewTokens } from "../functions";
 import { v2 } from "cloudinary";
+import { link } from "fs";
+import { url } from "inspector";
 
 const prisma = new PrismaClient();
 const cloudinary = v2;
@@ -79,7 +81,7 @@ async function diseños(req: NextApiRequest, res: NextApiResponse, email: string
     if(!isInt(body.coleccion)){
         return res.status(400).json({message: "La coleccion enviada no es un INT, debe ser un INT"});
     }
-    const usuarioExistente: boolean = await userExists(email, body.contrasenia);
+    const usuarioExistente: boolean = await userExists(email);
     if(!usuarioExistente){
         return res.status(400).json({message: "El usuario enviado no existe, quizas escribiste algun parametro mal"});
     }
@@ -129,14 +131,17 @@ async function crearDisenio(req: NextApiRequest, res: NextApiResponse, email: st
     if(!isbase64(body.disenioIMG) || !isbase64(body.mascaraIMG)){
         return res.status(400).json({message: "Las imagenes enviadas no estan en base 64"});
     }
-    const usuarioExistente: boolean = await userExists(email, body.contrasenia);
+    const usuarioExistente: boolean = await userExists(email);
     if(!usuarioExistente){
         return res.status(400).json({message: "El usuario enviado no existe, quizas escribiste algun parametro mal"});
     }
-    const coleccionExistente: boolean = await coleccionExists(body.nombre, email);
-    if(!coleccionExistente){
-        return res.status(400).json({message: "La coleccion ingresada no existe"});
-    }
+    // for(let i = 0; i < body.nombre.length; i++){
+    //     const coleccionExistente: boolean = await coleccionExists(body.nombre[i], email);
+    //     if(!coleccionExistente){
+    //         return res.status(400).json({message: "La coleccion ingresada no existe"});
+    //     }
+    // }
+    
 
     const disenioURL = await cloudinary.uploader.upload(body.disenioIMG, {
         resource_type: "image"
@@ -148,24 +153,36 @@ async function crearDisenio(req: NextApiRequest, res: NextApiResponse, email: st
     if(disenioURL.error || mascaraURL.error){
         return res.status(500);
     }
-    else if(disenioURL.status == 200){
+    else {
         try{
             const newDisenio = await prisma.disenio.create({
                 data: {
+                    nombre: body.nombre,
                     duenio_id: email,
-                    colecciones: body.nombre,
-                    imagen: disenioURL.url,
-                    mascara: mascaraURL.url,
+                    imagen: disenioURL.secure_url,
+                    mascara: mascaraURL.secure_url,
                     ambiente: body.ambiente,
                     presupuesto: body.presupuesto,
                     estilo: body.estilo,
-                    link: body.links
                 }
             })
+            console.log(newDisenio.id);
+            // for(let i = 0; i <= body.link.length; i++){
+            //     await prisma.link.create({
+            //         data: {
+            //             url: body.link[i][0],
+            //             mueble: body.link[i][1],
+            //             disenio: {
+            //                 connect: 
+            //             }
+            //         }
+            //     }) 
+            // }
             if(newDisenio){
                 return res.status(200).json({message: "Nuevo disenio creado con exito"});
             }
-        } catch {
+        } catch(error) {
+            console.log(error);
             return res.status(500).end();
         }
     }
@@ -180,7 +197,7 @@ async function viewDisenio(req: NextApiRequest, res: NextApiResponse, email: str
     if(!checkEmail(email)){
         return res.status(400).json({message: "El usuario no es valido"});
     }
-    const usuarioExistente: boolean = await userExists(email, body.contrasenia);
+    const usuarioExistente: boolean = await userExists(email);
     if(!usuarioExistente){
         return res.status(400).json({message: "El usuario enviado no existe, quizas escribiste algun parametro mal"});
     }
