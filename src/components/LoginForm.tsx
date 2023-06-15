@@ -52,16 +52,16 @@ function LoginForm() {
   };
 
   return (
-    <div className="flex h-[514px] w-[340px] md:h-[800px] md:w-[600px] items-center justify-center rounded-3xl bg-[#009E95] px-[12px] dark:bg-[#293433]">
+    <div className="flex h-[514px] w-[340px] items-center justify-center rounded-3xl bg-[#009E95] px-[12px] dark:bg-[#293433]">
       <form
-        className="flex relative h-full flex-col items-center justify-center"
+        className="flex flex-col items-center justify-center"
         action="/home"
         method="POST"
         onSubmit={handleSubmit}
         ref={formRef}
         noValidate
       >
-        <h2 className="md:absolute mt-[20px] md:mt-[36px] h-[88px] w-[266px] md:h-auto md:w-auto text-center font-coolveticaRegular text-[35px] md:text-[50px] leading-none text-[#FBF9FA] md:top-0">
+        <h2 className="mt-[20px] h-[88px] w-[266px] text-center font-coolveticaRegular text-[35px] leading-none text-[#FBF9FA]">
           Inicia sesión en DesAIgner
         </h2>
         <div className="mb-[36px] mt-[33px] flex flex-col items-center justify-center">

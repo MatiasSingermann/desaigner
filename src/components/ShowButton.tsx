@@ -10,7 +10,15 @@ interface ShowButtonProps {
 
 function ShowButton({ showPassword, togglePassword }: ShowButtonProps) {
   return (
-    <button className={"flex justify-center items-center absolute mb-[12px] pr-3 right-0 h-[52px] fill-[#C4C4C4] dark:fill-[#228187]"} aria-label={`${showPassword ? "Contraseña visible" : "Contraseña invisible"}`} onClick={togglePassword}>
+    <button
+      className={
+        "absolute right-0 mb-[12px] flex h-[52px] items-center justify-center fill-[#C4C4C4] pr-3 dark:fill-[#228187]"
+      }
+      aria-label={`${
+        showPassword ? "Contraseña visible" : "Contraseña invisible"
+      }`}
+      onClick={togglePassword}
+    >
       {showPassword ? <EyeOpen /> : <EyeClosed />}
     </button>
   );

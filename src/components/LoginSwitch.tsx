@@ -12,6 +12,7 @@ function LoginSwitch({login, toggleSwitch} : LoginSwitchProps) {
       <button
         className="relative flex h-[38px] w-[250px] items-center rounded-3xl bg-[#228187] dark:bg-[#293433] shadow-lg"
         onClick={toggleSwitch}
+        aria-label={`Cambiar a modo ${login ? "register" : "login"}`}
       >
         <div
           className={`absolute flex h-[38px] w-[124px] items-center justify-center rounded-3xl bg-[#009E95] shadow-lg transition-all ${
