@@ -1,6 +1,6 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import { checkEmail, isEmpty, isNullorUndefined, checkContrasenia } from "../functions";
+import { isString, checkEmail, isEmpty, isNullorUndefined, checkContrasenia } from "../functions";
 
 const prisma = new PrismaClient();
 
@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return await crearUsuario(req, res);
     }
     else{
-        res.status(405).end();
+        return res.status(405).end();
     }
 }
 
@@ -19,16 +19,19 @@ async function crearUsuario(req: NextApiRequest, res: NextApiResponse){
         return res.status(400).json({message: "Falta el mail o la contraseña"});
     }
     if(isNullorUndefined(body.email) || isNullorUndefined(body.contrasenia)){
-        res.status(400).json({message: "Algun parametro es null o undefined"});
+        return res.status(400).json({message: "Algun parametro es null o undefined"});
+    }
+    if(!isString(body.email) || !isString(body.contrasenia)){
+        return res.status(400).json({message: "El email o la contraseña no son un string"});
     }
     if(isEmpty(body.email) || isEmpty(body.contrasenia)){
-        res.status(400).json({message: "Algun parametro esta vacio"});
+        return res.status(400).json({message: "Algun parametro esta vacio"});
     }
     if(!checkEmail(body.email)){
-        res.status(400).json({message: "El email no es valido"});
+        return res.status(400).json({message: "El email no es valido"});
     }
     if(!checkContrasenia(body.contrasenia)){
-        res.status(400).json({message: "La contrasenia no cumple con los parametros requeridos"});
+        return res.status(400).json({message: "La contrasenia no cumple con los parametros requeridos"});
     }
     try{
         const newUser = await prisma.usuario.create({
@@ -59,7 +62,6 @@ async function crearUsuario(req: NextApiRequest, res: NextApiResponse){
                     rolUsuario: 1
                 }
             });
-            console.log(newUser.rolUsuario, newUser);
             if(newUser && newUser.rolUsuario == 1){
                 return res.status(200).json({message: "Se a creado con exito el perfil de admin 😎🤑 para: " + newUser.email});
             }
@@ -68,7 +70,6 @@ async function crearUsuario(req: NextApiRequest, res: NextApiResponse){
             }
             
         } catch(error) {
-            console.log(typeof error, error);
             if (error instanceof Prisma.PrismaClientKnownRequestError) {
                 return res.status(400).json({message: "La cuenta ya existe"});
             }

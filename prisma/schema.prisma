@@ -23,6 +23,7 @@ model coleccion {
 
 model disenio {
   id                 Int         @id @default(autoincrement())
+  nombre             String
   duenio             usuario     @relation(fields: [duenio_id], references: [email])
   duenio_id          String  
   colecciones        coleccion[]
@@ -52,8 +53,8 @@ model autorizados {
 model link {
   id         Int    @id @default(autoincrement())
   url        String @db.VarChar(2000)
-  disenio    disenio   @relation(fields: [disenio_id], references: [id])
-  disenio_id Int
+  disenio    disenio?   @relation(fields: [disenio_id], references: [id])
+  disenio_id Int?
   mueble     String @db.VarChar(30)
 
 
@@ -65,7 +66,6 @@ model usuario {
   contrasenia String @db.VarChar(30)
   rolUsuario  Int?   @default(0)
   idioma      Int?   @default(0)
-  estilo      Int?   @default(0)
   font        Int?   @default(0)
   disenio     disenio[]
   accesibles  autorizados[] 

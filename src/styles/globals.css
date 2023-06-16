@@ -24,4 +24,18 @@
         font-display: swap;
         font-style: normal;
     }
+    @font-face {
+        font-family: "opendyslexic-regular";
+        src: url("/fonts/opendyslexic-regular.woff2") format("woff2");
+        font-weight: 400;
+        font-display: swap;
+        font-style: normal;
+    }
+    @font-face {
+        font-family: "opendyslexic-bold";
+        src: url("/fonts/opendyslexic-bold.woff2") format("woff2");
+        font-weight: 400;
+        font-display: swap;
+        font-style: normal;
+    }
 }

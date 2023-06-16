@@ -1,8 +1,10 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import { checkEmail, isEmpty, isNullorUndefined, checkContrasenia } from "../functions";
+import { isString, checkEmail, isEmpty, isNullorUndefined, checkContrasenia } from "../functions";
 import jwt from "jsonwebtoken";
 import { serialize } from "cookie";
+import { type } from "os";
+import Email from "next-auth/providers/email";
 
 const prisma = new PrismaClient();
 
@@ -11,7 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return await revisarDatos(req, res);
     }
     else{
-        res.status(405).end();
+        return res.status(405).end();
     }
 }
 
@@ -21,16 +23,19 @@ async function revisarDatos(req: NextApiRequest, res: NextApiResponse) {
         return res.status(400).json({message: "Falta el mail o la contraseña"});
     }
     if(isNullorUndefined(body.email) || isNullorUndefined(body.contrasenia)){
-        res.status(400).json({message: "Algun parametro es null o undefined"});
+        return res.status(400).json({message: "Algun parametro es null o undefined"});
+    }
+    if(!isString(body.email) || !isString(body.contrasenia)){
+        return res.status(400).json({message: "El email o la contraseña no son un string"});
     }
     if(isEmpty(body.email) || isEmpty(body.contrasenia)){
-        res.status(400).json({message: "Algun parametro esta vacio"});
+        return res.status(400).json({message: "Algun parametro esta vacio"});
     }
     if(!checkContrasenia(body.contrasenia)){
-        res.status(400).json({message: "La contrasenia no es valida"});
+        return res.status(400).json({message: "La contrasenia no es valida"});
     }
     if(!checkEmail(body.email)){
-        res.status(400).json({message: "El email no es valido"});
+        return res.status(400).json({message: "El email no es valido"});
     }
     try{
         const user = await prisma.usuario.findFirst({
@@ -72,7 +77,8 @@ async function revisarDatos(req: NextApiRequest, res: NextApiResponse) {
         else{
             return res.status(401).end();
         }   
-    } catch {
-        return res.status(500).end();
+    } catch(error) {
+        console.error(error);
+        return res.status(500).end(); //puede ser un 500 tmb asi que no se
     }
 }

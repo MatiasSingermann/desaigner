@@ -8,7 +8,7 @@ interface FooterLinksLeftProps {
 function FooterLinksRight({ hlink, text }: FooterLinksLeftProps) {
   return (
     <li>
-      <Link className="flex items-center justify-end p-[2px] text-right" href={hlink}>
+      <Link className="flex items-center justify-end p-[2px] text-right text-[#FBF9FA] hover:text-[#E8E8E8] w-fit" href={hlink}>
         {text}
       </Link>
     </li>
