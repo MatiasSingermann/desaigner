@@ -31,23 +31,77 @@ function LoginForm() {
     let userPassword = inputData[1]![1];
 
     if (typeof userEmail === "string" && typeof userPassword === "string") {
-      let obj = {
-        email: userEmail.toLocaleLowerCase(),
-        contrasenia: userPassword,
-      };
-      fetch("api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(obj),
-      })
-        .then((response) => response.json())
-        .then((data) => console.log(data))
-        .catch((error) => {
-          console.log("Hola");
-          console.log(error);
+      let emptyInput = userEmail === "" || userPassword === "";
+      let forbiddenChars =
+        !/[A-Za-z0-9#_@$!%*?&]/.test(userEmail) ||
+        !/[A-Za-z0-9#_@$!%*?&]/.test(userPassword);
+      let noValidEmail = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail);
+
+      if (emptyInput) {
+        console.log("Hay uno o más inputs vacíos");
+        toast.error("Hay uno o más inputs vacíos", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
         });
+      } else if (forbiddenChars) {
+        console.log(
+          "Sólo puedes usar números, letras y los siguientes símbolos: #, _, @, $, !, %, *, ? y &"
+        );
+        toast.error(
+          "Sólo puedes usar números, letras y los siguientes símbolos: #, _, @, $, !, %, *, ? y &",
+          {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          }
+        );
+      } else if (noValidEmail) {
+        console.log("El Email no es válido");
+        toast.error("El Email no es válido", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      } else {
+        let obj = {
+          email: userEmail.toLocaleLowerCase(),
+          contrasenia: userPassword,
+        };
+        fetch("api/auth/login", {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify(obj),
+        })
+          .then((response) => {
+            console.log("De La Rua");
+            if (response.ok) {
+              console.log("Menem");
+            }
+          })
+          .then((data) => console.log(data))
+          .catch((error) => {
+            console.log("Hola");
+            console.log(error);
+          });
+      }
     }
   };
 

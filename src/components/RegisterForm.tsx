@@ -39,9 +39,9 @@ function RegisterForm() {
       let emptyInput =
         userEmail === "" || userPassword === "" || userRepeatPassword === "";
       let forbiddenChars =
-        /[<>]/.test(userEmail) ||
-        /[<>]/.test(userPassword) ||
-        /[<>]/.test(userRepeatPassword);
+        !/[A-Za-z0-9#_@$!%*?&]/.test(userEmail) ||
+        !/[A-Za-z0-9#_@$!%*?&]/.test(userPassword) ||
+        !/[A-Za-z0-9#_@$!%*?&]/.test(userRepeatPassword);
       let noValidEmail = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail);
       let notEqualPassword = userPassword !== userRepeatPassword;
       let minusMinLenPassword =
@@ -68,8 +68,8 @@ function RegisterForm() {
           theme: "colored",
         });
       } else if (forbiddenChars) {
-        console.log("Estás usando un caracter prohibido");
-        toast.error("Estás usando un caracter prohibido", {
+        console.log("Sólo puedes usar números, letras y los siguientes símbolos: #, _, @, $, !, %, *, ? y &");
+        toast.error("Sólo puedes usar números, letras y los siguientes símbolos: #, _, @, $, !, %, *, ? y &", {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
