@@ -1,8 +1,10 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import { checkEmail, isEmpty, isNullorUndefined, checkContrasenia } from "../functions";
+import { isString, checkEmail, isEmpty, isNullorUndefined, checkContrasenia } from "../functions";
 import jwt from "jsonwebtoken";
 import { serialize } from "cookie";
+import { type } from "os";
+import Email from "next-auth/providers/email";
 
 const prisma = new PrismaClient();
 
@@ -22,6 +24,9 @@ async function revisarDatos(req: NextApiRequest, res: NextApiResponse) {
     }
     if(isNullorUndefined(body.email) || isNullorUndefined(body.contrasenia)){
         return res.status(400).json({message: "Algun parametro es null o undefined"});
+    }
+    if(!isString(body.email) || !isString(body.contrasenia)){
+        return res.status(400).json({message: "El email o la contraseña no son un string"});
     }
     if(isEmpty(body.email) || isEmpty(body.contrasenia)){
         return res.status(400).json({message: "Algun parametro esta vacio"});

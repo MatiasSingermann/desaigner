@@ -1,6 +1,6 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import { checkEmail, isEmpty, isNullorUndefined, checkContrasenia } from "../functions";
+import { isString, checkEmail, isEmpty, isNullorUndefined, checkContrasenia } from "../functions";
 
 const prisma = new PrismaClient();
 
@@ -20,6 +20,9 @@ async function crearUsuario(req: NextApiRequest, res: NextApiResponse){
     }
     if(isNullorUndefined(body.email) || isNullorUndefined(body.contrasenia)){
         return res.status(400).json({message: "Algun parametro es null o undefined"});
+    }
+    if(!isString(body.email) || !isString(body.contrasenia)){
+        return res.status(400).json({message: "El email o la contraseña no son un string"});
     }
     if(isEmpty(body.email) || isEmpty(body.contrasenia)){
         return res.status(400).json({message: "Algun parametro esta vacio"});
@@ -59,7 +62,6 @@ async function crearUsuario(req: NextApiRequest, res: NextApiResponse){
                     rolUsuario: 1
                 }
             });
-            console.log(newUser.rolUsuario, newUser);
             if(newUser && newUser.rolUsuario == 1){
                 return res.status(200).json({message: "Se a creado con exito el perfil de admin 😎🤑 para: " + newUser.email});
             }
@@ -68,7 +70,6 @@ async function crearUsuario(req: NextApiRequest, res: NextApiResponse){
             }
             
         } catch(error) {
-            console.log(typeof error, error);
             if (error instanceof Prisma.PrismaClientKnownRequestError) {
                 return res.status(400).json({message: "La cuenta ya existe"});
             }

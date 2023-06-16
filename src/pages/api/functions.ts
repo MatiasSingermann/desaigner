@@ -157,6 +157,10 @@ async function disenioExists(id: number): Promise<boolean>{
     }
 }
 
+function isString(variable:any): boolean{
+    return typeof variable == "string";
+}
+
 export { checkEmail, isEmpty, isNullorUndefined, checkContrasenia, userExists, coleccionExists, coleccionIsFromUser,
-isInt, hasAccesToken, renewTokens, isBoolean, isbase64, disenioExists };
+isInt, hasAccesToken, renewTokens, isBoolean, isbase64, disenioExists, isString };
 

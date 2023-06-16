@@ -10,6 +10,7 @@ const prisma = new PrismaClient();
 const cloudinary = v2;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    const router = useRouter();
     const { cookies } = req;
     const AT = cookies.DesAIgnerToken;
     const RT = cookies.DesAIgnerRefeshToken;
@@ -41,7 +42,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
     }
     else if(req.method === "GET"){
-        const router = useRouter();
         const id = parseInt(router.query.id as string);
         if(isNaN(id)){
             return res.status(400).json({message: "Ningun id de disenio fue recibido"});
@@ -135,12 +135,12 @@ async function crearDisenio(req: NextApiRequest, res: NextApiResponse, email: st
     if(!usuarioExistente){
         return res.status(400).json({message: "El usuario enviado no existe, quizas escribiste algun parametro mal"});
     }
-    // for(let i = 0; i < body.nombre.length; i++){
-    //     const coleccionExistente: boolean = await coleccionExists(body.nombre[i], email);
-    //     if(!coleccionExistente){
-    //         return res.status(400).json({message: "La coleccion ingresada no existe"});
-    //     }
-    // }
+    for(let i = 0; i < body.colecciones.length; i++){
+        const coleccionExistente: boolean = await coleccionExists(body.colecciones[i], email);
+        if(!coleccionExistente){
+            return res.status(400).json({message: "La coleccion ingresada no existe"});
+        }
+    }
     
 
     const disenioURL = await cloudinary.uploader.upload(body.disenioIMG, {
@@ -166,18 +166,42 @@ async function crearDisenio(req: NextApiRequest, res: NextApiResponse, email: st
                     estilo: body.estilo,
                 }
             })
-            console.log(newDisenio.id);
-            // for(let i = 0; i <= body.link.length; i++){
-            //     await prisma.link.create({
-            //         data: {
-            //             url: body.link[i][0],
-            //             mueble: body.link[i][1],
-            //             disenio: {
-            //                 connect: 
-            //             }
-            //         }
-            //     }) 
-            // }
+            for(let i = 0; i <= body.link.length; i++){
+                await prisma.link.create({
+                    data: {
+                        url: body.link[i][0],
+                        mueble: body.link[i][1],
+                        disenio: {
+                            connect: {
+                                id: newDisenio.id
+                            }
+                        }
+                    }
+                }) 
+            }
+            for(let i = 0; i <= body.colecciones.length; i++){
+                const coleccionConnect = await prisma.coleccion.findFirst({
+                    where: {
+                        duenio_id: email,
+                        nombre: body.colecciones[i]
+                    }
+                })
+                if(coleccionConnect){
+                    await prisma.disenio.update({
+                        where: {
+                            id: newDisenio.id,
+                        },
+                        data: {
+                            colecciones: {
+                                connect: {
+                                    id: coleccionConnect.id
+                                }
+                            }
+                        }
+                    })
+                }
+                
+            }
             if(newDisenio){
                 return res.status(200).json({message: "Nuevo disenio creado con exito"});
             }
