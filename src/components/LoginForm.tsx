@@ -11,11 +11,11 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { useRef } from "react";
 
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 
 function LoginForm() {
   const formRef = useRef<HTMLFormElement>(null);
-  const router = useRouter()
+  const router = useRouter();
 
   const handleSubmit = (e: React.ChangeEvent<any>) => {
     e.preventDefault();
@@ -96,6 +96,18 @@ function LoginForm() {
           .then((response) => {
             if (response.ok) {
               console.log("Inicio de sesión exitoso");
+              router.push("/home");
+            } else {
+              toast.error("El usuario y/o la contraseña están mal", {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              });
             }
           })
           .then((data) => console.log(data))
@@ -103,26 +115,12 @@ function LoginForm() {
             console.log("Hubo un error en el login");
             console.log(error);
           });
-          toast.success(
-            "¡Has iniciado sesión exitosamente!",
-            {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            }
-          );
-          router.push('/home')
       }
     }
   };
 
   return (
-    <div className="flex h-[514px] w-[340px] items-center justify-center rounded-3xl bg-[#009E95] px-[12px] dark:bg-[#293433]">
+    <div className="1440:y-[900px] flex h-[514px] w-[340px] items-center justify-center rounded-3xl bg-[#009E95] px-[12px] dark:bg-[#292F2D] 480:h-[620px] 480:w-[400px] 720:h-[700px] 720:w-[450px] 1080:h-[820px] 1080:w-[600px] 1440:w-[700px]">
       <form
         className="flex flex-col items-center justify-center"
         action="/home"

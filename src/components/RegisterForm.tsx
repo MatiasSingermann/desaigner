@@ -181,29 +181,32 @@ function RegisterForm() {
           },
           body: JSON.stringify(obj),
         })
-          .then((response) => response.json())
+          .then((response) => {
+            if (response.ok) {
+              toast.success("¡Te has registrado exitosamente!", {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              });
+              router.push("/login");
+            }
+          })
           .then((data) => console.log(data))
           .catch((error) => {
             console.log("Hubo un error en el register");
             console.log(error);
           });
-        toast.success("¡Te has registrado exitosamente!", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-        router.push("/login");
       }
     }
   };
 
   return (
-    <div className="flex h-[514px] w-[340px] items-center justify-center rounded-3xl bg-[#009E95] px-[12px] dark:bg-[#293433]">
+    <div className="flex h-[514px] w-[340px] items-center justify-center rounded-3xl bg-[#009E95] px-[12px] dark:bg-[#292F2D]">
       <form
         className="flex flex-col items-center justify-center"
         action="/home"

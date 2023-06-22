@@ -13,6 +13,13 @@ export default {
         opendyslexicBold: "opendyslexic-bold, sans-serif",
       }
     },
+    screens: {
+      360: "640px",
+      480: "854px",
+      720: "1280px",
+      1080: "1920px",
+      1440: "2560px",
+    },
   },
   plugins: [],
 } satisfies Config;

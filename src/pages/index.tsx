@@ -6,19 +6,29 @@ import { api } from "~/utils/api";
 import { useRouter } from 'next/router'
 
 const Home = () => {
+
   const router = useRouter()
-  const { status } = useSession({
+
+  const { data: session, status } = useSession({
     required: false,
-    onUnauthenticated() {
-      router.push("/landing")
-    },
   })
 
-  if (status === "loading") {
-    return "Loading or not authenticated..."
+  if (status === "unauthenticated") {
+    console.log("no autenticado")
+    router.push("/landing")
   }
 
-  router.push("/home")
+
+  if (status === "loading") {
+    console.log("cargando...")
+    return "Cargando..."
+  }
+
+  if (status === "authenticated") {
+    console.log("autenticado")
+    router.push("/home")
+  }
+
   return (
     <>
       <Head>
