@@ -11,8 +11,11 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { useRef } from "react";
 
+import { useRouter } from 'next/router'
+
 function RegisterForm() {
   const formRef = useRef<HTMLFormElement>(null);
+  const router = useRouter()
 
   const handleSubmit = (e: React.ChangeEvent<any>) => {
     e.preventDefault();
@@ -176,9 +179,44 @@ function RegisterForm() {
           .then((response) => response.json())
           .then((data) => console.log(data))
           .catch((error) => {
-            console.log("Hola");
+            console.log("Hubo un error en el register");
             console.log(error);
           });
+          let obj2 = {
+            email: userEmail.toLocaleLowerCase(),
+            contrasenia: userPassword,
+          };
+          fetch("api/auth/login", {
+            method: "POST",
+            headers: {
+              "Content-type": "application/json",
+            },
+            body: JSON.stringify(obj2),
+          })
+            .then((response) => {
+              if (response.ok) {
+                console.log("Inicio de sesión exitoso");
+              }
+            })
+            .then((data) => console.log(data))
+            .catch((error) => {
+              console.log("Hubo un error en el login");
+              console.log(error);
+            });
+            toast.success(
+              "¡Te has registrado e iniciado sesión exitosamente!",
+              {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              }
+            );
+            router.push('/home')
       }
     }
   };

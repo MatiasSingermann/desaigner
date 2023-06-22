@@ -11,8 +11,11 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { useRef } from "react";
 
+import { useRouter } from 'next/router'
+
 function LoginForm() {
   const formRef = useRef<HTMLFormElement>(null);
+  const router = useRouter()
 
   const handleSubmit = (e: React.ChangeEvent<any>) => {
     e.preventDefault();
@@ -91,16 +94,29 @@ function LoginForm() {
           body: JSON.stringify(obj),
         })
           .then((response) => {
-            console.log("De La Rua");
             if (response.ok) {
-              console.log("Menem");
+              console.log("Inicio de sesión exitoso");
             }
           })
           .then((data) => console.log(data))
           .catch((error) => {
-            console.log("Hola");
+            console.log("Hubo un error en el login");
             console.log(error);
           });
+          toast.success(
+            "¡Has iniciado sesión exitosamente!",
+            {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            }
+          );
+          router.push('/home')
       }
     }
   };
