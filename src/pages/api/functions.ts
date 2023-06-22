@@ -2,6 +2,7 @@ import { Prisma, PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import jwt from "jsonwebtoken";
 import { serialize } from "cookie";
+import Email from "next-auth/providers/email";
 
 const prisma = new PrismaClient();
 
@@ -11,6 +12,34 @@ function checkEmail(email: string): boolean{
 }
 
 function isEmpty(variable: string): boolean{
+    return variable.length <= 0;
+}
+
+async function disenioFromUserExists(nombre: string, duenio: string): Promise<boolean>{
+    try{
+        const existe = await prisma.disenio.findFirst({
+            where: {
+                nombre: nombre,
+                duenio_id: duenio 
+            }
+        })
+        if(existe){
+            return true;
+        }
+        return false;
+    } catch {
+        return false;
+    }
+}
+
+function isArrayEmpty(variable: Array<string>): boolean{
+    if(variable.length > 0){
+        for(let i = 0; i < variable.length; i++){
+            if(variable[i]!.length == 0){
+                return true;
+            }
+        }
+    }
     return variable.length <= 0;
 }
 
@@ -161,6 +190,10 @@ function isString(variable:any): boolean{
     return typeof variable == "string";
 }
 
+function isList(variable:any): boolean{
+    return variable instanceof Array;
+}
+
 export { checkEmail, isEmpty, isNullorUndefined, checkContrasenia, userExists, coleccionExists, coleccionIsFromUser,
-isInt, hasAccesToken, renewTokens, isBoolean, isbase64, disenioExists, isString };
+isInt, hasAccesToken, renewTokens, isBoolean, isbase64, disenioExists, isString, isList, isArrayEmpty, disenioFromUserExists };
 

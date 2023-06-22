@@ -1,16 +1,12 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import { useRouter } from "next/router";
-import { disenioExists, isbase64, userExists, isEmpty, isNullorUndefined, checkEmail, coleccionExists, coleccionIsFromUser, isInt, hasAccesToken, renewTokens } from "../functions";
+import { disenioFromUserExists, isArrayEmpty, isList, disenioExists, isbase64, userExists, isEmpty, isNullorUndefined, checkEmail, coleccionExists, coleccionIsFromUser, isInt, hasAccesToken, renewTokens, isString } from "../functions";
 import { v2 } from "cloudinary";
-import { link } from "fs";
-import { url } from "inspector";
 
 const prisma = new PrismaClient();
 const cloudinary = v2;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const router = useRouter();
     const { cookies } = req;
     const AT = cookies.DesAIgnerToken;
     const RT = cookies.DesAIgnerRefeshToken;
@@ -42,8 +38,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
     }
     else if(req.method === "GET"){
-        const id = parseInt(router.query.id as string);
-        if(isNaN(id)){
+        const id = parseInt(req.query.id as string);
+        if(!id){
             return res.status(400).json({message: "Ningun id de disenio fue recibido"});
         }
         if(Object.keys(data).length != 0){
@@ -78,7 +74,7 @@ async function diseños(req: NextApiRequest, res: NextApiResponse, email: string
     if(!checkEmail(email)){
         return res.status(400).json({message: "El usuario no es valido"});
     }
-    if(!isInt(body.coleccion)){
+    if(!isString(body.coleccion)){
         return res.status(400).json({message: "La coleccion enviada no es un INT, debe ser un INT"});
     }
     const usuarioExistente: boolean = await userExists(email);
@@ -88,22 +84,19 @@ async function diseños(req: NextApiRequest, res: NextApiResponse, email: string
     if(!coleccionExists(body.coleccion, email)){
         return res.status(400).json({message: "La coleccion enviada no existe"});
     }
-    if(!coleccionIsFromUser(email, body.coleccion)){
-        return res.status(403).json({message: "No tienes acceso a esta coleccion"});
-    }
 
     try{
         const data = await prisma.coleccion.findMany({
             where: {
                 duenio_id: email,
-                id: body.coleccion
+                nombre: body.coleccion
             },
             include: {
                 disenios: true
             }
         })
         if(Object.keys(data).length == 0){
-            return res.status(204).json({message: "La coleccion no tieene diseños"});
+            return res.status(204).json({message: "La coleccion no tiene disenios"});
         }
         if(data){
             return res.status(200).json(data);
@@ -122,7 +115,7 @@ async function crearDisenio(req: NextApiRequest, res: NextApiResponse, email: st
     if(isNullorUndefined(body.nombre) || isNullorUndefined(email) || isNullorUndefined(body.ambiente) || isNullorUndefined(body.disenioIMG) || isNullorUndefined(body.mascaraIMG) || isNullorUndefined(body.presupuesto || isNullorUndefined(body.estilo) || isNullorUndefined(body.links))){
         return res.status(400).json({message: "Algun parametro enviado es undefined o null"});
     }
-    if(isEmpty(email) || isEmpty(body.nombre) || isEmpty(body.ambiente) || isEmpty(body.disenioIMG) || isEmpty(body.mascaraIMG) || isEmpty(body.presupuesto) || isEmpty(body.estilo) || isEmpty(body.links)){
+    if(isEmpty(email) || isEmpty(body.nombre) || isEmpty(body.ambiente) || isEmpty(body.disenioIMG) || isEmpty(body.mascaraIMG) || isEmpty(body.presupuesto) || isEmpty(body.estilo)){
         return res.status(400).json({message: "alguno de los parametros estan vacios"});
     }
     if(!checkEmail(email)){
@@ -135,11 +128,21 @@ async function crearDisenio(req: NextApiRequest, res: NextApiResponse, email: st
     if(!usuarioExistente){
         return res.status(400).json({message: "El usuario enviado no existe, quizas escribiste algun parametro mal"});
     }
+    if(!isList(body.colecciones) || isNullorUndefined(body.colecciones) || isArrayEmpty(body.colecciones)){
+        return res.status(400).json({message: "No hay colecciones"});
+    }
     for(let i = 0; i < body.colecciones.length; i++){
         const coleccionExistente: boolean = await coleccionExists(body.colecciones[i], email);
         if(!coleccionExistente){
             return res.status(400).json({message: "La coleccion ingresada no existe"});
         }
+    }
+    if(!isList(body.link) || isArrayEmpty(body.link) || isNullorUndefined(body.link)){
+        return res.status(400).json({message: "No hay links"});
+    }
+    const disenioFromUserExistente: boolean = await disenioFromUserExists(body.nombre, email);
+    if(disenioFromUserExistente){
+        return res.status(400).json({message: "Ya existe un disenio con este nombre"});
     }
     
 
@@ -166,7 +169,7 @@ async function crearDisenio(req: NextApiRequest, res: NextApiResponse, email: st
                     estilo: body.estilo,
                 }
             })
-            for(let i = 0; i <= body.link.length; i++){
+            for(let i = 0; i < body.link.length; i++){
                 await prisma.link.create({
                     data: {
                         url: body.link[i][0],
@@ -179,7 +182,7 @@ async function crearDisenio(req: NextApiRequest, res: NextApiResponse, email: st
                     }
                 }) 
             }
-            for(let i = 0; i <= body.colecciones.length; i++){
+            for(let i = 0; i < body.colecciones.length; i++){
                 const coleccionConnect = await prisma.coleccion.findFirst({
                     where: {
                         duenio_id: email,
@@ -213,7 +216,6 @@ async function crearDisenio(req: NextApiRequest, res: NextApiResponse, email: st
 }
 
 async function viewDisenio(req: NextApiRequest, res: NextApiResponse, email: string, id: number){
-    const body = req.body;
 
     if(isEmpty(email) || id <= 0){
         return res.status(400).json({message: "El email de la token esta vacio o el id del disenio es inexistente"});
