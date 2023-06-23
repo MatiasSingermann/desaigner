@@ -1,7 +1,12 @@
 import Head from "next/head";
 import ThemeButton from "~/components/ThemeButton";
+import { useSession } from "next-auth/react";
 
 function index() {
+  const { data: session, status } = useSession({
+    required: false,
+  })
+
   return (
     <>
       <Head>
@@ -12,6 +17,7 @@ function index() {
       <main>
         <div className="mt-[500px]">Settings</div>
         <ThemeButton/>
+        {status === "authenticated" ? "<componente/>" : null}
       </main>
     </>
   );

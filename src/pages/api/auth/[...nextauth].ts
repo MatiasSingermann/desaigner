@@ -4,6 +4,7 @@ import GoogleProvider from "next-auth/providers/google";
 import DiscordProvider from "next-auth/providers/discord";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
+import { signOut } from "next-auth/react";
 
 const prisma = new PrismaClient();
 
@@ -43,13 +44,16 @@ export default NextAuth ({
             clientSecret: DISCORD_CLIENT_SECRET
         }),
         CredentialsProvider({
-            name: 'Credenciales',
+            type: 'credentials',
             credentials: {
             email: { label: "Email", type: "email" },
             contrasenia: { label: "Contrasenia", type: "password" }
             },
             async authorize(credentials) {
-                const {email,contrasenia}=credentials as any;
+                const {email,contrasenia}=credentials as {
+                    email: string;
+                    contrasenia: string;
+                };
                 const res = await fetch("http://localhost:3000/api/auth/login", {
                     method: "POST",
                     headers: {
@@ -57,14 +61,13 @@ export default NextAuth ({
                     },
                     body: JSON.stringify({
                         email,
-                        contrasenia
+                        contrasenia,
                     })
                 });
 
-                const usuario = await res.json();
-
-                if(res.ok && usuario){
-                    return usuario;
+                if(res.ok){
+                    console.log(res.json());
+                    return res.json();
                 }
                 else{
                     return null;
@@ -74,7 +77,8 @@ export default NextAuth ({
     ],
     secret: process.env.JWT_SECRET,
     pages: {
-        signIn: "/auth/login"
+        signIn: "/login",
+        signOut: "/settings",
     },
     callbacks: {
         async jwt({ token, user, trigger, session }){

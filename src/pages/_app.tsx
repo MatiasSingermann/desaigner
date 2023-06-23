@@ -14,7 +14,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <ThemeProvider attribute="class">
-      <SessionProvider session={session}>
+      <SessionProvider session={session} refetchInterval={15*60} refetchOnWindowFocus={true}>
         <MobileNavBar />
         <div className="flex min-h-screen flex-col bg-[#FBF9FA] text-[#22302D] dark:bg-[#1B1F1F] dark:text-[#FBF9FA]">
           <Component {...pageProps} />

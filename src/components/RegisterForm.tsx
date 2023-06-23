@@ -194,19 +194,45 @@ function RegisterForm() {
                 theme: "colored",
               });
               router.push("/login");
+            } else if (response.status == 409) {
+              console.log("Ya existe una cuenta con este email");
+              toast.error("Ya existe una cuenta con este email", {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              });
             }
           })
-          .then((data) => console.log(data))
           .catch((error) => {
-            console.log("Hubo un error en el register");
+            console.log(
+              "Hubo un error inesperado. Revisa tu conexión o inténtalo más tarde"
+            );
             console.log(error);
+            toast.error(
+              "Hubo un error inesperado. Revisa tu conexión o inténtalo más tarde",
+              {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              }
+            );
           });
       }
     }
   };
 
   return (
-    <div className="flex h-[514px] w-[340px] items-center justify-center rounded-3xl bg-[#009E95] px-[12px] dark:bg-[#292F2D]">
+    <div className="relative flex h-[514px] w-[340px] items-center justify-center rounded-3xl bg-[#009E95] px-[12px] dark:bg-[#292F2D]">
       <form
         className="flex flex-col items-center justify-center"
         action="/home"
@@ -215,7 +241,7 @@ function RegisterForm() {
         ref={formRef}
         noValidate
       >
-        <h2 className="mt-[20px] h-[88px] w-[266px] text-center font-coolveticaRegular text-[35px] leading-none text-[#FBF9FA]">
+        <h2 className="mb-[20px] mt-[20px] text-center font-coolveticaRegular text-[35px] leading-none text-[#FBF9FA]">
           Regístrate en DesAIgner
         </h2>
         <div className="mb-[22px] mt-[15px] flex flex-col items-center justify-center">

@@ -39,13 +39,13 @@ function Footer() {
               </ul>
             </div>
           </div>
-          <div className="flex flex-col text-[9px] text-[#FBF9FA] 360:text-[14px] 720:text-[20px]">
+          <div className="flex flex-col text-[9px] text-[#FBF9FA] 360:text-[14px] 720:text-[18px]">
             <ul className="ml-[80px] mt-[6px] 360:ml-[280px] 480:ml-[350px] 720:ml-[420px]">
               <FooterLinksLeft hlink="/" text="Contacto" />
               <FooterLinksLeft hlink="/about" text="Sobre Nosotros" />
             </ul>
           </div>
-          <div className="flex flex-col text-[9px] text-[#FBF9FA] 360:text-[14px] 720:text-[20px]">
+          <div className="flex flex-col text-[9px] text-[#FBF9FA] 360:text-[14px] 720:text-[18px]">
             <ul className="ml-[20px] mt-[6px] 360:ml-[36px] 720:ml-[48px]">
               <FooterLinksRight hlink="/" text="Inicio" />
               <FooterLinksRight hlink="/about" text="Login/Registrarse" />
@@ -55,7 +55,7 @@ function Footer() {
             </ul>
           </div>
         </div>
-        <div className="flex text-[9px] text-[#FBF9FA] 360:text-[14px] 720:text-[20px]">
+        <div className="flex text-[9px] text-[#FBF9FA] 360:text-[14px] 720:text-[18px]">
           Copyright © DesAIgner, 2023, todos los derechos reservados.
         </div>
       </div>
