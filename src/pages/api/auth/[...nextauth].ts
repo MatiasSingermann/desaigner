@@ -50,7 +50,7 @@ export default NextAuth ({
             },
             async authorize(credentials) {
                 const {email,contrasenia}=credentials as any;
-                const res = await fetch("http://localhost:3000/api/usuarios/login", {
+                const res = await fetch("http://localhost:3000/api/auth/login", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -73,11 +73,17 @@ export default NextAuth ({
         }),
     ],
     secret: process.env.JWT_SECRET,
+    pages: {
+        signIn: "/auth/login"
+    },
     callbacks: {
-        async jwt({ token, user }){
+        async jwt({ token, user, trigger, session }){
+            if(trigger==="update"){
+                return {...token, ...session.user}
+            }
             return { ...token, ...user };
         },
-        async session({ session, token, user }) {
+        async session({ session, token }) {
             session.user.email = token.email as string;
             return session;
         },
