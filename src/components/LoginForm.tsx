@@ -88,7 +88,35 @@ function LoginForm() {
           contrasenia: userPassword,
           // redirect: true,
           // callbackUrl: "/home",
-        })
+        });
+        if (result!.ok) {
+          console.log("Inicio de sesión exitoso");
+          router.push("/home");
+        } else if (result!.status !== 200) {
+          console.log("Ese email no está registrado");
+          toast.error("Ese email no está registrado", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+        } // else if (result!.status == 401) {
+          //console.log("La contraseña es incorrecta");
+          // toast.error("La contraseña es incorrecta", {
+            // position: "top-center",
+            // autoClose: 5000,
+            // hideProgressBar: false,
+            // closeOnClick: true,
+            // pauseOnHover: true,
+            // draggable: true,
+            // progress: undefined,
+            // theme: "colored",
+          // });
+        // }
         // let obj = {
         //   email: userEmail.toLocaleLowerCase(),
         //   contrasenia: userPassword,
