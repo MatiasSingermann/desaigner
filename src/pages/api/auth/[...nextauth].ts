@@ -30,9 +30,6 @@ if (!DISCORD_CLIENT_SECRET) {
 
 
 export default NextAuth ({
-    session: {
-        strategy: 'jwt'
-    },
     adapter: PrismaAdapter(prisma),
     providers: [
         GoogleProvider({
@@ -50,7 +47,7 @@ export default NextAuth ({
             contrasenia: { label: "Contrasenia", type: "password" }
             },
             async authorize(credentials) {
-                const {email,contrasenia}=credentials as {
+                const {email, contrasenia}=credentials as {
                     email: string;
                     contrasenia: string;
                 };
@@ -63,14 +60,16 @@ export default NextAuth ({
                         email,
                         contrasenia,
                     })
-                });
+                })
 
                 if(res.ok){
-                    console.log(res.json());
-                    return res.json();
+                    console.log(res.status, res.json());
+                    return {
+                        id: email
+                    };
                 }
                 else{
-                    return null;
+                    throw new Error("Algo salio mal");
                 }
             }    
         }),
@@ -79,6 +78,9 @@ export default NextAuth ({
     pages: {
         signIn: "/login",
         signOut: "/settings",
+    },
+    session: {
+        strategy: 'jwt'
     },
     callbacks: {
         async jwt({ token, user, trigger, session }){

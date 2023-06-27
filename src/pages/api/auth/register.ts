@@ -71,7 +71,7 @@ async function crearUsuario(req: NextApiRequest, res: NextApiResponse){
             
         } catch(error) {
             if (error instanceof Prisma.PrismaClientKnownRequestError) {
-                return res.status(400).json({message: "La cuenta ya existe"});
+                return res.status(409).json({message: "La cuenta ya existe"});
             }
             return res.status(500).end();
         }

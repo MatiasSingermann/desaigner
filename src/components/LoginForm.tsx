@@ -86,8 +86,8 @@ function LoginForm() {
         const result = await signIn("credentials", {
           email: userEmail.toLocaleLowerCase(),
           contrasenia: userPassword,
-          redirect: true,
-          callbackUrl: "/home",
+          // redirect: true,
+          // callbackUrl: "/home",
         })
         // let obj = {
         //   email: userEmail.toLocaleLowerCase(),
