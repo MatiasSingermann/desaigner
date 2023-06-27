@@ -72,7 +72,7 @@ async function revisarDatos(req: NextApiRequest, res: NextApiResponse) {
             })
 
             res.setHeader("Set-Cookie", [serialized, serializedRefresh]);
-            return res.status(200).json([serialized, serializedRefresh]);
+            return res.status(200).json("Exito");
         }
         else{
             return res.status(401).end();

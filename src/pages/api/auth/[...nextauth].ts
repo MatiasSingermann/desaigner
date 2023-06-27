@@ -4,7 +4,6 @@ import GoogleProvider from "next-auth/providers/google";
 import DiscordProvider from "next-auth/providers/discord";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
-import { signOut } from "next-auth/react";
 
 const prisma = new PrismaClient();
 
@@ -42,6 +41,7 @@ export default NextAuth ({
         }),
         CredentialsProvider({
             type: 'credentials',
+            name: 'credentials',
             credentials: {
             email: { label: "Email", type: "email" },
             contrasenia: { label: "Contrasenia", type: "password" }
@@ -62,19 +62,20 @@ export default NextAuth ({
                     })
                 })
 
+
+                console.log(res.headers.get("set-cookie"))
+
                 if(res.ok){
-                    console.log(res.status, res.json());
                     return {
                         id: email
                     };
                 }
                 else{
-                    throw new Error("Algo salio mal");
+                    return null;
                 }
-            }    
+            },
         }),
     ],
-    secret: process.env.JWT_SECRET,
     pages: {
         signIn: "/login",
         signOut: "/settings",
@@ -83,15 +84,22 @@ export default NextAuth ({
         strategy: 'jwt'
     },
     callbacks: {
-        async jwt({ token, user, trigger, session }){
+        async jwt({ token, user, trigger }){
             if(trigger==="update"){
-                return {...token, ...session.user}
+                token.email = user.email
             }
-            return { ...token, ...user };
+            return token;
         },
         async session({ session, token }) {
-            session.user.email = token.email as string;
+            if(token){
+               session.user.email = token.email as string; 
+            }
+            
             return session;
         },
     },
+    secret: process.env.JWT_SECRET,
+    jwt: {
+        secret: process.env.JWT_SECRET,
+    }
 });
