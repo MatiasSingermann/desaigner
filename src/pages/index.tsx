@@ -13,6 +13,8 @@ const Home = () => {
     required: false,
   })
 
+  console.log(session)
+
   if (status === "unauthenticated") {
     console.log("no autenticado")
     router.push("/landing")
