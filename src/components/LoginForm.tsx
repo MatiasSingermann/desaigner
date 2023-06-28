@@ -86,15 +86,15 @@ function LoginForm() {
         const result = await signIn("credentials", {
           email: userEmail.toLocaleLowerCase(),
           contrasenia: userPassword,
-          // redirect: true,
+          redirect: false,
           // callbackUrl: "/home",
         });
         if (result!.ok) {
           console.log("Inicio de sesión exitoso");
           router.push("/home");
         } else if (result!.status !== 200) {
-          console.log("Ese email no está registrado");
-          toast.error("Ese email no está registrado", {
+          console.log("Ese email o la contraseña son incorrectos");
+          toast.error("Ese email o la contraseña son incorrectos", {
             position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,
