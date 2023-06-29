@@ -26,8 +26,6 @@ if (!DISCORD_CLIENT_SECRET) {
     throw new Error("Discord secret is missing in .env file WTH OMG :O >:(");
 }
 
-
-
 export default NextAuth ({
     adapter: PrismaAdapter(prisma),
     providers: [
@@ -62,12 +60,9 @@ export default NextAuth ({
                     })
                 })
 
-
-                console.log(res.headers.get("set-cookie"))
-
                 if(res.ok){
                     return {
-                        id: email
+                        id: email,
                     };
                 }
                 else{
@@ -84,17 +79,8 @@ export default NextAuth ({
         strategy: 'jwt'
     },
     callbacks: {
-        async jwt({ token, user, trigger }){
-            if(trigger==="update"){
-                token.email = user.email
-            }
-            return token;
-        },
-        async session({ session, token }) {
-            if(token){
-               session.user.email = token.email as string; 
-            }
-            
+        async session({ session, user }) {
+            session.user.email = user.email; 
             return session;
         },
     },

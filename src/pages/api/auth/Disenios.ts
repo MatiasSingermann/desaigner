@@ -7,8 +7,9 @@ const prisma = new PrismaClient();
 const cloudinary = v2;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const { cookies } = req;
-    const AT = cookies.DesAIgnerToken;
+    const { headers, cookies } = req;
+    console.log(headers);
+    const AT = "caca";
     const RT = cookies.DesAIgnerRefeshToken;
     const data = hasAccesToken(AT);
     if(req.method === "POST"){

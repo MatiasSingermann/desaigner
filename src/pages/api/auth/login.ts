@@ -45,34 +45,7 @@ async function revisarDatos(req: NextApiRequest, res: NextApiResponse) {
             }
         })
         if(user){
-            console.log(user);
-            const token = jwt.sign({
-                email: body.email.toLowerCase()
-            }, String(process.env.JWT_SECRET), { expiresIn: "15m"})
-
-            const refreshToken = jwt.sign({
-                email: body.email.toLowerCase(),
-                token: token
-            },  String(process.env.RJWT_SECRET), { expiresIn: "30m"})
-
-            const serialized = serialize("DesAIgnerToken", token, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV == "production",
-                sameSite: "strict", //puesto que el back esta concetado directamente con el front, debe ser asi pero es algo que podria cambiar a none
-                maxAge: 60 * 15, 
-                path: "/"
-            })
-
-            const serializedRefresh = serialize("DesAIgnerRefeshToken", refreshToken, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV == "production",
-                sameSite: "strict", 
-                maxAge: 60 * 30, 
-                path: "/"
-            })
-
-            res.setHeader("Set-Cookie", [serialized, serializedRefresh]);
-            return res.status(200).json("Exito");
+            return res.status(200).json(body.email.toLowerCase());
         }
         else{
             return res.status(401).end();
