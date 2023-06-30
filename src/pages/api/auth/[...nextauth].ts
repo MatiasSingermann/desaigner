@@ -76,11 +76,16 @@ export default NextAuth ({
         signOut: "/settings",
     },
     session: {
-        strategy: 'jwt'
+        strategy: 'jwt',
+        maxAge: 30 * 60
     },
     callbacks: {
         async session({ session, user }) {
-            session.user.email = user.email; 
+            if(user){
+                session.user.email = user.id;
+            }
+            console.log(user);
+            console.log(session);
             return session;
         },
     },

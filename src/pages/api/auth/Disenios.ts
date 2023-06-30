@@ -2,12 +2,14 @@ import { Prisma, PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import { disenioFromUserExists, isArrayEmpty, isList, disenioExists, isbase64, userExists, isEmpty, isNullorUndefined, checkEmail, coleccionExists, coleccionIsFromUser, isInt, hasAccesToken, renewTokens, isString } from "../functions";
 import { v2 } from "cloudinary";
+import { getSession } from "next-auth/react";
 
 const prisma = new PrismaClient();
 const cloudinary = v2;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { headers, cookies } = req;
+    console.log(getSession());
     console.log(headers);
     const AT = "caca";
     const RT = cookies.DesAIgnerRefeshToken;

@@ -45,7 +45,7 @@ async function revisarDatos(req: NextApiRequest, res: NextApiResponse) {
             }
         })
         if(user){
-            return res.status(200).json(body.email.toLowerCase());
+            return res.status(200).end();
         }
         else{
             return res.status(401).end();
