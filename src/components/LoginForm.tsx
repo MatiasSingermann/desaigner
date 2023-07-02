@@ -105,17 +105,17 @@ function LoginForm() {
             theme: "colored",
           });
         } // else if (result!.status == 401) {
-          //console.log("La contraseña es incorrecta");
-          // toast.error("La contraseña es incorrecta", {
-            // position: "top-center",
-            // autoClose: 5000,
-            // hideProgressBar: false,
-            // closeOnClick: true,
-            // pauseOnHover: true,
-            // draggable: true,
-            // progress: undefined,
-            // theme: "colored",
-          // });
+        //console.log("La contraseña es incorrecta");
+        // toast.error("La contraseña es incorrecta", {
+        // position: "top-center",
+        // autoClose: 5000,
+        // hideProgressBar: false,
+        // closeOnClick: true,
+        // pauseOnHover: true,
+        // draggable: true,
+        // progress: undefined,
+        // theme: "colored",
+        // });
         // }
         // let obj = {
         //   email: userEmail.toLocaleLowerCase(),
@@ -183,19 +183,19 @@ function LoginForm() {
   };
 
   return (
-    <div className="relative flex h-[514px] w-[340px] items-center justify-center rounded-3xl bg-[#009E95] px-[12px] dark:bg-[#292F2D] 480:h-[620px] 480:w-[426px] 720:h-[700px] 720:w-[466px] 1080:h-[820px] 1080:w-[546px]">
+    <div className="relative flex h-[514px] w-[340px] flex-col items-center justify-center rounded-3xl bg-[#009E95] px-[12px] dark:bg-[#292F2D] 480:h-[566px] 480:w-[374px] 720:h-[566px] 720:w-[374px] 1080:h-[566px] 1080:w-[374px]">
       <form
-        className="flex flex-col items-center justify-center"
+        className="flex h-fit flex-col items-center justify-center"
         action="/home"
         method="POST"
         onSubmit={handleSubmit}
         ref={formRef}
         noValidate
       >
-        <h2 className="absolute top-0 mb-[20px] mt-[20px] text-center font-coolveticaRegular text-[35px] leading-none text-[#FBF9FA] 720:mt-[60px]">
+        <h2 className="relative top-0 mb-[58px] mt-[28px] text-center font-coolveticaRegular text-[35px] leading-none text-[#FBF9FA] 480:text-[38.5px] 480:mb-[70px]">
           Inicia sesión en DesAIgner
         </h2>
-        <div className="mb-[36px] mt-[33px] flex flex-col items-center justify-center">
+        <div className="mb-[26px] flex flex-col items-center justify-center 480:mb-[32px]">
           <EmailInput
             icon={<EmailLogo />}
             pholder="Email"
@@ -209,13 +209,13 @@ function LoginForm() {
             name="passw"
           />
           <SignButton type="submit" text="Inicia sesión" />
-          <button className="mt-[8px] font-coolveticaBook text-[#FBF9FA] underline hover:text-[#E8E8E8]">
+          <button className="mt-[8px] font-coolveticaBook text-[15px] text-[#FBF9FA] underline hover:text-[#E8E8E8] 480:text-[16.5px]">
             ¿Olvidaste tu contraseña?
           </button>
         </div>
-        <div className="mb-[22px] flex flex-row items-center justify-center">
+        <div className="mb-[16px] flex flex-row items-center justify-center">
           <hr className="mr-2 w-[136px] border-[#FBF9FA]" />
-          <p className="pb-1 text-center text-[20px] text-[#FBF9FA]">o</p>
+          <p className="pb-1 text-center text-[20px] text-[#FBF9FA] 480:text-[22px]">o</p>
           <hr className="ml-2 w-[136px] border-[#FBF9FA]" />
         </div>
         <GoogleButton icon={<GoogleLogo />} text="Inicia sesión con Google" />

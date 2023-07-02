@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Footer from "~/components/Footer";
 
 function index() {
   return (
@@ -11,6 +12,7 @@ function index() {
       <main>
         <div>Collections</div>
       </main>
+      <Footer/>
     </>
   );
 }

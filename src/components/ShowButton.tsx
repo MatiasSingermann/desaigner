@@ -12,7 +12,7 @@ function ShowButton({ showPassword, togglePassword }: ShowButtonProps) {
   return (
     <button
       className={
-        "absolute right-0 mb-[12px] flex h-[52px] items-center justify-center fill-[#C4C4C4] pr-3 dark:fill-[#228187]"
+        "flex h-[52px] items-center justify-center fill-[#C4C4C4] dark:fill-[#228187]"
       }
       aria-label={`${
         showPassword ? "Contraseña visible" : "Contraseña invisible"

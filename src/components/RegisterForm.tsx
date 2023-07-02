@@ -232,19 +232,19 @@ function RegisterForm() {
   };
 
   return (
-    <div className="relative flex h-[514px] w-[340px] items-center justify-center rounded-3xl bg-[#009E95] px-[12px] dark:bg-[#292F2D]">
+    <div className="relative flex h-[514px] w-[340px] flex-col items-center justify-center rounded-3xl bg-[#009E95] px-[12px] dark:bg-[#292F2D] 480:h-[566px] 480:w-[374px] 720:h-[566px] 720:w-[374px] 1080:h-[566px] 1080:w-[374px]">
       <form
-        className="flex flex-col items-center justify-center"
+        className="flex h-fit flex-col items-center justify-center"
         action="/home"
         method="POST"
         onSubmit={handleSubmit}
         ref={formRef}
         noValidate
       >
-        <h2 className="mb-[20px] mt-[20px] text-center font-coolveticaRegular text-[35px] leading-none text-[#FBF9FA]">
+        <h2 className="relative top-0 mb-[24px] mt-[28px] text-center font-coolveticaRegular text-[35px] leading-none text-[#FBF9FA] 480:text-[38.5px] 480:mb-[28px]">
           Regístrate en DesAIgner
         </h2>
-        <div className="mb-[22px] mt-[15px] flex flex-col items-center justify-center">
+        <div className="mb-[26px] flex flex-col items-center justify-center 480:mb-[32px]">
           <EmailInput
             icon={<EmailLogo />}
             pholder="Email"
@@ -265,9 +265,9 @@ function RegisterForm() {
           />
           <SignButton type="submit" text="Regístrate" />
         </div>
-        <div className="mb-[22px] flex flex-row items-center justify-center">
+        <div className="mb-[16px] flex flex-row items-center justify-center">
           <hr className="mr-2 w-[136px] border-[#FBF9FA]" />
-          <p className="pb-1 text-center text-[20px] text-[#FBF9FA]">o</p>
+          <p className="pb-1 text-center text-[20px] text-[#FBF9FA] 480:text-[22px]">o</p>
           <hr className="ml-2 w-[136px] border-[#FBF9FA]" />
         </div>
         <GoogleButton icon={<GoogleLogo />} text="Registrarse con Google" />

@@ -9,7 +9,7 @@ interface PWInfoButtonProps {
 function PWInfoButton({showReqs, toggleReqs} : PWInfoButtonProps) {
   return (
     <button
-      className="absolute right-0 mb-[12px] flex h-[52px] items-center justify-center fill-[#C4C4C4] pr-[54px] dark:fill-[#228187]"
+      className="flex h-[52px] items-center justify-center fill-[#C4C4C4] dark:fill-[#228187]"
       aria-label={showReqs ? "Ocultar requisitos de contraseña" : "Mostrar requisitos de contraseña"}
       onClick={toggleReqs}
     >

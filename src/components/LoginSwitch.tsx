@@ -6,24 +6,24 @@ interface LoginSwitchProps {
   toggleSwitch: MouseEventHandler<HTMLButtonElement>;
 }
 
-function LoginSwitch({login, toggleSwitch} : LoginSwitchProps) {
+function LoginSwitch({ login, toggleSwitch }: LoginSwitchProps) {
   return (
-    <div className="relative flex h-[38px] w-[250px] items-center justify-center my-[20px]">
+    <div className="relative my-[20px] flex h-[38px] w-[250px] items-center justify-center 480:h-[46px] 480:w-[300px] 480:my-[36px]">
       <button
-        className="relative flex h-[38px] w-[250px] items-center rounded-3xl bg-[#228187] dark:bg-[#293433] shadow-lg"
+        className="relative flex h-[38px] w-[250px] items-center rounded-3xl bg-[#228187] shadow-lg dark:bg-[#293433] 480:h-[46px] 480:w-[300px]"
         onClick={toggleSwitch}
         aria-label={`Cambiar a modo ${login ? "register" : "login"}`}
       >
         <div
-          className={`absolute flex h-[38px] w-[124px] items-center justify-center rounded-3xl bg-[#009E95] shadow-lg transition-all ${
+          className={`absolute flex h-[38px] w-[124px] items-center justify-center rounded-3xl bg-[#009E95] shadow-lg transition-all 480:h-[46px] 480:w-[148px] ${
             login ? "left-0" : "right-0"
           }`}
         ></div>
-        <div className="absolute flex h-[38px] w-[250px] items-center justify-between pl-[28px] pr-[16px] text-center font-coolveticaRegular text-[24px]">
-          <span className="flex h-[24px] w-[68px] items-center justify-center text-[#FBF9FA]">
+        <div className="absolute flex h-[38px] w-[250px] items-center justify-between pl-[28px] pr-[16px] text-center font-coolveticaRegular text-[25px] 480:text-[30px] 480:h-[46px] 480:w-[300px]">
+          <span className="flex items-center justify-center text-[#FBF9FA] pl-[6px] 480:pl-[14px]">
             Login
           </span>
-          <span className="flex h-[24px] w-[90px] items-center justify-center text-[#FBF9FA]">
+          <span className="flex items-center justify-center text-[#FBF9FA] pr-[5px] 480:pr-[9px]">
             Sign Up
           </span>
         </div>
