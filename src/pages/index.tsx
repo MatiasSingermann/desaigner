@@ -13,21 +13,15 @@ const Home = () => {
     required: false,
   })
 
-  console.log(session)
-
   if (status === "unauthenticated") {
-    console.log("no autenticado")
     router.push("/landing")
   }
 
-
   if (status === "loading") {
-    console.log("cargando...")
     return "Cargando..."
   }
 
   if (status === "authenticated") {
-    console.log("autenticado")
     router.push("/home")
   }
 
