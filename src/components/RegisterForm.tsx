@@ -17,45 +17,45 @@ function RegisterForm() {
   const formRef = useRef<HTMLFormElement>(null);
   const router = useRouter();
 
-  const handleSubmit = (e: React.ChangeEvent<any>) => {
+  const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
 
     console.log(formData.entries());
 
-    let inputData = [];
+    const inputData = [];
 
     for (const pair of formData.entries()) {
       inputData.push(pair);
     }
-
-    let userEmail = inputData[0]![1];
-    let userPassword = inputData[1]![1];
-    let userRepeatPassword = inputData[2]![1];
+    
+    const userEmail = inputData[0]?inputData[0][1]:"";
+    const userPassword = inputData[1]?inputData[1][1]:"";
+    const userRepeatPassword = inputData[2]?inputData[2][1]:"";
 
     if (
       typeof userEmail === "string" &&
       typeof userPassword === "string" &&
       typeof userRepeatPassword === "string"
     ) {
-      let emptyInput =
+      const emptyInput =
         userEmail === "" || userPassword === "" || userRepeatPassword === "";
-      let forbiddenChars =
+      const forbiddenChars =
         !/[A-Za-z0-9#_@$!%*?&]/.test(userEmail) ||
         !/[A-Za-z0-9#_@$!%*?&]/.test(userPassword) ||
         !/[A-Za-z0-9#_@$!%*?&]/.test(userRepeatPassword);
-      let noValidEmail = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail);
-      let notEqualPassword = userPassword !== userRepeatPassword;
-      let minusMinLenPassword =
+      const noValidEmail = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail);
+      const notEqualPassword = userPassword !== userRepeatPassword;
+      const minusMinLenPassword =
         userPassword.length < 8 || userRepeatPassword.length < 8;
-      let hasNoSpecialChar =
+      const hasNoSpecialChar =
         !/[#_@$!%*?&]/.test(userPassword) ||
         !/[#_@$!%*?&]/.test(userRepeatPassword); // /[!@$%&#]/
-      let hasNoUpperCase =
+      const hasNoUpperCase =
         userPassword.match(/[A-Z]/) == null ||
         userRepeatPassword.match(/[A-Z]/) == null;
-      let hasNoSpace =
+      const hasNoSpace =
         userPassword.includes(" ") || userRepeatPassword.includes(" ");
 
       if (emptyInput) {
@@ -170,7 +170,7 @@ function RegisterForm() {
           theme: "colored",
         });
       } else {
-        let obj = {
+        const obj = {
           email: userEmail.toLocaleLowerCase(),
           contrasenia: userPassword,
         };
@@ -193,7 +193,6 @@ function RegisterForm() {
                 progress: undefined,
                 theme: "colored",
               });
-              router.push("/login");
             } else if (response.status == 409) {
               console.log("Ya existe una cuenta con este email");
               toast.error("Ya existe una cuenta con este email", {

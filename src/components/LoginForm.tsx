@@ -18,28 +18,28 @@ function LoginForm() {
   const formRef = useRef<HTMLFormElement>(null);
   const router = useRouter();
 
-  const handleSubmit = async (e: React.ChangeEvent<any>) => {
+  const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
 
     console.log(formData.entries());
 
-    let inputData = [];
+    const inputData = [];
 
     for (const pair of formData.entries()) {
       inputData.push(pair);
     }
 
-    let userEmail = inputData[0]![1];
-    let userPassword = inputData[1]![1];
+    const userEmail = inputData[0]![1];
+    const userPassword = inputData[1]![1];
 
     if (typeof userEmail === "string" && typeof userPassword === "string") {
-      let emptyInput = userEmail === "" || userPassword === "";
-      let forbiddenChars =
+      const emptyInput = userEmail === "" || userPassword === "";
+      const forbiddenChars =
         !/[A-Za-z0-9#_@$!%*?&]/.test(userEmail) ||
         !/[A-Za-z0-9#_@$!%*?&]/.test(userPassword);
-      let noValidEmail = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail);
+      const noValidEmail = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail);
 
       if (emptyInput) {
         console.log("Hay uno o más inputs vacíos");
