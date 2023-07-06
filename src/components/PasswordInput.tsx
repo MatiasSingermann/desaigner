@@ -1,4 +1,4 @@
-import { ClipboardEventHandler, useState } from "react";
+import { useState } from "react";
 import ShowButton from "./ShowButton";
 import PWInfoButton from "./PWInfoButton";
 import PWReqs from "./PWReqs";
@@ -11,8 +11,6 @@ interface PasswordInputProps {
 }
 
 function PasswordInput({ icon, pholder, mlength, name }: PasswordInputProps) {
-  const [invalid, setInvalid] = useState(false);
-
   const [showPassword, setShowPassword] = useState(false);
 
   const [showReqs, setShowReqs] = useState(false);
@@ -34,12 +32,7 @@ function PasswordInput({ icon, pholder, mlength, name }: PasswordInputProps) {
   return (
     <div className="relative flex">
       <div className="group relative flex items-center justify-start">
-        <span
-          className={[
-            "pointer-events-none absolute mb-[12px] fill-[#228187] pl-[14px] 480:mb-[16px]",
-            invalid ? "fill-[#FF8383]" : "fill-[#228187]",
-          ].join(" ")}
-        >
+        <span className="pointer-events-none absolute mb-[12px] fill-[#228187] pl-[14px] 480:mb-[16px]">
           {icon}
         </span>
         <input

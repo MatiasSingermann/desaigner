@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { MouseEventHandler } from "react";
+import type { MouseEventHandler } from "react";
 
 interface LoginSwitchProps {
   login: boolean;

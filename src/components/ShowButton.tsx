@@ -1,7 +1,6 @@
-import { boolean } from "zod";
 import EyeClosed from "./EyeClosed";
 import EyeOpen from "./EyeOpen";
-import { MouseEventHandler } from "react";
+import type { MouseEventHandler } from "react";
 
 interface ShowButtonProps {
   showPassword: boolean;

@@ -1,8 +1,5 @@
-import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
-import Link from "next/link";
-import { api } from "~/utils/api";
 import { useRouter } from 'next/router'
 
 const Home = () => {

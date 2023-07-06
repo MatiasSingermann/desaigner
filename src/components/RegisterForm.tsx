@@ -11,11 +11,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { useRef } from "react";
 
-import { useRouter } from "next/router";
-
 function RegisterForm() {
   const formRef = useRef<HTMLFormElement>(null);
-  const router = useRouter();
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();

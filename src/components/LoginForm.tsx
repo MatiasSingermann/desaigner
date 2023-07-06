@@ -10,13 +10,10 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { useRef } from "react";
-
-import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
 
 function LoginForm() {
   const formRef = useRef<HTMLFormElement>(null);
-  const router = useRouter();
 
   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -31,8 +28,8 @@ function LoginForm() {
       inputData.push(pair);
     }
 
-    const userEmail = inputData[0]![1];
-    const userPassword = inputData[1]![1];
+    const userEmail = inputData[0]?inputData[0][1]:"";
+    const userPassword = inputData[1]?inputData[1][1]:"";
 
     if (typeof userEmail === "string" && typeof userPassword === "string") {
       const emptyInput = userEmail === "" || userPassword === "";
@@ -91,7 +88,6 @@ function LoginForm() {
         });
         if (result!.ok) {
           console.log("Inicio de sesión exitoso");
-          router.push("/home");
         } else if (result!.status !== 200) {
           console.log("Ese email o la contraseña son incorrectos");
           toast.error("Ese email o la contraseña son incorrectos", {

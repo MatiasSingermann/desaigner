@@ -1,5 +1,5 @@
 import PasswordInfo from "./PasswordInfo";
-import { MouseEventHandler } from "react";
+import type { MouseEventHandler } from "react";
 
 interface PWInfoButtonProps {
   showReqs: boolean;
