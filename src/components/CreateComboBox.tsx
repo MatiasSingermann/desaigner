@@ -31,7 +31,7 @@ function CreateComboBox({ icon, pholder }: CreateComboBoxProps) {
           </div>
         </div>
         {pholder === "Presupuesto" && clicked && (
-          <div className="relative flex h-[160px] w-[310px] flex-col rounded-[1.25rem] bg-red-500 480:h-[180px] 480:w-[342px] overflow-y-scroll mb-[12px] 480:mb-[16px]">
+          <div className="relative flex h-[160px] w-[310px] flex-col rounded-[1.25rem] bg-red-500 480:h-[180px] 480:w-[342px] overflow-x-hidden overflow-y-scroll mb-[12px] 480:mb-[16px]">
             <ComboBoxElement name="Presupuesto" text="Bajo"/>
             <ComboBoxElement name="Presupuesto" text="Medio"/>
             <ComboBoxElement name="Presupuesto" text="Alto"/>

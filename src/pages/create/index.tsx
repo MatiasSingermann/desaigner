@@ -4,7 +4,11 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import ImageUploader from "~/components/ImageUploader";
 import CreateComboBox from "~/components/CreateComboBox";
-import EmailLogo from "~/components/EmailLogo";
+import Presupuesto from "~/components/Presupuesto";
+import Estilo from "~/components/Estilo";
+import Plano from "~/components/Plano";
+import Clima from "~/components/Clima";
+import Discapacidad from "~/components/Discapacidad";
 
 function index() {
   const router = useRouter();
@@ -30,11 +34,11 @@ function index() {
           <link rel="icon" href="/DesAIgnerIco.ico" />
         </Head>
         <main className="flex grow flex-col items-center justify-start font-coolveticaLight">
-          <CreateComboBox icon={<EmailLogo/>} pholder="Presupuesto"/>
-          <CreateComboBox icon={<EmailLogo/>} pholder="Estilo"/>
-          <CreateComboBox icon={<EmailLogo/>} pholder="Tipo"/>
-          <CreateComboBox icon={<EmailLogo/>} pholder="Clima"/>
-          <CreateComboBox icon={<EmailLogo/>} pholder="Discapacidad"/>
+          <CreateComboBox icon={<Presupuesto/>} pholder="Presupuesto"/>
+          <CreateComboBox icon={<Estilo/>} pholder="Estilo"/>
+          <CreateComboBox icon={<Plano/>} pholder="Tipo"/>
+          <CreateComboBox icon={<Clima/>} pholder="Clima"/>
+          <CreateComboBox icon={<Discapacidad/>} pholder="Discapacidad"/>
           <ImageUploader/>
         </main>
         <Footer />
