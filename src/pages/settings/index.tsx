@@ -17,7 +17,7 @@ function index() {
       <main>
         <div className="mt-[500px]">Settings</div>
         <ThemeButton/>
-        {status === "authenticated" ? "<componente/>" : null}
+        {status === "authenticated" && "<componente/>"}
       </main>
     </>
   );
