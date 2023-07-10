@@ -3,6 +3,8 @@ import Footer from "~/components/Footer";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import ImageUploader from "~/components/ImageUploader";
+import CreateComboBox from "~/components/CreateComboBox";
+import EmailLogo from "~/components/EmailLogo";
 
 function index() {
   const router = useRouter();
@@ -28,6 +30,7 @@ function index() {
           <link rel="icon" href="/DesAIgnerIco.ico" />
         </Head>
         <main className="flex grow flex-col items-center justify-start font-coolveticaLight">
+          <CreateComboBox icon={<EmailLogo/>} pholder="Presupuesto" name="presupuesto"/>
           <ImageUploader/>
         </main>
         <Footer />
