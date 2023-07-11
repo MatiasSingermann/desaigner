@@ -1,6 +1,6 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import { disenioFromUserExists, isArrayEmpty, isList, disenioExists, isbase64, userExists, isEmpty, isNullorUndefined, checkEmail, coleccionExists, coleccionIsFromUser, isInt, hasAccesToken, renewTokens, isString } from "../functions";
+import { disenioFromUserExists, isArrayEmpty, disenioExists, isbase64, userExists, checkEmail, coleccionExists, coleccionIsFromUser } from "../functions";
 import { v2 } from "cloudinary";
 import { getSession } from "next-auth/react";
 
@@ -8,15 +8,10 @@ const prisma = new PrismaClient();
 const cloudinary = v2;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const { headers, cookies } = req;
-    console.log(getSession());
-    console.log(headers);
-    const AT = "caca";
-    const RT = cookies.DesAIgnerRefeshToken;
-    const data = hasAccesToken(AT);
+    const session = await getSession({req});
     if(req.method === "POST"){
-        if(Object.keys(data).length != 0){
-                const email = Object(data).email;
+        if(session){
+                const email = session?.user.email as string;
                 if(req.body.coleccion){
                     return await diseños(req, res, email);
                 }
@@ -25,19 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 }
         }
         else{
-            const data = renewTokens(RT, res);
-            if(Object.keys(data).length != 0){
-                const email = Object(data).email; 
-                if(req.body.coleccion){
-                    return await diseños(req, res, email);
-                }
-                else{
-                    return await crearDisenio(req, res, email);
-                }
-            }
-            else{
-                return res.status(403).end();
-            }
+            return res.status(403).end();
         }
     }
     else if(req.method === "GET"){
@@ -45,19 +28,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         if(!id){
             return res.status(400).json({message: "Ningun id de disenio fue recibido"});
         }
-        if(Object.keys(data).length != 0){
-            const email = Object(data).email;
+        if(session){
+            const email = session?.user.email as string;
             return await viewDisenio(req, res, email, id);
         }
         else{
-            const data = renewTokens(RT, res);
-            if(Object.keys(data).length != 0){
-                const email = Object(data).email;
-                return await viewDisenio(req, res, email, id);
-            }
-            else{
-                return res.status(403).end();
-            }
+            return res.status(403).end();
         }
     }
     else{
@@ -68,17 +44,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 async function diseños(req: NextApiRequest, res: NextApiResponse, email: string){
     const body = req.body;
 
-    if(isNullorUndefined(body.coleccion) || isNullorUndefined(email)){
-        return res.status(400).json({message: "Algun parametro enviado es undefined o null"});
-    }
-    if(isEmpty(body.coleccion) || isEmpty(email)){
-        return res.status(400).json({message: "El email o el nombre de la coleccion enviado esta vacio"});
+    if(!body.coleccion || !email){
+        return res.status(400).json({message: "Algun parametro enviado no cumple los requisitos"});
     }
     if(!checkEmail(email)){
         return res.status(400).json({message: "El usuario no es valido"});
-    }
-    if(!isString(body.coleccion)){
-        return res.status(400).json({message: "La coleccion enviada no es un INT, debe ser un INT"});
     }
     const usuarioExistente: boolean = await userExists(email);
     if(!usuarioExistente){
@@ -115,23 +85,22 @@ async function diseños(req: NextApiRequest, res: NextApiResponse, email: string
 async function crearDisenio(req: NextApiRequest, res: NextApiResponse, email: string){
     const body = req.body;
 
-    if(isNullorUndefined(body.nombre) || isNullorUndefined(email) || isNullorUndefined(body.ambiente) || isNullorUndefined(body.disenioIMG) || isNullorUndefined(body.mascaraIMG) || isNullorUndefined(body.presupuesto || isNullorUndefined(body.estilo) || isNullorUndefined(body.links))){
-        return res.status(400).json({message: "Algun parametro enviado es undefined o null"});
-    }
-    if(isEmpty(email) || isEmpty(body.nombre) || isEmpty(body.ambiente) || isEmpty(body.disenioIMG) || isEmpty(body.mascaraIMG) || isEmpty(body.presupuesto) || isEmpty(body.estilo)){
-        return res.status(400).json({message: "alguno de los parametros estan vacios"});
+    if(
+        !body.nombre || !email || !body.ambiente || !body.disenioIMG || !body.mascara || !body.presupuesto || !body.estilo || !body.links
+    ){
+        return res.status(400).json({message: "Algun parametro enviado no cumple los requisitos"});
     }
     if(!checkEmail(email)){
         return res.status(400).json({message: "El usuario no es valido"});
     }
-    if(!isbase64(body.disenioIMG) || !isbase64(body.mascaraIMG)){
-        return res.status(400).json({message: "Las imagenes enviadas no estan en base 64"});
+    if(!isbase64(body.disenioIMG)){
+        return res.status(400).json({message: "La imagen enviada no esta en base 64"});
     }
     const usuarioExistente: boolean = await userExists(email);
     if(!usuarioExistente){
         return res.status(400).json({message: "El usuario enviado no existe, quizas escribiste algun parametro mal"});
     }
-    if(!isList(body.colecciones) || isNullorUndefined(body.colecciones) || isArrayEmpty(body.colecciones)){
+    if(!Array.isArray(body.colecciones) || isArrayEmpty(body.colecciones) || body.colecciones.length == 0){
         return res.status(400).json({message: "No hay colecciones"});
     }
     for(let i = 0; i < body.colecciones.length; i++){
@@ -140,7 +109,7 @@ async function crearDisenio(req: NextApiRequest, res: NextApiResponse, email: st
             return res.status(400).json({message: "La coleccion ingresada no existe"});
         }
     }
-    if(!isList(body.link) || isArrayEmpty(body.link) || isNullorUndefined(body.link)){
+    if(!Array.isArray(body.link) || isArrayEmpty(body.link) || body.link.length == 0){
         return res.status(400).json({message: "No hay links"});
     }
     const disenioFromUserExistente: boolean = await disenioFromUserExists(body.nombre, email);
@@ -220,7 +189,7 @@ async function crearDisenio(req: NextApiRequest, res: NextApiResponse, email: st
 
 async function viewDisenio(req: NextApiRequest, res: NextApiResponse, email: string, id: number){
 
-    if(isEmpty(email) || id <= 0){
+    if(!email || id <= 0){
         return res.status(400).json({message: "El email de la token esta vacio o el id del disenio es inexistente"});
     }
     if(!checkEmail(email)){

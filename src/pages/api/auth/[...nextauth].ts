@@ -28,6 +28,14 @@ if (!DISCORD_CLIENT_SECRET) {
 
 export default NextAuth ({
     adapter: PrismaAdapter(prisma),
+    session: {
+        strategy: 'jwt',
+        maxAge: 30 * 60 
+    },
+    secret: process.env.JWT_SECRET,
+    jwt: {
+        secret: process.env.JWT_SECRET,
+    },
     providers: [
         GoogleProvider({
             clientId: GOOGLE_CLIENT_ID,
@@ -75,22 +83,20 @@ export default NextAuth ({
         signIn: "/login",
         signOut: "/settings",
     },
-    session: {
-        strategy: 'jwt',
-        maxAge: 30 * 60 //dura 30 minutos la sesion, ver con nacho
-    },
     callbacks: {
-        async session({ session, user }) {
+        jwt({token, user}){
             if(user){
-                session.user.email = user.id;
+                token.email = user.id;
             }
-            console.log(user);
-            console.log(session);
-            return session;
+
+            return token;
         },
-    },
-    secret: process.env.JWT_SECRET,
-    jwt: {
-        secret: process.env.JWT_SECRET,
+        session({ session, token }){
+            if(token){
+                session.user.email = token.email as string;
+            }
+            
+            return session;
+        }
     }
 });

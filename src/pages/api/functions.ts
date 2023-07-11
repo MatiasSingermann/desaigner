@@ -43,10 +43,6 @@ function isArrayEmpty(variable: Array<string>): boolean{
     return variable.length <= 0;
 }
 
-function isNullorUndefined(variable: any): boolean{
-    return variable == null || variable == undefined
-}
-
 function checkContrasenia(contrasenia: string): boolean{
     const contraseniaRegEx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#_@$!%*?&])[A-Za-z\d#_@$!%*?&]{8,}$/g;
     return contraseniaRegEx.test(contrasenia);
@@ -102,72 +98,13 @@ async function coleccionIsFromUser(email: string, coleccion: number): Promise<bo
     }
 }
 
-function isInt(variable: any): boolean{
-    return Number.isInteger(variable);
-}
-
-function isBoolean(variable: any): boolean{
-    return typeof variable == "boolean";
-}
-
-function hasAccesToken(token: any): Object{
-    try {
-        const data = jwt.verify(token, String(process.env.JWT_SECRET));
-        return data;
-    } catch {
-        return {};
-    }
-}
-
-function hasRefreshToken(refreshToken: any): Object{
-    try{
-        const data = jwt.verify(refreshToken, String(process.env.RJWT_SECRET))
-        return data;
-    } catch {
-        return {};
-    }
-}
-
-function renewTokens(refreshToken: any, res: NextApiResponse): Object{
-    const data = hasRefreshToken(refreshToken);
-    if(Object.keys(data).length == 0){
-        return {};
-    }
-
-    const token = jwt.sign({
-        email: Object(data).email
-    }, String(process.env.JWT_SECRET), { expiresIn: "15m"})
-
-    const refreshTkn = jwt.sign({
-        email: Object(data).email,
-        token: token
-    },  String(process.env.RJWT_SECRET), { expiresIn: "30m"})
-
-    const serialized = serialize("DesAIgnerToken", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV == "production",
-        sameSite: "strict", 
-        maxAge: 60 * 15, 
-        path: "/"
-    })
-
-    const serializedRefresh = serialize("DesAIgnerRefeshToken", refreshTkn, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV == "production",
-        sameSite: "strict", 
-        maxAge: 60 * 30, 
-        path: "/"
-    })
-
-    res.setHeader("Set-Cookie", [serialized, serializedRefresh]);
-    
-    return data;
-}
-
-function isbase64(variable: any): boolean{
+function isbase64(variable: string): boolean{
     const base64RegEx = /^(?:[A-Za-z0-9+\/]{4})*(?:[A-Za-z0-9+\/]{4}|[A-Za-z0-9+\/]{3}=|[A-Za-z0-9+\/]{2}={2})$/g;
     const [metadata, base64] = variable.split(",");
-    return base64RegEx.test(base64) && "data:image/jpeg;base64" === metadata;
+    if(base64){
+        return base64RegEx.test(base64) && "data:image/jpeg;base64" === metadata;
+    }
+    return false;
 }
 
 async function disenioExists(id: number): Promise<boolean>{
@@ -186,14 +123,6 @@ async function disenioExists(id: number): Promise<boolean>{
     }
 }
 
-function isString(variable:any): boolean{
-    return typeof variable == "string";
-}
-
-function isList(variable:any): boolean{
-    return variable instanceof Array;
-}
-
-export { checkEmail, isEmpty, isNullorUndefined, checkContrasenia, userExists, coleccionExists, coleccionIsFromUser,
-isInt, hasAccesToken, renewTokens, isBoolean, isbase64, disenioExists, isString, isList, isArrayEmpty, disenioFromUserExists };
+export { checkEmail, isEmpty, checkContrasenia, userExists, coleccionExists, coleccionIsFromUser,
+isbase64, disenioExists,isArrayEmpty, disenioFromUserExists };
 

@@ -1,6 +1,6 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import { isString, checkEmail, isEmpty, isNullorUndefined, checkContrasenia } from "../functions";
+import { checkEmail, checkContrasenia } from "../functions";
 
 const prisma = new PrismaClient();
 
@@ -18,14 +18,8 @@ async function crearUsuario(req: NextApiRequest, res: NextApiResponse){
     if (!('email' in body && 'contrasenia' in body)) {
         return res.status(400).json({message: "Falta el mail o la contraseña"});
     }
-    if(isNullorUndefined(body.email) || isNullorUndefined(body.contrasenia)){
-        return res.status(400).json({message: "Algun parametro es null o undefined"});
-    }
-    if(!isString(body.email) || !isString(body.contrasenia)){
-        return res.status(400).json({message: "El email o la contraseña no son un string"});
-    }
-    if(isEmpty(body.email) || isEmpty(body.contrasenia)){
-        return res.status(400).json({message: "Algun parametro esta vacio"});
+    if(!body.email || !body.contrasenia){
+        return res.status(400).json({message: "Algun parametro no cumple con los requisitos"});
     }
     if(!checkEmail(body.email)){
         return res.status(400).json({message: "El email no es valido"});

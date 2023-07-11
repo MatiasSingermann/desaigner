@@ -29,7 +29,7 @@ model disenio {
   colecciones        coleccion[]
   fecha              DateTime    @default(now())
   imagen             String
-  mascara            String
+  mascara            Json
   ambiente           String      @db.VarChar(20)
   presupuesto        Int
   estilo             String      @db.VarChar(20)

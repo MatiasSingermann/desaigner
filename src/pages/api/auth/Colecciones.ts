@@ -1,17 +1,15 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import { isBoolean, coleccionExists, checkEmail, isEmpty, isNullorUndefined, userExists, hasAccesToken, renewTokens } from "../functions";
+import { coleccionExists, checkEmail, userExists } from "../functions";
+import { getSession } from "next-auth/react";
 
 const prisma = new PrismaClient();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const { cookies } = req;
-    const AT = cookies.DesAIgnerToken;
-    const RT = cookies.DesAIgnerRefeshToken;
-    const data = hasAccesToken(AT);
+    const session = await getSession({req});
     if(req.method === "POST"){
-        if(Object.keys(data).length != 0){
-                const email = Object(data).email;
+        if(session){
+                const email = session?.user.email as string;
                 if(req.body.nombre){
                     return await crearColeccion(req, res, email);
                 }
@@ -20,19 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 }
         }
         else{
-            const data = renewTokens(RT, res);
-            if(Object.keys(data).length != 0){
-                const email = Object(data).email; 
-                if(req.body.nombre){
-                    return await crearColeccion(req, res, email);
-                }
-                else{
-                    return await colecciones(req, res, email);
-                }
-            }
-            else{
-                return res.status(403).end();
-            }
+            return res.status(403).end();
         }
     }
     else{
@@ -41,14 +27,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 }
 
 async function colecciones(req: NextApiRequest, res: NextApiResponse, email: string) {
-    const body = req.body;
 
     //chequeos de informacion
-    if(isNullorUndefined(email)){
-        return res.status(400).json({message: "El usuario es undefined o null"});
-    }
-    if(isEmpty(email)){
-        return res.status(400).json({message: "El usuario enviado estaba vacio"});
+    if(!email){
+        return res.status(400).json({message: "El email enviado tiene algun error"});
     }
     if(!checkEmail(email)){
         return res.status(400).json({message: "El usuario no es valido"});
@@ -82,14 +64,8 @@ async function colecciones(req: NextApiRequest, res: NextApiResponse, email: str
 async function crearColeccion(req: NextApiRequest, res: NextApiResponse, email: string){
     const body = req.body;
 
-    if(isNullorUndefined(body.nombre || isNullorUndefined(email) || isNullorUndefined(body.favorito))){
-        return res.status(400).json({message: "Algun parametro enviado es undefined o null"});
-    }
-    if(isEmpty(email) || isEmpty(body.nombre)){
-        return res.status(400).json({message: "O el usuario o el nombre de la coleccion estan vacios"});
-    }
-    if(!isBoolean(body.favorito)){
-        return res.status(400).json({message: "El parametro de favorito no fue recibido como bool, tiene que serlo"});
+    if(!body.nombre || !body.favorito || !email){
+        return res.status(400).json({message: "Algun parametro enviado no cumple los requisitos"});
     }
     if(!checkEmail(email)){
         return res.status(400).json({message: "El usuario no es valido"});
