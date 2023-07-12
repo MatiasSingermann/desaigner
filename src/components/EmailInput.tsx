@@ -12,7 +12,7 @@ function EmailInput({ icon, pholder, mlength, name }: EmailInputProps) {
 
   return (
     <div className="group relative flex items-center justify-start">
-      <span className="pointer-events-none absolute mb-[12px] fill-[#228187] pl-[14px] 480:mb-[16px]">
+      <span className="pointer-events-none absolute mb-[12px] fill-[#228187] left-[14px] 480:mb-[16px]">
         {icon}
       </span>
       <input

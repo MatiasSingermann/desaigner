@@ -32,7 +32,7 @@ function PasswordInput({ icon, pholder, mlength, name }: PasswordInputProps) {
   return (
     <div className="relative flex">
       <div className="group relative flex items-center justify-start">
-        <span className="pointer-events-none absolute mb-[12px] fill-[#228187] pl-[14px] 480:mb-[16px]">
+        <span className="pointer-events-none absolute mb-[12px] fill-[#228187] left-[14px] 480:mb-[16px]">
           {icon}
         </span>
         <input
@@ -45,7 +45,7 @@ function PasswordInput({ icon, pholder, mlength, name }: PasswordInputProps) {
           onCopy={handleCopyPaste}
           onPaste={handleCopyPaste}
         />
-        <div className="absolute right-0 mx-[14px] mb-[12px] flex h-[52px] w-[66px] items-center justify-between 480:mb-[16px]">
+        <div className="absolute right-[14px] mb-[12px] flex h-[52px] w-[66px] items-center justify-between 480:mb-[16px]">
           <PWInfoButton showReqs={showReqs} toggleReqs={toggleReqs} />
           <ShowButton
             showPassword={showPassword}

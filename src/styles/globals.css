@@ -39,3 +39,20 @@
         font-style: normal;
     }
 }
+
+::-webkit-scrollbar {
+    width: 8px; /* width of the scrollbar */
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #292F2D; /* color of the track */
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #59C3C3; /* color of the scrollbar thumb */
+    border-radius: 0.25rem;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #009E95; /* color of the scrollbar thumb on hover */
+  }
