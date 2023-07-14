@@ -7,6 +7,36 @@ import { getSession } from "next-auth/react";
 const prisma = new PrismaClient();
 const cloudinary = v2;
 
+interface ExtendedNextApiRequestDisenios extends NextApiRequest{
+    body: {
+        coleccion: Array<string> //revisable
+    }
+}
+
+interface ExtendedNextApiRequestCreateDisenios extends NextApiRequest{
+    body: {
+        
+    }
+}
+
+interface ExtendedNextApiRequestDeleteDisenio extends NextApiRequest{
+    body: {
+        
+    }
+}
+
+interface ExtendedNextApiRequestRemoverDisenio extends NextApiRequest{
+    body: {
+        
+    }
+}
+
+interface ExtendedNextApiRequestPermitirUsuario extends NextApiRequest{
+    body: {
+        
+    }
+}
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     // const session = await getSession({req});
     // if(req.method === "POST"){
@@ -70,7 +100,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return removerDisenio(req, res, email, id);
 }
 
-async function diseños(req: NextApiRequest, res: NextApiResponse, email: string){
+async function diseños(req: ExtendedNextApiRequestDisenios, res: NextApiResponse, email: string){
     const body = req.body;
 
     if(!body.coleccion || !email){

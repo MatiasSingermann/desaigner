@@ -2,10 +2,16 @@ import { Prisma, PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import { checkEmail, checkContrasenia } from "../functions";
 
-
 const prisma = new PrismaClient();
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+interface ExtendedNextApiRequest extends NextApiRequest{
+    body: {
+        readonly email: string,
+        readonly contrasenia: string
+    }
+}
+
+export default async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     if(req.method === "POST"){
         return await revisarDatos(req, res);
     }
@@ -14,7 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 }
 
-async function revisarDatos(req: NextApiRequest, res: NextApiResponse) {
+async function revisarDatos(req: ExtendedNextApiRequest, res: NextApiResponse) {
     const body = req.body;
     if (!('email' in body && 'contrasenia' in body)) {
         return res.status(400).json({message: "Falta el mail o la contraseña"});

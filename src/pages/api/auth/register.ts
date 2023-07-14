@@ -4,7 +4,14 @@ import { checkEmail, checkContrasenia } from "../functions";
 
 const prisma = new PrismaClient();
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+interface ExtendedNextApiRequest extends NextApiRequest{
+    body: {
+        readonly email: string,
+        readonly contrasenia: string
+    }
+}
+
+export default async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     if(req.method === "POST"){
         return await crearUsuario(req, res);
     }
@@ -13,7 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 }
 
-async function crearUsuario(req: NextApiRequest, res: NextApiResponse){
+async function crearUsuario(req: ExtendedNextApiRequest, res: NextApiResponse){
     const body = req.body;
     if (!('email' in body && 'contrasenia' in body)) {
         return res.status(400).json({message: "Falta el mail o la contraseña"});
@@ -45,29 +52,29 @@ async function crearUsuario(req: NextApiRequest, res: NextApiResponse){
         return res.status(500).end();
     }
 
-    async function crearAdmin(req: NextApiRequest, res: NextApiResponse){
-        //esta funcion se espera que se use de forma correcta y por ende no trae ningn tipo de revisión
-        const body = req.body;
-        try{
-            const newUser = await prisma.usuario.create({
-                data: {
-                    email: body.email.toLowerCase(),
-                    contrasenia: body.contrasenia,
-                    rolUsuario: 1
-                }
-            });
-            if(newUser && newUser.rolUsuario == 1){
-                return res.status(200).json({message: "Se a creado con exito el perfil de admin 😎🤑 para: " + newUser.email});
-            }
-            else if (newUser) {
-                return res.status(200).json({message: "Se a creado con exito el perfil para: " + newUser.email});
-            }
+    // async function crearAdmin(req: NextApiRequest, res: NextApiResponse){
+    //     //esta funcion se espera que se use de forma correcta y por ende no trae ningn tipo de revisión
+    //     const body = req.body;
+    //     try{
+    //         const newUser = await prisma.usuario.create({
+    //             data: {
+    //                 email: body.email.toLowerCase(),
+    //                 contrasenia: body.contrasenia,
+    //                 rolUsuario: 1
+    //             }
+    //         });
+    //         if(newUser && newUser.rolUsuario == 1){
+    //             return res.status(200).json({message: "Se a creado con exito el perfil de admin 😎🤑 para: " + newUser.email});
+    //         }
+    //         else if (newUser) {
+    //             return res.status(200).json({message: "Se a creado con exito el perfil para: " + newUser.email});
+    //         }
             
-        } catch(error) {
-            if (error instanceof Prisma.PrismaClientKnownRequestError) {
-                return res.status(409).json({message: "La cuenta ya existe"});
-            }
-            return res.status(500).end();
-        }
-    }
+    //     } catch(error) {
+    //         if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    //             return res.status(409).json({message: "La cuenta ya existe"});
+    //         }
+    //         return res.status(500).end();
+    //     }
+    // }
 }
