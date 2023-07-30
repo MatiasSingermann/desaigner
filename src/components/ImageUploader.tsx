@@ -14,7 +14,7 @@ function ImageUploader() {
   return (
     <form
       onSubmit={submitImage}
-      className="relative flex h-[180px] w-[330px] flex-col items-center justify-center rounded-xl bg-[#E8E8E8] p-[22px] text-[#292F2D] mb-[52px]"
+      className="relative flex h-[180px] w-[330px] flex-col items-center justify-center rounded-xl bg-[#E8E8E8] p-[22px] text-[#292F2D]"
     >
       <div className="flex flex-col">
         <Upload/>
