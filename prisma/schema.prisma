@@ -9,30 +9,39 @@ datasource db {
 }
 
 model coleccion {
-  id                 Int       @id @default(autoincrement())
-  nombre             String    @db.VarChar(30)
-  favorito           Boolean?   @db.Bit(1)
-  disenios           disenio[] 
-  duenio             usuario   @relation(fields: [duenio_id], references: [email])
+  id                 Int                  @id @default(autoincrement())
+  nombre             String               @db.VarChar(30)
+  favorito           Boolean?             @db.Bit(1)
+  disenios           disenioYcoleccion[] 
+  duenio             usuario              @relation(fields: [duenio_id], references: [email])
   duenio_id          String     
-
-  
 
   @@index([duenio_id])
 }
 
+model disenioYcoleccion {
+  id               Int        @id @default(autoincrement())
+  disenio_id       Int
+  disenio          disenio    @relation(fields: [disenio_id], references: [id])
+  coleccion_id     Int
+  coleccion        coleccion  @relation(fields: [coleccion_id], references: [id])
+
+  @@index([disenio_id])
+  @@index([coleccion_id])
+}
+
 model disenio {
-  id                 Int         @id @default(autoincrement())
+  id                 Int                  @id @default(autoincrement())
   nombre             String
-  duenio             usuario     @relation(fields: [duenio_id], references: [email])
+  duenio             usuario              @relation(fields: [duenio_id], references: [email])
   duenio_id          String  
-  colecciones        coleccion[]
-  fecha              DateTime    @default(now())
+  colecciones        disenioYcoleccion[]
+  fecha              DateTime             @default(now())
   imagen             String
   mascara            puntos[]
-  ambiente           String      @db.VarChar(20)
+  ambiente           String               @db.VarChar(20)
   presupuesto        Int
-  estilo             String      @db.VarChar(20)
+  estilo             String               @db.VarChar(20)
   link               link[]
   permitidos         autorizados[]
 
@@ -40,22 +49,22 @@ model disenio {
 }
 
 model autorizados {
-  id               Int     @id @default(autoincrement())
+  id               Int      @id @default(autoincrement())
   disenio_id       Int
-  disenio          disenio @relation(fields: [disenio_id], references: [id])
+  disenio          disenio  @relation(fields: [disenio_id], references: [id])
   usuario_email    String
-  usuario          usuario @relation(fields: [usuario_email], references: [email])
+  usuario          usuario  @relation(fields: [usuario_email], references: [email])
 
   @@index([disenio_id])
   @@index([usuario_email])
 }
 
 model link {
-  id         Int    @id @default(autoincrement())
-  url        String @db.VarChar(2000)
-  disenio    disenio?   @relation(fields: [disenio_id], references: [id])
-  disenio_id Int?
-  mueble     String @db.VarChar(30)
+  id          Int        @id @default(autoincrement())
+  url         String     @db.VarChar(2000)
+  disenio     disenio?   @relation(fields: [disenio_id], references: [id])
+  disenio_id  Int?
+  mueble      String     @db.VarChar(30)
 
 
   @@index([disenio_id])
@@ -63,7 +72,7 @@ model link {
 
 model puntos {
   id            Int         @id @default(autoincrement())
-  disenio       disenio?   @relation(fields: [disenio_id], references: [id])
+  disenio       disenio?    @relation(fields: [disenio_id], references: [id])
   disenio_id    Int?
   x             Int
   y             Int
@@ -74,12 +83,12 @@ model puntos {
 }
 
 model usuario {
-  email       String @id @unique
-  contrasenia String @db.VarChar(30)
-  rolUsuario  Int?   @default(0)
-  idioma      Int?   @default(0)
-  font        Int?   @default(0)
-  disenio     disenio[]
-  accesibles  autorizados[] 
-  coleccion   coleccion[]
+  email         String          @id @unique
+  contrasenia   String          @db.VarChar(30)
+  rolUsuario    Int?            @default(0)
+  idioma        Int?            @default(0)
+  font          Int?            @default(0)
+  disenio       disenio[]
+  accesibles    autorizados[] 
+  coleccion     coleccion[]
 }

@@ -9,12 +9,16 @@ const cloudinary = v2;
 
 interface ExtendedNextApiRequestDisenios extends NextApiRequest{
     body: {
-        coleccion: Array<string> //revisable
+        coleccion: string
     }
 }
 
 interface ExtendedNextApiRequestCreateDisenios extends NextApiRequest{
     body: {
+        nombre: string,
+        ambiente: string,
+        disenioIMG: string,
+        mascara: Array<Array<number>>,
         
     }
 }
@@ -118,14 +122,22 @@ async function diseños(req: ExtendedNextApiRequestDisenios, res: NextApiRespons
     }
 
     try{
-        const data = await prisma.disenio.findMany({
+        const data = await prisma.coleccion.findMany({
             where: {
                 duenio_id: email,
-                colecciones: body.coleccion
+                nombre: body.coleccion
             },
             include: {
-                mascara: true,
-                link: true
+                disenios: {
+                    include: {
+                        disenio: {
+                            include:{
+                                mascara: true,
+                                link: true
+                            }
+                        }
+                    }
+                }
             }
         })
         if(Object.keys(data).length == 0){
@@ -171,6 +183,9 @@ async function crearDisenio(req: NextApiRequest, res: NextApiResponse, email: st
     }
     if(!Array.isArray(body.link) || isArrayEmpty(body.link) || body.link.length == 0){
         return res.status(400).json({message: "No hay links"});
+    }
+    if(!Array.isArray(body.mascara) || isArrayEmpty(body.mascara) || body.mascara.length == 0){
+        return res.status(400).json({message: "No hay mascara"});
     }
     const disenioFromUserExistente: boolean = await disenioFromUserExists(body.nombre, email);
     if(disenioFromUserExistente){
@@ -233,16 +248,10 @@ async function crearDisenio(req: NextApiRequest, res: NextApiResponse, email: st
                     }
                 })
                 if(coleccionConnect){
-                    await prisma.disenio.update({
-                        where: {
-                            id: newDisenio.id,
-                        },
+                    await prisma.disenioYcoleccion.create({
                         data: {
-                            colecciones: {
-                                connect: {
-                                    id: coleccionConnect.id
-                                }
-                            }
+                            disenio_id: newDisenio.id,
+                            coleccion_id: coleccionConnect.id
                         }
                     })
                 }
@@ -381,31 +390,17 @@ async function removerDisenio(req: NextApiRequest, res: NextApiResponse, email: 
     }
 
     try{
-        const disenio = await prisma.disenio.findFirst({
-            where: {
-                id: id,
-                duenio_id: email 
-            },
-            include: {
-                colecciones: true
+        const coleccion = await prisma.coleccion.findFirst({
+            where:{
+                duenio_id: email,
+                nombre: body.coleccion
             }
         })
-        if(disenio){
-            const updatedColecciones = disenio.colecciones.filter(coleccion => coleccion != body.coleccion);
-            const success = await prisma.disenio.upsert({
-                where: {
-                    id: id
-                },
-                create:{
-                    id: id,
-                    colecciones:{
-                        connectOrCreate: updatedColecciones
-                    },
-                },
-                update: {
-                    colecciones: {
-                        connectOrCreate: updatedColecciones
-                    }
+        if(coleccion){
+            const succes = await prisma.disenioYcoleccion.delete({
+                where:{
+                    disenio_id: id, //no tengo idea
+                    coleccion_id: coleccion.id
                 }
             })
         }
