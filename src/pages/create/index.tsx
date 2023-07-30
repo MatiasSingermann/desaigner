@@ -2,13 +2,7 @@ import Head from "next/head";
 import Footer from "~/components/Footer";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import ImageUploader from "~/components/ImageUploader";
-import CreateComboBox from "~/components/CreateComboBox";
-import Presupuesto from "~/components/Presupuesto";
-import Estilo from "~/components/Estilo";
-import Plano from "~/components/Plano";
-import Clima from "~/components/Clima";
-import Discapacidad from "~/components/Discapacidad";
+import StepShow from "~/components/StepShow";
 
 function index() {
   const router = useRouter();
@@ -22,10 +16,10 @@ function index() {
   }
 
   if (status === "unauthenticated") {
-    router.push("/login");
+    //router.push("/login");
   }
 
-  if (status === "authenticated") {
+  if (status === "unauthenticated") {
     return (
       <>
         <Head>
@@ -37,20 +31,7 @@ function index() {
           <h1 className="mx-[32px] mb-[52px] self-start bg-gradient-to-tr from-[#228187] to-[#59C3C3] bg-clip-text font-coolveticaRegular text-[40px] leading-none text-transparent">
             Comencemos
           </h1>
-          <h2 className="mx-[32px] mb-[52px] self-start font-coolveticaRegular text-[30px] leading-none">
-            Paso 1: Adjunta una imagen
-          </h2>
-          <ImageUploader />
-          <h2 className="mx-[32px] mb-[52px] self-start font-coolveticaRegular text-[30px] leading-none">
-            Paso 2: Elige tus preferencias
-          </h2>
-          <div className="mb-[52px] flex flex-col">
-            <CreateComboBox icon={<Presupuesto />} pholder="Presupuesto" />
-            <CreateComboBox icon={<Estilo />} pholder="Estilo" />
-            <CreateComboBox icon={<Plano />} pholder="Tipo" />
-            <CreateComboBox icon={<Clima />} pholder="Clima" />
-            <CreateComboBox icon={<Discapacidad />} pholder="Discapacidad" />
-          </div>
+          <StepShow/>
         </main>
         <Footer />
       </>
