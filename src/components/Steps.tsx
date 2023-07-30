@@ -21,16 +21,16 @@ function Steps({ setCounter, counter }: StepsProps) {
     <div className="mt-[22px] flex">
       <button
         onClick={counterRest}
-        className="rotate-[90deg] scale-[.6] stroke-[#228187] stroke-2"
+        className={`rotate-[90deg] scale-[.6] stroke-[#228187] fill-[#228187] stroke-2 ${counter === 1 && "stroke-[#BABABA] fill-[#BABABA]"}`}
       >
         <Arrow />
       </button>
-      <h2 className="mx-[8px] text-center font-coolveticaRegular text-[20px] text-[#228187] dark:text-[#228187]">
+      <h2 className="mx-[2px] text-center font-coolveticaRegular text-[20px] text-[#228187] dark:text-[#228187]">
         {"Paso " + counter.toString() + "/3"}
       </h2>
       <button
         onClick={counterSum}
-        className="rotate-[270deg] scale-[.6] stroke-[#228187] stroke-2"
+        className={`rotate-[270deg] scale-[.6] stroke-[#228187] fill-[#228187] stroke-2 ${counter === 3 && "stroke-[#BABABA] fill-[#BABABA]"}`}
       >
         <Arrow />
       </button>
