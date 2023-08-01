@@ -16,10 +16,10 @@ function index() {
   }
 
   if (status === "unauthenticated") {
-    //router.push("/login");
+    router.push("/login");
   }
 
-  if (status === "unauthenticated") {
+  if (status === "authenticated") {
     const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
       e.preventDefault();
     };
