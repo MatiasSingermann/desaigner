@@ -30,7 +30,7 @@ function index() {
           <h1 className="mx-[32px] mb-[52px] self-start bg-gradient-to-tr from-[#228187] to-[#59C3C3] bg-clip-text font-coolveticaRegular text-[40px] leading-none text-transparent">
             Bienvenido
           </h1>
-          <h2 className="mx-[32px] mb-[52px] self-start font-coolveticaRegular text-[#292F2D] dark:text-[#FBF9FA] text-[35px] leading-none text-transparent">Tus diseños recientes</h2>
+          <h2 className="mx-[32px] mb-[52px] self-start font-coolveticaRegular text-[#292F2D] dark:text-[#FBF9FA] text-[35px] leading-none">Tus diseños recientes</h2>
         </main>
         <Footer />
       </>
