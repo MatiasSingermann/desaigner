@@ -22,7 +22,7 @@ function index() {
           </span>
         </h1>
         <h2 className="mx-[32px] mb-[52px] self-start font-coolveticaLight text-[20px] leading-none text-[#292F2D] text-transparent dark:text-[#FBF9FA]">
-          Con Inteligencia Artificial, te ayudamos a crear el cuarto de tus sueños.
+          Con <span className="font-coolveticaBook">Inteligencia Artificial</span>, te ayudamos a crear el cuarto de tus sueños.
         </h2>
       </main>
       <Footer />
