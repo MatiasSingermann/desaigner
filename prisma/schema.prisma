@@ -38,11 +38,10 @@ model disenio {
   colecciones        disenioYcoleccion[]
   fecha              DateTime             @default(now())
   imagen             String
-  mascara            puntos[]
+  muebles            mueble[]
   ambiente           String               @db.VarChar(20)
   presupuesto        Int
   estilo             String               @db.VarChar(20)
-  link               link[]
   permitidos         autorizados[]
 
   @@index([duenio_id])
@@ -59,21 +58,14 @@ model autorizados {
   @@index([usuario_email])
 }
 
-model link {
-  id          Int        @id @default(autoincrement())
-  url         String     @db.VarChar(2000)
-  disenio     disenio?   @relation(fields: [disenio_id], references: [id])
-  disenio_id  Int?
-  mueble      String     @db.VarChar(30)
-
-
-  @@index([disenio_id])
-}
-
-model puntos {
-  id            Int         @id @default(autoincrement())
-  disenio       disenio?    @relation(fields: [disenio_id], references: [id])
+model mueble {
+  id            Int        @id @default(autoincrement())
+  url1          String     @db.VarChar(2000)
+  url2          String?     @db.VarChar(2000)
+  url3          String?     @db.VarChar(2000)
+  disenio       disenio?   @relation(fields: [disenio_id], references: [id])
   disenio_id    Int?
+  descripcion   String     @db.VarChar(30)
   x             Int
   y             Int
   width         Int

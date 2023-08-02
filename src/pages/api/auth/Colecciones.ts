@@ -1,9 +1,27 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import { coleccionExists, checkEmail, userExists } from "../functions";
+import { coleccionExists, checkEmail, userExists, coleccionIsFromUser } from "../functions";
 import { getSession } from "next-auth/react";
 
 const prisma = new PrismaClient();
+
+interface ExtendedNextApiRequestColecciones extends NextApiRequest{
+    body: {
+        
+    }
+}
+
+interface ExtendedNextApiRequestCreateColeccion extends NextApiRequest{
+    body: {
+        
+    }
+}
+
+interface ExtendedNextApiRequestDisenios extends NextApiRequest{
+    body: {
+        
+    }
+}
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const session = await getSession({req});
@@ -47,7 +65,7 @@ async function colecciones(req: NextApiRequest, res: NextApiResponse, email: str
                 duenio_id: email
             }
         })
-        if(Object.keys(data).length == 0){
+        if(Object.keys(data).length === 0){
             return res.status(204).json({message: "El usuario no tiene colecciones"});
         }
         if(data){
@@ -91,6 +109,41 @@ async function crearColeccion(req: NextApiRequest, res: NextApiResponse, email: 
         if(newColeccion){
             return res.status(200).json({message: "Nueva coleccion creada con exito"});
         }
+    } catch {
+        return res.status(500).end();
+    }
+}
+
+async function deleteColeccion(req: NextApiRequest, res: NextApiResponse, email: string){
+    const body = req.body;
+
+    if(!checkEmail(email)){
+        return res.status(400).json({message: "El usuario no es valido"});
+    }
+    const usuarioExistente: boolean = await userExists(email);
+    if(!usuarioExistente){
+        return res.status(400).json({message: "El usuario enviado no existe, quizas escribiste algun parametro mal"});
+    }
+    const coleccionExistente: boolean = await coleccionExists(body.nombre, email);
+    if(!coleccionExistente){
+        return res.status(400).json({message: "La coleccion enviada no existe"});
+    }
+
+    try{
+        const coleccion = await prisma.coleccion.findFirst({
+            where:{
+                nombre: body.nombre,
+                duenio_id: email
+            }
+        })
+        if(coleccion){
+            const success = await prisma.coleccion.delete({
+                where:{
+                    id: coleccion.id
+                }
+            })
+        }
+        return res.status(200).json({message: "Coleccion eliminada exitosamente"});
     } catch {
         return res.status(500).end();
     }

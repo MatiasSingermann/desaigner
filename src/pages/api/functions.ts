@@ -1,8 +1,4 @@
-import { Prisma, PrismaClient } from "@prisma/client";
-import { NextApiRequest, NextApiResponse } from "next";
-import jwt from "jsonwebtoken";
-import { serialize } from "cookie";
-import Email from "next-auth/providers/email";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -32,15 +28,25 @@ async function disenioFromUserExists(nombre: string, duenio: string): Promise<bo
     }
 }
 
-function isArrayEmpty(variable: Array<string>): boolean{
-    if(variable.length > 0){
-        for(let i = 0; i < variable.length; i++){
-            if(variable[i]!.length == 0){
-                return true;
-            }
-        }
+function isArrayEmpty(array: (string|number)[] | (string|number)[][]): boolean{
+    return array.length <= 0;
+}
+
+function objectHasData(object: object): boolean{
+    if(!("box" in object) || !("prompt" in object) || !("links" in object)){
+        return false;
     }
-    return variable.length <= 0;
+    
+    if(!Array.isArray(object.box) || object.box.length <= 0 || object.box.length > 4 || object.box.every(num => typeof num != "number")){
+        return false;
+    }
+    if(typeof object.prompt != "string" || object.prompt.length <= 0){
+        return false;
+    }
+    if(!Array.isArray(object.links) || object.links.length <= 0 || object.links.length > 3 || object.links.every(str => typeof str != "string") || object.links.every(str => str.length <= 0)){
+        return false;
+    }
+    return true;
 }
 
 function checkContrasenia(contrasenia: string): boolean{
@@ -124,5 +130,5 @@ async function disenioExists(id: number): Promise<boolean>{
 }
 
 export { checkEmail, isEmpty, checkContrasenia, userExists, coleccionExists, coleccionIsFromUser,
-isbase64, disenioExists,isArrayEmpty, disenioFromUserExists };
+isbase64, disenioExists,isArrayEmpty, objectHasData, disenioFromUserExists };
 

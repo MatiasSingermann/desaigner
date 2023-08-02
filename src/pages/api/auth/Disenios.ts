@@ -1,8 +1,7 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import { disenioFromUserExists, isArrayEmpty, disenioExists, isbase64, userExists, checkEmail, coleccionExists, coleccionIsFromUser } from "../functions";
+import { disenioFromUserExists, isArrayEmpty, disenioExists, isbase64, userExists, checkEmail, coleccionExists, coleccionIsFromUser, objectHasData } from "../functions";
 import { v2 } from "cloudinary";
-import { getSession } from "next-auth/react";
 
 const prisma = new PrismaClient();
 const cloudinary = v2;
@@ -18,20 +17,20 @@ interface ExtendedNextApiRequestCreateDisenios extends NextApiRequest{
         nombre: string,
         ambiente: string,
         disenioIMG: string,
-        mascara: Array<Array<number>>,
-        
-    }
-}
-
-interface ExtendedNextApiRequestDeleteDisenio extends NextApiRequest{
-    body: {
-        
+        muebles: Array<{
+            box: Array<number>,
+            prompt: string,
+            links: Array<string>
+        }>,
+        presupuesto: number,
+        estilo: string,
+        colecciones: string[],
     }
 }
 
 interface ExtendedNextApiRequestRemoverDisenio extends NextApiRequest{
     body: {
-        
+        coleccion: string
     }
 }
 
@@ -132,15 +131,14 @@ async function diseños(req: ExtendedNextApiRequestDisenios, res: NextApiRespons
                     include: {
                         disenio: {
                             include:{
-                                mascara: true,
-                                link: true
+                                muebles: true
                             }
                         }
                     }
                 }
             }
         })
-        if(Object.keys(data).length == 0){
+        if(Object.keys(data).length === 0){
             return res.status(204).json({message: "La coleccion no tiene disenios"});
         }
         if(data){
@@ -154,11 +152,11 @@ async function diseños(req: ExtendedNextApiRequestDisenios, res: NextApiRespons
     }
 }
 
-async function crearDisenio(req: NextApiRequest, res: NextApiResponse, email: string){
+async function crearDisenio(req: ExtendedNextApiRequestCreateDisenios, res: NextApiResponse, email: string){
     const body = req.body;
 
     if(
-        !body.nombre || !email || !body.ambiente || !body.disenioIMG || !body.mascara || !body.presupuesto || !body.estilo || !body.link
+        !body.nombre || !email || !body.ambiente || !body.disenioIMG || !body.muebles || !body.presupuesto || !body.estilo
     ){
         return res.status(400).json({message: "Algun parametro enviado no cumple los requisitos"});
     }
@@ -172,20 +170,17 @@ async function crearDisenio(req: NextApiRequest, res: NextApiResponse, email: st
     if(!usuarioExistente){
         return res.status(400).json({message: "El usuario enviado no existe, quizas escribiste algun parametro mal"});
     }
-    if(!Array.isArray(body.colecciones) || isArrayEmpty(body.colecciones) || body.colecciones.length == 0){
+    if(!Array.isArray(body.colecciones) || body.colecciones.every(str => str.length > 0) || body.colecciones.length === 0){
         return res.status(400).json({message: "No hay colecciones"});
     }
     for(let i = 0; i < body.colecciones.length; i++){
-        const coleccionExistente: boolean = await coleccionExists(body.colecciones[i], email);
+        const coleccionExistente: boolean = await coleccionExists(body.colecciones[i]!.toString(), email); //Revisar
         if(!coleccionExistente){
             return res.status(400).json({message: "La coleccion ingresada no existe"});
         }
     }
-    if(!Array.isArray(body.link) || isArrayEmpty(body.link) || body.link.length == 0){
-        return res.status(400).json({message: "No hay links"});
-    }
-    if(!Array.isArray(body.mascara) || isArrayEmpty(body.mascara) || body.mascara.length == 0){
-        return res.status(400).json({message: "No hay mascara"});
+    if(!Array.isArray(body.muebles) || !body.muebles.every(objectHasData) || body.muebles.length === 0){
+        return res.status(400).json({message: "No hay muebles o algun dato esta mal"});
     }
     const disenioFromUserExistente: boolean = await disenioFromUserExists(body.nombre, email);
     if(disenioFromUserExistente){
@@ -200,70 +195,59 @@ async function crearDisenio(req: NextApiRequest, res: NextApiResponse, email: st
     if(disenioURL.error){
         return res.status(500);
     }
-    else {
-        try{
-            const newDisenio = await prisma.disenio.create({
+    try{
+        const newDisenio = await prisma.disenio.create({
+            data: {
+                nombre: body.nombre,
+                duenio_id: email,
+                imagen: disenioURL.secure_url,
+                ambiente: body.ambiente,
+                presupuesto: body.presupuesto,
+                estilo: body.estilo,
+            }
+        })
+        for(let i = 0; i < body.muebles.length; i++){
+            await prisma.mueble.create({
                 data: {
-                    nombre: body.nombre,
-                    duenio_id: email,
-                    imagen: disenioURL.secure_url,
-                    ambiente: body.ambiente,
-                    presupuesto: body.presupuesto,
-                    estilo: body.estilo,
+                    url1: body.muebles[i]!.links[0]!,
+                    url2: body.muebles[i]!.links[1]!,
+                    url3: body.muebles[i]!.links[2]!,
+                    descripcion: body.muebles[i]!.prompt,
+                    x: body.muebles[i]!.box[0]!,
+                    y: body.muebles[i]!.box[1]!,
+                    width: body.muebles[i]!.box[2]!,
+                    height: body.muebles[i]!.box[3]!,
+                    disenio: {
+                        connect: {
+                            id: newDisenio.id
+                        }
+                    }
                 }
             })
-            for(let i = 0; i < body.mascara.length; i++){
-                await prisma.puntos.create({
-                    data: {
-                        x: body.mascara[i][0],
-                        y: body.mascara[i][1],
-                        width: body.mascara[i][2],
-                        height: body.mascara[i][3],
-                        disenio: {
-                            connect: {
-                                id: newDisenio.id
-                            }
-                        }
-                    }
-                })
-            }
-            for(let i = 0; i < body.link.length; i++){
-                await prisma.link.create({
-                    data: {
-                        url: body.link[i][0],
-                        mueble: body.link[i][1],
-                        disenio: {
-                            connect: {
-                                id: newDisenio.id
-                            }
-                        }
-                    }
-                }) 
-            }
-            for(let i = 0; i < body.colecciones.length; i++){
-                const coleccionConnect = await prisma.coleccion.findFirst({
-                    where: {
-                        duenio_id: email,
-                        nombre: body.colecciones[i]
-                    }
-                })
-                if(coleccionConnect){
-                    await prisma.disenioYcoleccion.create({
-                        data: {
-                            disenio_id: newDisenio.id,
-                            coleccion_id: coleccionConnect.id
-                        }
-                    })
-                }
-                
-            }
-            if(newDisenio){ //Revisable
-                return res.status(200).json({message: "Nuevo disenio creado con exito"});
-            }
-        } catch(error) {
-            console.log(error);
-            return res.status(500).end();
         }
+        for(let i = 0; i < body.colecciones.length; i++){
+            const coleccionConnect = await prisma.coleccion.findFirst({
+                where: {
+                    duenio_id: email,
+                    nombre: body.colecciones[i]?.toString()
+                }
+            })
+            if(coleccionConnect){
+                await prisma.disenioYcoleccion.create({
+                    data: {
+                        disenio_id: newDisenio.id,
+                        coleccion_id: coleccionConnect.id
+                    }
+                })
+            }
+            
+        }
+        if(newDisenio){ //Revisable
+            return res.status(200).json({message: "Nuevo disenio creado con exito"});
+        }
+    } catch(error) {
+        console.log(error);
+        return res.status(500).end();
     }
 }
 
@@ -355,7 +339,7 @@ async function deleteDisenio(req: NextApiRequest, res: NextApiResponse, email: s
     }
 }
 
-async function removerDisenio(req: NextApiRequest, res: NextApiResponse, email: string, id: number){
+async function removerDisenio(req: ExtendedNextApiRequestRemoverDisenio, res: NextApiResponse, email: string, id: number){
     const body = req.body;
     
     if(!body.coleccion){
@@ -397,12 +381,20 @@ async function removerDisenio(req: NextApiRequest, res: NextApiResponse, email: 
             }
         })
         if(coleccion){
-            const succes = await prisma.disenioYcoleccion.delete({
+            const relacion= await prisma.disenioYcoleccion.findFirst({
                 where:{
-                    disenio_id: id, //no tengo idea
+                    disenio_id: id, 
                     coleccion_id: coleccion.id
                 }
             })
+            if(relacion){
+                const succes = await prisma.disenioYcoleccion.delete({
+                    where:{
+                        id: relacion.id
+                    }
+                })
+            }
+        return res.status(200).json({message: "Disenio removido con exito"});            
         }
     } catch{
         return res.status(500).end();
@@ -410,8 +402,10 @@ async function removerDisenio(req: NextApiRequest, res: NextApiResponse, email: 
 }
 
 async function permitirUsuario(req: NextApiRequest, res: NextApiResponse, email: string, id: number){
-    if(!email || id <= 0){
-        return res.status(400).json({message: "El email de la sesion esta vacio o el id del disenio es inexistente"});
+    const body = req.body;
+    
+    if(!email || id <= 0 || !body.usuario){
+        return res.status(400).json({message: "El email de la sesion esta vacio o el id del disenio es inexistente, tambien es posible que el usuario a autorizar no haya sido enviado"});
     }
     if(!checkEmail(email)){
         return res.status(400).json({message: "El usuario no es valido"});
@@ -419,6 +413,10 @@ async function permitirUsuario(req: NextApiRequest, res: NextApiResponse, email:
     const usuarioExistente: boolean = await userExists(email);
     if(!usuarioExistente){
         return res.status(400).json({message: "El usuario enviado no existe, quizas escribiste algun parametro mal"});
+    }
+    const usuarioAutorizadoExiste: boolean = await userExists(body.usuario);
+    if(!usuarioAutorizadoExiste){
+        return res.status(400).json({message: "El usuario que se quiere autorizar no existe"});
     }
     const disenioExistente: boolean = await disenioExists(id);
     if(!disenioExistente){
@@ -436,7 +434,12 @@ async function permitirUsuario(req: NextApiRequest, res: NextApiResponse, email:
     }
 
     try{
-
+        const usersAutorizados = await prisma.autorizados.findMany({
+            where: {
+                disenio_id: id
+            }
+        })
+        
     } catch{
         return res.status(500).end();
     }
