@@ -15,7 +15,8 @@ function index() {
           <span className="bg-gradient-to-tr from-[#228187] to-[#59C3C3] bg-clip-text text-transparent">
             AI
           </span>
-          gner, la app de
+          <span>gner,&#160;</span>
+          la app de&#160;
           <span className="bg-gradient-to-tr from-[#228187] to-[#59C3C3] bg-clip-text text-transparent">
             diseño de interiores
           </span>

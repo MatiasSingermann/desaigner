@@ -23,7 +23,7 @@ function SelectedImage({
     >
       <Image
         className="object-contain"
-        src="" // ejemplo: "/../public/Imagen.jpg"
+        src={image} // ejemplo: "/../public/Imagen.jpg"
         alt="Selected Image"
         height={1500} // altura de la imagen
         width={1500} // ancho de la imagen

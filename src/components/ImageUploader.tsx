@@ -17,6 +17,7 @@ function ImageUploader({
     imageName = selectedImage!.name;
     console.log(selectedImage!.type)
     console.log(imageName);
+    console.log(e.target.files);
     updateImageData(image, imageName);
 
     // setImage(selectedImage);
