@@ -16,10 +16,13 @@ function index() {
   }
 
   if (status === "unauthenticated") {
-    //router.push("/login");
+    router.push("/login");
   }
 
-  if (status === "unauthenticated") {
+  if (status === "authenticated") {
+    const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
+      e.preventDefault();
+    };
     return (
       <>
         <Head>
@@ -31,7 +34,14 @@ function index() {
           <h1 className="mx-[32px] mb-[52px] self-start bg-gradient-to-tr from-[#228187] to-[#59C3C3] bg-clip-text font-coolveticaRegular text-[40px] leading-none text-transparent">
             Comencemos
           </h1>
-          <StepShow/>
+          <form
+            action=""
+            method="POST"
+            onSubmit={handleSubmit}
+            className="flex flex-col items-center justify-center w-full"
+          >
+            <StepShow />
+          </form>
         </main>
         <Footer />
       </>

@@ -1,6 +1,14 @@
 import ImageUploader from "./ImageUploader";
+import SelectedImage from "./SelectedImage";
+import { useState } from "react";
 
 function Step1() {
+  const [image, setImage] = useState();
+  const [imageName, setImageName] = useState("");
+  const updateImageData = (newImage : any, newImageName : string) => {
+    setImage(newImage);
+    setImageName(newImageName);
+  }
   return (
     <>
       <h2 className="mx-[32px] self-start font-coolveticaRegular text-[30px] leading-none">
@@ -10,7 +18,10 @@ function Step1() {
         La imagen debe ser formato .jpeg o .png con una resolución mínima de
         512x512 píxeles.
       </h3>
-      <ImageUploader/>
+      <div className="relative flex h-[180px] w-[330px] flex-col">
+        <SelectedImage image={image} imageName={imageName} updateImageData={updateImageData}/>
+        <ImageUploader image={image} imageName={imageName} updateImageData={updateImageData}/>
+      </div>
     </>
   );
 }
