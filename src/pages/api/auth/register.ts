@@ -6,8 +6,8 @@ const prisma = new PrismaClient();
 
 interface ExtendedNextApiRequest extends NextApiRequest{
     body: {
-        readonly email: string,
-        readonly contrasenia: string
+        email: string,
+        contrasenia: string
     }
 }
 

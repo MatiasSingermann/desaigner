@@ -5,21 +5,16 @@ import { getSession } from "next-auth/react";
 
 const prisma = new PrismaClient();
 
-interface ExtendedNextApiRequestColecciones extends NextApiRequest{
-    body: {
-        
-    }
-}
-
 interface ExtendedNextApiRequestCreateColeccion extends NextApiRequest{
     body: {
-        
+        nombre: string,
+        favorito: boolean
     }
 }
 
 interface ExtendedNextApiRequestDisenios extends NextApiRequest{
     body: {
-        
+        nombre: string
     }
 }
 
@@ -45,7 +40,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 }
 
 async function colecciones(req: NextApiRequest, res: NextApiResponse, email: string) {
-
     //chequeos de informacion
     if(!email){
         return res.status(400).json({message: "El email enviado tiene algun error"});
@@ -79,7 +73,7 @@ async function colecciones(req: NextApiRequest, res: NextApiResponse, email: str
     }
 }
 
-async function crearColeccion(req: NextApiRequest, res: NextApiResponse, email: string){
+async function crearColeccion(req: ExtendedNextApiRequestCreateColeccion, res: NextApiResponse, email: string){
     const body = req.body;
 
     if(!body.nombre || !body.favorito || !email){
@@ -114,7 +108,7 @@ async function crearColeccion(req: NextApiRequest, res: NextApiResponse, email: 
     }
 }
 
-async function deleteColeccion(req: NextApiRequest, res: NextApiResponse, email: string){
+async function deleteColeccion(req: ExtendedNextApiRequestDisenios, res: NextApiResponse, email: string){
     const body = req.body;
 
     if(!checkEmail(email)){
