@@ -24,7 +24,7 @@ interface ExtendedNextApiRequestCreateDisenios extends NextApiRequest{
         }>,
         presupuesto: number,
         estilo: string,
-        colecciones: string[],
+        colecciones: string[]
     }
 }
 
@@ -120,9 +120,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     //     return res.status(405).end();
     // }
 
-    const id = req.body.id;
-    const email = "wilson@gmail.com";
-    return removerDisenio(req, res, email);
+    const email = "uwu@gmail.com";
+    return await crearDisenio(req, res, email);
 }
 
 async function diseños(req: ExtendedNextApiRequestDisenios, res: NextApiResponse, email: string){
@@ -138,17 +137,17 @@ async function diseños(req: ExtendedNextApiRequestDisenios, res: NextApiRespons
     if(!usuarioExistente){
         return res.status(400).json({message: "El usuario enviado no existe, quizas escribiste algun parametro mal"});
     }
-    if(!coleccionExists(body.coleccion, email)){
+    if(!await coleccionExists(body.coleccion, email)){
         return res.status(400).json({message: "La coleccion enviada no existe"});
     }
 
     try{
-        const data = await prisma.coleccion.findMany({
+        const data = await prisma.coleccion.findFirst({
             where: {
                 duenio_id: email,
                 nombre: body.coleccion
             },
-            include: {
+            select: {
                 disenios: {
                     include: {
                         disenio: {
@@ -161,7 +160,7 @@ async function diseños(req: ExtendedNextApiRequestDisenios, res: NextApiRespons
                 }
             }
         })
-        if(Object.keys(data).length === 0){
+        if(data?.disenios.length === 0){
             return res.status(204).json({message: "La coleccion no tiene disenios"});
         }
         if(data){
@@ -191,7 +190,7 @@ async function crearDisenio(req: ExtendedNextApiRequestCreateDisenios, res: Next
     if(!usuarioExistente){
         return res.status(400).json({message: "El usuario enviado no existe, quizas escribiste algun parametro mal"});
     }
-    if(!Array.isArray(body.colecciones) || body.colecciones.every(str => str.length > 0) || body.colecciones.length === 0){
+    if(!Array.isArray(body.colecciones) || !body.colecciones.every(str => str.length > 0) || body.colecciones.length === 0){
         return res.status(400).json({message: "No hay colecciones"});
     }
     for(let i = 0; i < body.colecciones.length; i++){
@@ -385,7 +384,7 @@ async function removerDisenio(req: ExtendedNextApiRequestRemoverDisenio, res: Ne
     if(!disenioExistente){
         return res.status(404).json({message: "El disenio que se quiere visualizar no existe"});
     }
-    if(!coleccionExists(body.coleccion, email)){
+    if(!await coleccionExists(body.coleccion, email)){
         return res.status(400).json({message: "La coleccion enviada no existe"});
     }
 
@@ -452,7 +451,7 @@ async function agregarDisenioAcoleccion(req: ExtendedNextApiRequestAgregarDiseni
     if(!disenioExistente){
         return res.status(404).json({message: "El disenio que se quiere visualizar no existe"});
     }
-    if(!coleccionExists(body.coleccion, email)){
+    if(!await coleccionExists(body.coleccion, email)){
         return res.status(400).json({message: "La coleccion enviada no existe"});
     }
 

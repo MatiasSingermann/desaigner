@@ -43,7 +43,7 @@ function objectHasData(object: object): boolean{
     if(typeof object.prompt != "string" || object.prompt.length <= 0){
         return false;
     }
-    if(!Array.isArray(object.links) || object.links.length <= 0 || object.links.length > 3 || object.links.every(str => typeof str != "string") || object.links.every(str => str.length <= 0)){
+    if(!Array.isArray(object.links) || object.links.length <= 0 || object.links.length > 3 || object.links.every(str => typeof str != "string") || object.links.every((str: string) => str.length <= 0)){
         return false;
     }
     return true;
@@ -72,7 +72,7 @@ async function userExists(usuario: string): Promise<boolean>{
 
 async function coleccionExists(nombre: string, duenio: string): Promise<boolean>{
     try{
-        const existe = await prisma.coleccion.findFirst({
+        const existe = !!await prisma.coleccion.findFirst({
             where: {
                 nombre: nombre,
                 duenio_id: duenio
