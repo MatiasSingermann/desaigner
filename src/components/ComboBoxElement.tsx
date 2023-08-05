@@ -15,7 +15,7 @@ function ComboBoxElement({ name, text, value, handleRadioChange }: ComboBoxEleme
         name={name}
         value={value}
         onChange={handleRadioChange}
-        className="absolute ahidden h-[52px] w-[310px] 480:h-[58px] 480:w-[342px]"
+        className="absolute opacity-0 h-[52px] w-[310px] 480:h-[58px] 480:w-[342px]"
       />
       <p className="mx-[24px] text-[20px] 480:text-[22px]">{text}</p>
     </div>

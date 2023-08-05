@@ -12,6 +12,7 @@ function CreateComboBox({ icon, pholder }: CreateComboBoxProps) {
   const [selectedOption, setSelectedOption] = useState("");
   const handleRadioChange = (e : ChangeEvent<HTMLInputElement>) => {
     setSelectedOption(e.target.value);
+    setClicked(false);
   };
   const handleCopyPaste = (e: React.ClipboardEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -45,7 +46,7 @@ function CreateComboBox({ icon, pholder }: CreateComboBoxProps) {
         {pholder === "Presupuesto" && clicked && (
           <div className="relative mb-[12px] flex h-[156px] w-[310px] overflow-hidden rounded-[1.25rem] 480:mb-[16px] 480:h-[174px] 480:w-[342px]">
             <div className="relative h-[156px] w-[310px] flex-col overflow-x-hidden overflow-y-scroll rounded-[1.25rem] bg-[#292F2D] dark:bg-[#292F2D] 480:h-[174px] 480:w-[342px]">
-              <ComboBoxElement name="Presupuesto" text="Bajo" value="Bajo" handleRadioChange={handleRadioChange} />
+              <ComboBoxElement name="Presupuesto" text="Bajo" value="Bajo" handleRadioChange={handleRadioChange}/>
               <ComboBoxElement name="Presupuesto" text="Medio" value="Medio" handleRadioChange={handleRadioChange}/>
               <ComboBoxElement name="Presupuesto" text="Alto" value="Alto" handleRadioChange={handleRadioChange}/>
             </div>
