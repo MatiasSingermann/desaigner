@@ -17,22 +17,23 @@ function SelectedImage({
   };
   return (
     <div
-      className={`absolute flex h-full w-full flex-col items-center justify-end rounded-xl bg-[#000] px-[16px] py-[4px] text-[#FBF9FA] ${
+      className={`absolute flex h-full w-full flex-col items-center justify-end rounded-xl bg-[#1B1F1F] px-[16px] text-[#FBF9FA] ${
         imageName === "" ? "-z-10" : "z-10"
       }`}
     >
       {image ? (
         <Image
-          className="object-contain"
+          className="absolute flex h-full w-full items-center justify-center rounded-xl object-cover"
           src={image} // ejemplo: "/../public/Imagen.jpg"
           alt="Selected Image"
           height={1500} // altura de la imagen
           width={1500} // ancho de la imagen
         />
       ) : null}
-      <div className="relative flex w-full items-end justify-between">
+      <div className="absolute flex h-1/2 w-full rounded-xl bg-gradient-to-b from-transparent to-black"></div>
+      <div className="absolute flex w-full items-center justify-between rounded-b-xl px-[8px] pb-[2px]">
         <h3 className="p-[4px]">{imageName}</h3>
-        <button className="absolute right-0 flex p-[4px]" onClick={trashClick}>
+        <button className="flex p-[4px]" onClick={trashClick}>
           <Trash />
         </button>
       </div>

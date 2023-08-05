@@ -1,4 +1,3 @@
-import SelectedImage from "./SelectedImage";
 import Upload from "./Upload";
 
 interface ImageUploaderProps {
@@ -17,11 +16,12 @@ function ImageUploader({
     const selectedImage = e.target.files![0];
     imageName = selectedImage!.name;
     console.log(selectedImage!.type)
+
+    image = URL.createObjectURL(selectedImage!);
+
     console.log(imageName);
     console.log(e.target.files);
     updateImageData(image, imageName);
-
-    // setImage(selectedImage);
   };
   return (
     <div
