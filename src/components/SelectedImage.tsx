@@ -21,13 +21,15 @@ function SelectedImage({
         imageName === "" ? "-z-10" : "z-10"
       }`}
     >
-      <Image
-        className="object-contain"
-        src={image} // ejemplo: "/../public/Imagen.jpg"
-        alt="Selected Image"
-        height={1500} // altura de la imagen
-        width={1500} // ancho de la imagen
-      />
+      {image ? (
+        <Image
+          className="object-contain"
+          src={image} // ejemplo: "/../public/Imagen.jpg"
+          alt="Selected Image"
+          height={1500} // altura de la imagen
+          width={1500} // ancho de la imagen
+        />
+      ) : null}
       <div className="relative flex w-full items-end justify-between">
         <h3 className="p-[4px]">{imageName}</h3>
         <button className="absolute right-0 flex p-[4px]" onClick={trashClick}>

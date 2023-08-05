@@ -12,7 +12,8 @@ function ImageUploader({
   imageName,
   updateImageData,
 }: ImageUploaderProps) {
-  const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImage = (e: React.ChangeEvent<HTMLInputElement> ) => {
+    updateImageData(null, "");
     const selectedImage = e.target.files![0];
     imageName = selectedImage!.name;
     console.log(selectedImage!.type)
