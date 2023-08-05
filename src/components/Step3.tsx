@@ -17,8 +17,7 @@ function Step3() {
           <ImageNumBox number="3" status={slider >= 3} />
           <ImageNumBox number="4" status={slider >= 4} />
         </div>
-        <button onClick={() => setSlider(slider => slider + 1)}>AAAAAAAAA</button>
-        <Slider />
+        <Slider setSlider={setSlider}/>
       </div>
     </>
   );
