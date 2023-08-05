@@ -1,5 +1,8 @@
 import Upload from "./Upload";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 interface ImageUploaderProps {
   image: any;
   imageName: string;
@@ -11,23 +14,50 @@ function ImageUploader({
   imageName,
   updateImageData,
 }: ImageUploaderProps) {
-  const handleImage = (e: React.ChangeEvent<HTMLInputElement> ) => {
+  const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateImageData(null, "");
     const selectedImage = e.target.files![0];
-    imageName = selectedImage!.name;
-    console.log(selectedImage!.type)
+    if (
+      selectedImage!.type != "image/png" &&
+      selectedImage!.type != "image/jpeg"
+    ) {
+      toast.error(
+        "Solo se permiten archivos de tipo .png y .jpg (.jpeg)",
+        {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        }
+      );
+    } else {
+      imageName = selectedImage!.name;
+      console.log(selectedImage!.type);
 
-    image = URL.createObjectURL(selectedImage!);
+      image = URL.createObjectURL(selectedImage!);
 
-    console.log(imageName);
-    console.log(e.target.files);
-    updateImageData(image, imageName);
+      console.log(imageName);
+      console.log(e.target.files);
+      updateImageData(image, imageName);
+    }
+  };
+  const dragImage = (e: React.DragEvent) => {
+    e.preventDefault();
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      const file = files[0];
+    }
   };
   return (
     <div
       className={`absolute flex h-full w-full flex-col items-center justify-center rounded-xl bg-[#E8E8E8] p-[22px] text-[#292F2D] dark:bg-[#293433] dark:text-[#FBF9FA] ${
         imageName === "" ? "z-10" : "-z-10"
       }`}
+      onDrag={dragImage}
     >
       <div className="flex flex-col">
         <Upload />
@@ -53,6 +83,7 @@ function ImageUploader({
           Subir archivo...
         </div>
       </div>
+      <ToastContainer limit={3} />
     </div>
   );
 }
