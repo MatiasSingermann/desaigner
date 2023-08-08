@@ -15,6 +15,7 @@ function Slider({setSlider} : SliderProps) {
       type="range"
       min={1}
       max={4}
+      defaultValue={1}
       onChange={changeValue}
     ></input>
   );
