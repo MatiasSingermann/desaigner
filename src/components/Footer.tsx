@@ -5,6 +5,7 @@ import FooterLinksRight from "./FooterLinksRight";
 import InstagramLogo from "./InstagramLogo";
 import SocialMedia from "./SocialMedia";
 import TwitterLogo from "./TwitterLogo";
+import XLogo from "./XLogo";
 
 function Footer() {
   return (
@@ -22,19 +23,19 @@ function Footer() {
                 <SocialMedia
                   hlink="https://www.youtube.com/watch?v=mSUNnCwj1WY"
                   alabel="Visita nuestro Twitter"
-                  icon={<TwitterLogo />}
+                  icon="./XLogo.svg"
                 />
 
                 <SocialMedia
                   hlink="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
                   alabel="Visita nuestro Instagram"
-                  icon={<InstagramLogo />}
+                  icon="./InstagramLogo.svg"
                 />
 
                 <SocialMedia
                   hlink="https://www.youtube.com/watch?v=qPCf1tS_AwM"
                   alabel="Visita nuestro Facebook"
-                  icon={<FacebookLogo />}
+                  icon="./FacebookLogo.svg"
                 />
               </ul>
             </div>
