@@ -1,3 +1,4 @@
+import CreateButton from "./CreateButton";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
@@ -12,6 +13,7 @@ function StepShow() {
       {counter === 2 && <Step2/>}
       {counter === 3 && <Step3/>}
       <Steps setCounter={setCounter} counter={counter}/>
+      <CreateButton/>
     </>
   );
 }

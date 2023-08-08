@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import ComboBoxElement from "./ComboBoxElement";
 import Arrow from "./Arrow";
 
@@ -9,6 +9,11 @@ interface CreateComboBoxProps {
 
 function CreateComboBox({ icon, pholder }: CreateComboBoxProps) {
   const [clicked, setClicked] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("");
+  const handleRadioChange = (e : ChangeEvent<HTMLInputElement>) => {
+    setSelectedOption(e.target.value);
+    setClicked(false);
+  };
   const handleCopyPaste = (e: React.ClipboardEvent<HTMLDivElement>) => {
     e.preventDefault();
   };
@@ -28,7 +33,7 @@ function CreateComboBox({ icon, pholder }: CreateComboBoxProps) {
             onPaste={handleCopyPaste}
             onClick={handleClick}
           >
-            {pholder}
+            {selectedOption != "" ? selectedOption : pholder}
           </div>
           <span
             className={`pointer-events-none absolute right-[14px] mb-[12px] fill-[#228187] transition-all duration-300 480:mb-[16px] ${
@@ -41,50 +46,50 @@ function CreateComboBox({ icon, pholder }: CreateComboBoxProps) {
         {pholder === "Presupuesto" && clicked && (
           <div className="relative mb-[12px] flex h-[156px] w-[310px] overflow-hidden rounded-[1.25rem] 480:mb-[16px] 480:h-[174px] 480:w-[342px]">
             <div className="relative h-[156px] w-[310px] flex-col overflow-x-hidden overflow-y-scroll rounded-[1.25rem] bg-[#292F2D] dark:bg-[#292F2D] 480:h-[174px] 480:w-[342px]">
-              <ComboBoxElement name="Presupuesto" text="Bajo" />
-              <ComboBoxElement name="Presupuesto" text="Medio" />
-              <ComboBoxElement name="Presupuesto" text="Alto" />
+              <ComboBoxElement name="Presupuesto" text="Bajo" value="Bajo" handleRadioChange={handleRadioChange}/>
+              <ComboBoxElement name="Presupuesto" text="Medio" value="Medio" handleRadioChange={handleRadioChange}/>
+              <ComboBoxElement name="Presupuesto" text="Alto" value="Alto" handleRadioChange={handleRadioChange}/>
             </div>
           </div>
         )}
         {pholder === "Estilo" && clicked && (
           <div className="relative mb-[12px] flex h-[156px] w-[310px] overflow-hidden rounded-[1.25rem] 480:mb-[16px] 480:h-[174px] 480:w-[342px]">
             <div className="relative h-[156px] w-[310px] flex-col overflow-x-hidden overflow-y-scroll rounded-[1.25rem] bg-[#292F2D] dark:bg-[#292F2D] 480:h-[174px] 480:w-[342px]">
-              <ComboBoxElement name="Estilo" text="Moderno" />
-              <ComboBoxElement name="Estilo" text="Minimalista" />
-              <ComboBoxElement name="Estilo" text="Oriental" />
-              <ComboBoxElement name="Estilo" text="Tradicional" />
-              <ComboBoxElement name="Estilo" text="Clásico" />
+              <ComboBoxElement name="Estilo" text="Moderno" value="Moderno" handleRadioChange={handleRadioChange}/>
+              <ComboBoxElement name="Estilo" text="Minimalista" value="Minimalista" handleRadioChange={handleRadioChange}/>
+              <ComboBoxElement name="Estilo" text="Oriental" value="Oriental" handleRadioChange={handleRadioChange}/>
+              <ComboBoxElement name="Estilo" text="Tradicional" value="Tradicional" handleRadioChange={handleRadioChange}/>
+              <ComboBoxElement name="Estilo" text="Clásico" value="Clásico" handleRadioChange={handleRadioChange}/>
             </div>
           </div>
         )}
         {pholder === "Tipo" && clicked && (
           <div className="relative mb-[12px] flex h-[156px] w-[310px] overflow-hidden rounded-[1.25rem] 480:mb-[16px] 480:h-[174px] 480:w-[342px]">
             <div className="relative h-[156px] w-[310px] flex-col overflow-x-hidden overflow-y-scroll rounded-[1.25rem] bg-[#292F2D] dark:bg-[#292F2D] 480:h-[174px] 480:w-[342px]">
-              <ComboBoxElement name="Tipo" text="Cocina" />
-              <ComboBoxElement name="Tipo" text="Living" />
-              <ComboBoxElement name="Tipo" text="Dormitorio" />
-              <ComboBoxElement name="Tipo" text="Baño" />
+              <ComboBoxElement name="Tipo" text="Cocina" value="Cocina" handleRadioChange={handleRadioChange}/>
+              <ComboBoxElement name="Tipo" text="Living" value="Living" handleRadioChange={handleRadioChange}/>
+              <ComboBoxElement name="Tipo" text="Dormitorio" value="Dormitorio" handleRadioChange={handleRadioChange}/>
+              <ComboBoxElement name="Tipo" text="Baño" value="Baño" handleRadioChange={handleRadioChange}/>
             </div>
           </div>
         )}
         {pholder === "Clima" && clicked && (
           <div className="relative mb-[12px] flex h-[156px] w-[310px] overflow-hidden rounded-[1.25rem] 480:mb-[16px] 480:h-[174px] 480:w-[342px]">
             <div className="relative h-[156px] w-[310px] flex-col overflow-x-hidden overflow-y-scroll rounded-[1.25rem] bg-[#292F2D] dark:bg-[#292F2D] 480:h-[174px] 480:w-[342px]">
-              <ComboBoxElement name="Clima" text="Tropical" />
-              <ComboBoxElement name="Clima" text="Frío" />
-              <ComboBoxElement name="Clima" text="Caluroso" />
-              <ComboBoxElement name="Clima" text="Templado" />
+              <ComboBoxElement name="Clima" text="Tropical" value="Tropical" handleRadioChange={handleRadioChange}/>
+              <ComboBoxElement name="Clima" text="Frío" value="Frío" handleRadioChange={handleRadioChange}/>
+              <ComboBoxElement name="Clima" text="Caluroso" value="Caluroso" handleRadioChange={handleRadioChange}/>
+              <ComboBoxElement name="Clima" text="Templado" value="Templado" handleRadioChange={handleRadioChange}/>
             </div>
           </div>
         )}
         {pholder === "Discapacidad" && clicked && (
           <div className="relative mb-[12px] flex h-[156px] w-[310px] overflow-hidden rounded-[1.25rem] 480:mb-[16px] 480:h-[174px] 480:w-[342px]">
             <div className="relative h-[156px] w-[310px] flex-col overflow-x-hidden overflow-y-scroll rounded-[1.25rem] bg-[#292F2D] dark:bg-[#292F2D] 480:h-[174px] 480:w-[342px]">
-              <ComboBoxElement name="Discapacidad" text="Ninguna" />
-              <ComboBoxElement name="Discapacidad" text="Paraplejía" />
-              <ComboBoxElement name="Discapacidad" text="Ceguera" />
-              <ComboBoxElement name="Discapacidad" text="Sordera" />
+              <ComboBoxElement name="Discapacidad" text="Ninguna" value="Ninguna" handleRadioChange={handleRadioChange}/>
+              <ComboBoxElement name="Discapacidad" text="Paraplejía" value="Paraplejía" handleRadioChange={handleRadioChange}/>
+              <ComboBoxElement name="Discapacidad" text="Ceguera" value="Ceguera" handleRadioChange={handleRadioChange}/>
+              <ComboBoxElement name="Discapacidad" text="Sordera" value="Sordera" handleRadioChange={handleRadioChange}/>
             </div>
           </div>
         )}
