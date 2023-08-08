@@ -10,7 +10,7 @@ datasource db {
 
 model coleccion {
   id                 Int                  @id @default(autoincrement())
-  nombre             String               @db.VarChar(30)
+  nombre             String               @db.VarChar(100)
   favorito           Boolean?             @db.Bit(1)
   disenios           disenioYcoleccion[] 
   duenio             usuario              @relation(fields: [duenio_id], references: [email])
@@ -65,7 +65,7 @@ model mueble {
   url3          String?     @db.VarChar(2000)
   disenio       disenio?   @relation(fields: [disenio_id], references: [id])
   disenio_id    Int?
-  descripcion   String     @db.VarChar(30)
+  descripcion   String     @db.VarChar(2000)
   x             Int
   y             Int
   width         Int

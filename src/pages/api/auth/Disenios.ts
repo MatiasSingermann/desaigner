@@ -121,7 +121,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // }
 
     const email = "uwu@gmail.com";
-    return await crearDisenio(req, res, email);
+    return await deleteDisenio(req, res, email);
 }
 
 async function diseños(req: ExtendedNextApiRequestDisenios, res: NextApiResponse, email: string){
@@ -194,7 +194,7 @@ async function crearDisenio(req: ExtendedNextApiRequestCreateDisenios, res: Next
         return res.status(400).json({message: "No hay colecciones"});
     }
     for(let i = 0; i < body.colecciones.length; i++){
-        const coleccionExistente: boolean = await coleccionExists(body.colecciones[i]!.toString(), email); //Revisar
+        const coleccionExistente: boolean = await coleccionExists(body.colecciones[i]!.toString(), email);
         if(!coleccionExistente){
             return res.status(400).json({message: "La coleccion ingresada no existe"});
         }
@@ -255,6 +255,7 @@ async function crearDisenio(req: ExtendedNextApiRequestCreateDisenios, res: Next
                     nombre: body.colecciones[i]?.toString()
                 }
             })
+            console.log(coleccionConnect);
             if(coleccionConnect){
                 await prisma.disenioYcoleccion.create({
                     data: {
@@ -263,7 +264,9 @@ async function crearDisenio(req: ExtendedNextApiRequestCreateDisenios, res: Next
                     }
                 })
             }
-            return res.status(404).json({message: "Las colecciones no existen"});
+            else{
+                return res.status(404).json({message: "Las colecciones no existen"});
+            }
         }
         if(newDisenio){ //Revisable
             return res.status(201).json({message: "Nuevo disenio creado con exito"});
@@ -303,7 +306,7 @@ async function viewDisenio(res: NextApiResponse, email: string, id: number){
         }
     })
 
-    if(!duenio || !permiso){
+    if(!duenio && !permiso){
         return res.status(400).json({message: "No tienes acceso a este disenio"});
     }
     try{
@@ -349,13 +352,45 @@ async function deleteDisenio(req: ExtendedNextApiRequestDeleteDisenio, res: Next
     }
 
     try{
-        const success = await prisma.disenio.delete({
-            where: {
-                id: body.id
+        const autorizados = await prisma.autorizados.findFirst({
+            where:{
+                disenio_id: body.id
             }
         })
-        if(success){
-            return res.status(200).json({message: "Disenio borrado con exito"});
+        if(autorizados){
+            await prisma.autorizados.deleteMany({
+                where:{
+                    disenio_id: body.id
+                }
+            })
+        }
+        
+        const relacion = await prisma.disenioYcoleccion.deleteMany({
+            where:{
+                disenio_id: body.id
+            }
+        })
+        if(relacion){
+            const muebles = await prisma.mueble.deleteMany({
+                where:{
+                    disenio_id: body.id
+                }
+            })
+            if(muebles){
+                const success = await prisma.disenio.delete({
+                    where: {
+                        id: body.id
+                    }
+                })
+                if(success){
+                    return res.status(200).json({message: "Disenio borrado con exito"});
+                }
+                return res.status(400).json({message: "Algo salio mal"});
+            }
+            return res.status(400).json({message: "El disenio a eliminar no tenia muebles, esto no deberia ser posible"});
+        }
+        else{
+            return res.status(400).json({message: "El disenio a eliminar no tenia ninguna coleccion, esto no deberia ser posible"});
         }
     }
     catch(error) {
@@ -382,7 +417,7 @@ async function removerDisenio(req: ExtendedNextApiRequestRemoverDisenio, res: Ne
     }
     const disenioExistente: boolean = await disenioExists(body.id);
     if(!disenioExistente){
-        return res.status(404).json({message: "El disenio que se quiere visualizar no existe"});
+        return res.status(404).json({message: "El disenio que se quiere remover no existe"});
     }
     if(!await coleccionExists(body.coleccion, email)){
         return res.status(400).json({message: "La coleccion enviada no existe"});
@@ -449,7 +484,7 @@ async function agregarDisenioAcoleccion(req: ExtendedNextApiRequestAgregarDiseni
     }
     const disenioExistente: boolean = await disenioExists(body.id);
     if(!disenioExistente){
-        return res.status(404).json({message: "El disenio que se quiere visualizar no existe"});
+        return res.status(404).json({message: "El disenio que se quiere agregar no existe"});
     }
     if(!await coleccionExists(body.coleccion, email)){
         return res.status(400).json({message: "La coleccion enviada no existe"});
@@ -490,7 +525,7 @@ async function agregarDisenioAcoleccion(req: ExtendedNextApiRequestAgregarDiseni
                 }
             })
             if(success){
-                return res.status(200).json({message: "Disenio removido con exito"}); 
+                return res.status(200).json({message: "Disenio agregado con exito"}); 
             }
             return res.status(404).json({message: "Algo salio mal en la unificacion del disenio y la coleccion"});
         }

@@ -141,13 +141,30 @@ async function deleteColeccion(req: ExtendedNextApiRequestDisenios, res: NextApi
             }
         })
         if(coleccion){
+            const relaciones = await prisma.disenioYcoleccion.findMany({
+                where:{
+                    coleccion_id: coleccion.id
+                }
+            })
+            if(relaciones){
+                await prisma.disenioYcoleccion.deleteMany({
+                where:{
+                    coleccion_id: coleccion.id
+                }
+            })
+            
             const success = await prisma.coleccion.delete({
                 where:{
                     id: coleccion.id
                 }
             })
+            if(success){
+                return res.status(200).json({message: "Coleccion eliminada exitosamente"});
+            }
         }
-        return res.status(200).json({message: "Coleccion eliminada exitosamente"});
+            
+        }
+        return res.status(400).json({message: "Algo salio mal"});
     } catch {
         return res.status(500).end();
     }
