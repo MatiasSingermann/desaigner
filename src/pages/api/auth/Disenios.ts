@@ -1,7 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, coleccion, usuario } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import { disenioFromUserExists, isArrayEmpty, disenioExists, isbase64, userExists, checkEmail, coleccionExists, coleccionIsFromUser, objectHasData } from "../functions";
 import { v2 } from "cloudinary";
+import { getSession } from "next-auth/react";
 
 const prisma = new PrismaClient();
 const cloudinary = v2;
@@ -63,65 +64,68 @@ interface ExtendedNextApiRequestNoPermitirUsuario extends NextApiRequest{
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    // const session = await getSession({req});
-    // if(req.method === "POST"){
-    //     if(session){
-    //             const email = session?.user.email as string;
-    //             if(req.body.coleccion){
-    //                 return await diseños(req, res, email);
-    //             }
-    //             else{
-    //                 return await crearDisenio(req, res, email);
-    //             }
-    //     }
-    //     else{
-    //         return res.status(403).end();
-    //     }
-    // }
-    // else if(req.method === "GET"){
-    //     const id = parseInt(req.query.id as string);
-    //     if(!id){
-    //         return res.status(400).json({message: "Ningun id de disenio fue recibido"});
-    //     }
-    //     if(session){
-    //         const email = session?.user.email as string;
-    //         return await viewDisenio(res, email, id);
-    //     }
-    //     else{
-    //         return res.status(403).end();
-    //     }
-    // }
-    // else if(req.method === "DELETE"){
-    //     const id = req.body.id;
-    //     if(!id){
-    //         return res.status(400).json({message: "No se recibio el id de ningun disenio"});
-    //     }
-    //     if(session){
-    //         const email = session?.user.email as string;
-    //         return await deleteDisenio(req, res, email, id);
-    //     }
-    // }
-    // else if(req.method === "PATCH"){
-    //     const id = req.body.id;
-    //     if(!id){
-    //         return res.status(400).json({message: "No se recibio el id de ningun disenio"});
-    //     }
-    //     if(session){
-    //         const email = session?.user.email as string;
-    //         if(req.body.usuarios){
-    //             return await permitirUsuario(req, res, email, id);
-    //         }
-    //         else{
-    //             return await removerDisenio(req, res, email, id);
-    //         }
-    //     }
-    // }
-    // else{
-    //     return res.status(405).end();
-    // }
-
-    const email = "uwu@gmail.com";
-    return await deleteDisenio(req, res, email);
+    const session = await getSession({req});
+    if(req.method === "POST"){
+        if(session){
+                const email = session?.user.email;
+                if(req.body.coleccion as coleccion){
+                    return await diseños(req, res, email);
+                }
+                else{
+                    return await crearDisenio(req, res, email);
+                }
+        }
+        else{
+            return res.status(403).end();
+        }
+    }
+    else if(req.method === "GET"){
+        const id = parseInt(req.query.id as string);
+        if(!id){
+            return res.status(400).json({message: "Ningun id de disenio fue recibido"});
+        }
+        if(session){
+            const email = session?.user.email;
+            return await viewDisenio(res, email, id);
+        }
+        else{
+            return res.status(403).end();
+        }
+    }
+    else if(req.method === "DELETE"){
+        const id = parseInt(req.body.id as string);
+        if(!id){
+            return res.status(400).json({message: "No se recibio el id de ningun disenio"});
+        }
+        if(session){
+            const email = session?.user.email;
+            if(req.body.usuario as usuario){
+                return await revocarUsuario(req, res, email);
+            }
+            return await deleteDisenio(req, res, email);
+        }
+    }
+    else if(req.method === "PATCH"){
+        const id = parseInt(req.body.id as string);
+        if(!id){
+            return res.status(400).json({message: "No se recibio el id de ningun disenio"});
+        }
+        if(session){
+            const email = session?.user.email;
+            if(req.body.usuario as usuario){
+                return await permitirUsuario(req, res, email);
+            }
+            else if(req.body.coleccion as coleccion){
+                return await agregarDisenioAcoleccion(req, res, email);
+            }
+            else{
+                return await removerDisenio(req, res, email);
+            }
+        }
+    }
+    else{
+        return res.status(405).end();
+    }
 }
 
 async function diseños(req: ExtendedNextApiRequestDisenios, res: NextApiResponse, email: string){
