@@ -22,6 +22,14 @@ function index() {
   if (status === "authenticated") {
     const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
       e.preventDefault();
+      console.log("mandar form");
+      // const obj = {
+      //   method: "POST",
+      //   body: 
+      // }
+      // fetch("/txt2img", obj){
+
+      // }
     };
     return (
       <>
