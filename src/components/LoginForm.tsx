@@ -132,7 +132,7 @@ function LoginForm() {
             name="passw"
           />
           <SignButton type="submit" text="Inicia sesión" />
-          <button className="mt-[8px] font-coolveticaBook text-[15px] text-[#FBF9FA] underline hover:text-[#E8E8E8] 480:text-[16.5px]">
+          <button form="false" className="mt-[8px] font-coolveticaBook text-[15px] text-[#FBF9FA] underline hover:text-[#E8E8E8] 480:text-[16.5px]">
             ¿Olvidaste tu contraseña?
           </button>
         </div>
