@@ -20,8 +20,11 @@ function Steps({ setCounter, counter }: StepsProps) {
   return (
     <div className="mt-[22px] flex">
       <button
+        form="false"
         onClick={counterRest}
-        className={`rotate-[90deg] scale-[.6] stroke-[#228187] fill-[#228187] stroke-2 ${counter === 1 && "stroke-[#BABABA] fill-[#BABABA]"}`}
+        className={`rotate-[90deg] scale-[.6] fill-[#228187] stroke-[#228187] stroke-2 ${
+          counter === 1 && "fill-[#BABABA] stroke-[#BABABA]"
+        }`}
       >
         <Arrow />
       </button>
@@ -29,8 +32,11 @@ function Steps({ setCounter, counter }: StepsProps) {
         {"Paso " + counter.toString() + "/3"}
       </h2>
       <button
+        form="false"
         onClick={counterSum}
-        className={`rotate-[270deg] scale-[.6] stroke-[#228187] fill-[#228187] stroke-2 ${counter === 3 && "stroke-[#BABABA] fill-[#BABABA]"}`}
+        className={`rotate-[270deg] scale-[.6] fill-[#228187] stroke-[#228187] stroke-2 ${
+          counter === 3 && "fill-[#BABABA] stroke-[#BABABA]"
+        }`}
       >
         <Arrow />
       </button>

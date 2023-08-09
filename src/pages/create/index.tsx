@@ -22,6 +22,7 @@ function index() {
   if (status === "authenticated") {
     const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
       e.preventDefault();
+      console.log("mandar form");
     };
     return (
       <>
