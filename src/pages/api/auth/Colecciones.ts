@@ -20,33 +20,31 @@ interface ExtendedNextApiRequestDisenios extends NextApiRequest{
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    // const session = await getSession({req});
-    // if(req.method === "POST"){
-    //     if(session){
-    //         const email = session.user.email as string;
-    //         if(req.body.nombre){
-    //             return await crearColeccion(req, res, email);
-    //         }
-    //         else{
-    //             return await colecciones(req, res, email);
-    //         }
-    //     }
-    //     else{
-    //         return res.status(403).end();
-    //     }
-    // }
-    // if(req.method === "DELETE"){
-    //     if(session){
-    //         const email = session.user.email as string;
-    //         return await deleteColeccion(req, res, email);
-    //     }
-    //     return res.status(403).end();
-    // }
-    // else{
-    //     return res.status(405).end();
-    // }
-    const email = "uwu@gmail.com";
-    return await crearColeccion(req, res, email);
+    const session = await getSession({req});
+    if(req.method === "POST"){
+        if(session){
+            const email = session?.user.email;
+            if(req.body.nombre as string){
+                return await crearColeccion(req, res, email);
+            }
+            else{
+                return await colecciones(req, res, email);
+            }
+        }
+        else{
+            return res.status(403).end();
+        }
+    }
+    if(req.method === "DELETE"){
+        if(session){
+            const email = session?.user.email;
+            return await deleteColeccion(req, res, email);
+        }
+        return res.status(403).end();
+    }
+    else{
+        return res.status(405).end();
+    }
 }
 
 async function colecciones(req: NextApiRequest, res: NextApiResponse, email: string) {
@@ -141,13 +139,30 @@ async function deleteColeccion(req: ExtendedNextApiRequestDisenios, res: NextApi
             }
         })
         if(coleccion){
+            const relaciones = await prisma.disenioYcoleccion.findMany({
+                where:{
+                    coleccion_id: coleccion.id
+                }
+            })
+            if(relaciones){
+                await prisma.disenioYcoleccion.deleteMany({
+                where:{
+                    coleccion_id: coleccion.id
+                }
+            })
+            
             const success = await prisma.coleccion.delete({
                 where:{
                     id: coleccion.id
                 }
             })
+            if(success){
+                return res.status(200).json({message: "Coleccion eliminada exitosamente"});
+            }
         }
-        return res.status(200).json({message: "Coleccion eliminada exitosamente"});
+            
+        }
+        return res.status(400).json({message: "Algo salio mal"});
     } catch {
         return res.status(500).end();
     }
