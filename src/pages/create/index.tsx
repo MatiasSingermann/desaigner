@@ -4,8 +4,14 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import StepShow from "~/components/StepShow";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import { useRef } from "react";
+
 function index() {
   const router = useRouter();
+  const formRef = useRef<HTMLFormElement>(null);
 
   const { data: session, status } = useSession({
     required: false,
@@ -22,14 +28,67 @@ function index() {
   if (status === "authenticated") {
     const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
       e.preventDefault();
-      console.log("mandar form");
-      // const obj = {
-      //   method: "POST",
-      //   body: 
-      // }
-      // fetch("/txt2img", obj){
-
-      // }
+      const formData = new FormData(e.currentTarget);
+      console.log(formData.entries());
+      const inputData = [];
+      for (const pair of formData.entries()) {
+        inputData.push(pair);
+      }
+      const image = inputData[0] ? inputData[0][1] : "";
+      const budget = inputData[1] ? inputData[1][1] : "";
+      const style = inputData[2] ? inputData[2][1] : "";
+      const type = inputData[3] ? inputData[3][1] : "";
+      const climate = inputData[4] ? inputData[4][1] : "";
+      const disability = inputData[5] ? inputData[5][1] : "";
+      const imgNumber = inputData[6] ? inputData[6][1] : "";
+      const obj = {
+        image: image,
+        // inpainting: inpainting;
+        budget: budget,
+        style: style,
+        type: type,
+        climate: climate,
+        disability: disability,
+        imgNumber: imgNumber,
+      };
+      fetch("localhost:9000/txt2img", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify(obj),
+      })
+        .then((response) => {
+          if (response.ok) {
+            toast.success("¡Los datos han sido subidos exitosamente!", {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
+          }
+        })
+        .catch((error) => {
+          console.log(
+            "Hubo un error inesperado. Revisa tu conexión o inténtalo más tarde"
+          );
+          console.log(error);
+          toast.error(
+            "Hubo un error inesperado. Revisa tu conexión o inténtalo más tarde",
+            {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            }
+          );
+        });
     };
     return (
       <>
@@ -43,10 +102,13 @@ function index() {
             action=""
             method="POST"
             onSubmit={handleSubmit}
-            className="flex flex-col items-center justify-center w-full"
+            encType="multipart/form-data"
+            ref={formRef}
+            className="flex w-full flex-col items-center justify-center"
           >
             <StepShow />
           </form>
+          <ToastContainer limit={3} />
         </main>
         <Footer />
       </>
