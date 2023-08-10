@@ -9,7 +9,7 @@ interface ComboBoxElementProps {
 
 function ComboBoxElement({ name, text, value, handleRadioChange }: ComboBoxElementProps) {
   return (
-    <div className="relative flex h-[52px] w-[310px] items-center justify-start bg-[#292F2D] dark:bg-[#292F2D] 480:h-[58px] 480:w-[342px]">
+    <div className="relative flex h-[52px] w-[310px] items-center justify-start 480:h-[58px] 480:w-[342px]">
       <input
         type="radio"
         name={name}
