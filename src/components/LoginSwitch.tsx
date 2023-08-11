@@ -9,7 +9,7 @@ function LoginSwitch({ login, toggleSwitch }: LoginSwitchProps) {
   return (
     <div className="relative my-[20px] flex h-[38px] w-[250px] items-center justify-center 480:h-[46px] 480:w-[300px] 480:my-[36px]">
       <button
-        className="relative flex h-[38px] w-[250px] items-center rounded-3xl bg-[#228187] shadow-lg dark:bg-[#293433] 480:h-[46px] 480:w-[300px]"
+        className="relative flex h-[38px] w-[250px] items-center rounded-3xl bg-[#228187] shadow-md shadow-[#999] dark:shadow-[#111] dark:bg-[#293433] 480:h-[46px] 480:w-[300px]"
         onClick={toggleSwitch}
         aria-label={`Cambiar a modo ${login ? "register" : "login"}`}
       >

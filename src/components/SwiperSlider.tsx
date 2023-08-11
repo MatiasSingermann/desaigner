@@ -10,7 +10,7 @@ import "swiper/css/pagination";
 const SwiperSlider: React.FC = () => {
   SwiperCore.use([Autoplay]);
   return (
-    <div className="relative mb-[54px] mt-[6px] flex h-[220px] w-[280px] flex-col items-center justify-center overflow-clip rounded-2xl shadow-xl">
+    <div className="relative mb-[54px] mt-[6px] flex h-[220px] w-[280px] flex-col items-center justify-center overflow-clip rounded-2xl shadow-md shadow-[#999] dark:shadow-[#111]">
       <Swiper
         modules={[Autoplay, Pagination]}
         autoplay={{ delay: 2000 }}

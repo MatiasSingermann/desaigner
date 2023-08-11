@@ -41,17 +41,20 @@ function CompSlider() {
   };
 
   return (
-    <div className="flex h-[190px] w-[282px] items-center justify-center overflow-clip rounded-2xl px-4 shadow-xl mb-[36px]">
-      <div ref={imgContainer} className="flex relative mt-2 max-w-4xl select-none overflow-clip rounded-2xl">
+    <div className="mb-[36px] flex h-[190px] w-[282px] items-center justify-center overflow-clip rounded-2xl shadow-md shadow-[#999] dark:shadow-[#111]">
+      <div
+        ref={imgContainer}
+        className="relative mt-2 flex h-full w-full max-w-4xl select-none items-center justify-center overflow-clip rounded-2xl"
+      >
         <Image
-          className="pointer-events-none rounded-lg"
+          className="pointer-events-none absolute flex rounded-2xl"
           src="/OutputImg.png"
           width={282}
           height={282}
           alt="Output"
         />
         <Image
-          className="pointer-events-none absolute inset-0 rounded-lg"
+          className="pointer-events-none inset-0 flex rounded-2xl"
           src="/InputImg.png"
           width={282}
           height={282}
@@ -67,9 +70,10 @@ function CompSlider() {
           style={{ left: `${imgRevealFraq * 100}%` }}
         >
           <div className="relative h-full">
-            <div className="bg-gradient-radial absolute inset-y-0 -ml-px w-0.5 from-[#1D1B25] via-transparent"></div>
+            <div className="bg-gradient-radial absolute inset-y-0 -ml-px w-[0.5] from-[#1D1B25] via-transparent"></div>
+            <div className="absolute bg-[#1D1B25] -ml-px w-[2px] h-full"></div>
             <div
-              className="absolute top-1/2 -ml-[13px] -mt-[13px] flex h-[26px] w-[26px] cursor-pointer items-center justify-center rounded-full bg-[#1D1B25]"
+              className="absolute top-1/2 -ml-[10px] -mt-[10px] flex h-[20px] w-[20px] cursor-pointer items-center justify-center rounded-full bg-[#1D1B25]"
               style={{ touchAction: "none" }}
               onMouseDown={handleMouseDown}
               onTouchMove={handleTouchMove}
