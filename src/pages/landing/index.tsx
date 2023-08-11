@@ -1,4 +1,5 @@
 import Head from "next/head";
+import CompSlider from "~/components/CompSlider";
 import Footer from "~/components/Footer";
 import LandingButton from "~/components/LandingButton";
 import SwiperSlider from "~/components/SwiperSlider";
@@ -55,6 +56,7 @@ function index() {
           Toma una foto de tu cuarto, súbela y haremos todo el trabajo por tí.
           Elige el estilo del resultado como plazcas.
         </h2>
+        <CompSlider />
         <h1 className="mx-[32px] mb-[52px] flex flex-wrap self-start font-coolveticaRegular text-[40px] leading-none">
           <span>¿Cómo&#160;</span>
           <span className="bg-gradient-to-tr from-[#228187] to-[#59C3C3] bg-clip-text text-transparent">

@@ -1,47 +1,58 @@
 import React from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination } from "swiper/modules";
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import SwiperCore from "swiper";
 import "swiper/css";
+import "swiper/css/autoplay";
+import "swiper/css/pagination";
 
 const SwiperSlider: React.FC = () => {
   SwiperCore.use([Autoplay]);
   return (
-    <div className="relative flex h-[220px] w-[280px] flex-col items-center justify-center overflow-clip rounded-2xl object-scale-down">
+    <div className="relative mb-[54px] mt-[6px] flex h-[220px] w-[280px] flex-col items-center justify-center overflow-clip rounded-2xl shadow-xl">
       <Swiper
         modules={[Autoplay, Pagination]}
         autoplay={{ delay: 2000 }}
         pagination={{ clickable: true }}
         slidesPerView={1}
-        className="flex h-[512px] w-[512px] flex-col"
+        className="flex h-[220px] w-[280px] flex-col"
       >
         <SwiperSlide>
-          <Image
-            className="object-contain"
-            src="/../public/Pieza.png"
-            alt="Pieza"
-            height={280}
-            width={280}
-          />
+          <div className="flex flex-col">
+            <Image
+              className="flex object-contain"
+              src="/../public/Pieza.png"
+              alt="Pieza"
+              height={280}
+              width={280}
+            />
+          </div>
+          <div className="absolute bottom-0 z-10 flex h-1/2 w-full bg-gradient-to-b from-transparent to-black"></div>
         </SwiperSlide>
         <SwiperSlide>
-          <Image
-            className="object-contain"
-            src="/../public/Living.png"
-            alt="Living"
-            height={280}
-            width={280}
-          />
+          <div className="flex flex-col">
+            <Image
+              className="flex object-contain"
+              src="/../public/Living.png"
+              alt="Living"
+              height={280}
+              width={280}
+            />
+          </div>
+          <div className="absolute bottom-0 z-10 flex h-1/2 w-full bg-gradient-to-b from-transparent to-black"></div>
         </SwiperSlide>
         <SwiperSlide>
-          <Image
-            className="object-contain"
-            src="/../public/Baño.png"
-            alt="Baño"
-            height={280}
-            width={280}
-          />
+          <div className="flex flex-col">
+            <Image
+              className="flex object-contain"
+              src="/../public/Baño.png"
+              alt="Baño"
+              height={280}
+              width={280}
+            />
+          </div>
+          <div className="absolute bottom-0 z-10 flex h-1/2 w-full bg-gradient-to-b from-transparent to-black"></div>
         </SwiperSlide>
       </Swiper>
     </div>
