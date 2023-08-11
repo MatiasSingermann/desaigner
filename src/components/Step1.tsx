@@ -1,4 +1,5 @@
 import ImageUploader from "./ImageUploader";
+import NoImageOption from "./NoImageOption";
 import SelectedImage from "./SelectedImage";
 import { useState } from "react";
 
@@ -33,6 +34,7 @@ function Step1() {
           updateImageData={updateImageData}
         />
       </div>
+      <NoImageOption/>
     </>
   );
 }
