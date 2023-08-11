@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Footer from "~/components/Footer";
 import LandingButton from "~/components/LandingButton";
+import SwiperSlider from "~/components/SwiperSlider";
 
 function index() {
   return (
@@ -31,10 +32,17 @@ function index() {
           </span>
         </h1>
         <h2 className="mx-[32px] mb-[36px] self-start font-coolveticaLight text-[20px] leading-none">
-          Con <span className="font-coolveticaBook">Inteligencia Artificial</span>, te ayudamos a crear el cuarto de tus sueños.
+          Con{" "}
+          <span className="font-coolveticaBook">Inteligencia Artificial</span>,
+          te ayudamos a crear el cuarto de tus sueños.
         </h2>
-        <LandingButton text="Pruébalo ya" color="bg-[#59C3C3]" link="/create"/>
-        <LandingButton text="Crea una cuenta" color="bg-[#228187]" link="/login"/>
+        <LandingButton text="Pruébalo ya" color="bg-[#59C3C3]" link="/create" />
+        <LandingButton
+          text="Crea una cuenta"
+          color="bg-[#228187]"
+          link="/login"
+        />
+        <SwiperSlider />
         <h1 className="mx-[32px] mb-[52px] flex flex-wrap self-start font-coolveticaRegular text-[40px] leading-none">
           <span>Modifica&#160;</span>
           <span className="bg-gradient-to-tr from-[#228187] to-[#59C3C3] bg-clip-text text-transparent">
@@ -44,7 +52,8 @@ function index() {
           <span>hogar</span>
         </h1>
         <h2 className="mx-[32px] mb-[52px] self-start font-coolveticaLight text-[20px] leading-none">
-          Toma una foto de tu cuarto, súbela y haremos todo el trabajo por tí. Elige el estilo del resultado como plazcas.
+          Toma una foto de tu cuarto, súbela y haremos todo el trabajo por tí.
+          Elige el estilo del resultado como plazcas.
         </h2>
         <h1 className="mx-[32px] mb-[52px] flex flex-wrap self-start font-coolveticaRegular text-[40px] leading-none">
           <span>¿Cómo&#160;</span>
@@ -53,7 +62,8 @@ function index() {
           </span>
         </h1>
         <h2 className="mx-[32px] mb-[52px] self-start font-coolveticaLight text-[20px] leading-none">
-          Usamos Grounding DINO, Stable Diffusion y CLIP Interrogator para poder darle vida a nuestra idea.
+          Usamos Grounding DINO, Stable Diffusion y CLIP Interrogator para poder
+          darle vida a nuestra idea.
         </h2>
       </main>
       <Footer />

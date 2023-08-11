@@ -18,7 +18,7 @@ function Step1() {
         Paso 1: Adjunta una imagen
       </h2>
       <h3 className="mx-[32px] my-[20px] w-[254px] self-start font-coolveticaLight text-[15px] leading-none">
-        La imagen debe ser formato .jpeg o .png con una resolución mínima de
+        La imagen debe ser formato .jpg (.jpeg) o .png con una resolución mínima de
         512x512 píxeles.
       </h3>
       <div className="relative flex h-[180px] w-[330px] flex-col">
