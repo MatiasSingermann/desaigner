@@ -1,9 +1,13 @@
 import ImageUploader from "./ImageUploader";
 import NoImageOption from "./NoImageOption";
 import SelectedImage from "./SelectedImage";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
-function Step1() {
+interface Step1Props {
+  setShowEdit: Dispatch<SetStateAction<boolean>>;
+}
+
+function Step1({setShowEdit} : Step1Props) {
   const [image, setImage] = useState();
   const [imageName, setImageName] = useState("");
   const updateImageData = (newImage: any, newImageName: string) => {
@@ -27,6 +31,7 @@ function Step1() {
           image={image}
           imageName={imageName}
           updateImageData={updateImageData}
+          setShowEdit={setShowEdit}
         />
         <ImageUploader
           image={image}

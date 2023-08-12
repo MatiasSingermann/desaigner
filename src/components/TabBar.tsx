@@ -10,12 +10,12 @@ import TabCurve from "./TabCurve";
 function TabBar() {
   const [selected, setSelected] = useState(false);
   return (
-    <div className="fixed bottom-0 z-[100] flex h-[70px] w-full">
+    <div className="fixed bottom-0 z-[100] flex h-[70px] w-full 480:hidden">
       <div className="absolute bottom-[66px] flex items-center justify-center">
         <TabCurve />
       </div>
 
-      <div className="flex h-[70px] w-full items-center justify-center bg-[#228187] px-[24px] 480:hidden">
+      <div className="flex h-[70px] w-full items-center justify-center bg-[#228187] px-[24px]">
         <ul className="flex h-full w-full items-center justify-between">
           <TabBarButton href="/landing" image={<Rocket />} />
           <TabBarButton href="/home" image={<House />} />

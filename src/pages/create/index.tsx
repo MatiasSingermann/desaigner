@@ -3,15 +3,18 @@ import Footer from "~/components/Footer";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import StepShow from "~/components/StepShow";
+import { useState } from "react";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { useRef } from "react";
+import InpaintingEditor from "~/components/InpaintingEditor";
 
 function index() {
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
+  const [showEdit, setShowEdit] = useState(false);
 
   const { data: session, status } = useSession({
     required: false,
@@ -106,7 +109,8 @@ function index() {
             ref={formRef}
             className="flex w-full flex-col items-center justify-center"
           >
-            <StepShow />
+            <StepShow setShowEdit={setShowEdit} />
+            {showEdit ? <InpaintingEditor setShowEdit={setShowEdit} /> : null}
           </form>
           <ToastContainer limit={3} />
         </main>
