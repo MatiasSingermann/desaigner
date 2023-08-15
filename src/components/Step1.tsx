@@ -2,14 +2,16 @@ import ImageUploader from "./ImageUploader";
 import NoImageOption from "./NoImageOption";
 import SelectedImage from "./SelectedImage";
 import { Dispatch, SetStateAction, useState } from "react";
+import ImageUploaderBlack from "./ImageUploaderBlack";
 
 interface Step1Props {
   setShowEdit: Dispatch<SetStateAction<boolean>>;
 }
 
-function Step1({setShowEdit} : Step1Props) {
+function Step1({ setShowEdit }: Step1Props) {
   const [image, setImage] = useState();
   const [imageName, setImageName] = useState("");
+  const [checked, setChecked] = useState(false);
   const updateImageData = (newImage: any, newImageName: string) => {
     setImage(newImage);
     setImageName(newImageName);
@@ -23,10 +25,11 @@ function Step1({setShowEdit} : Step1Props) {
         Paso 1: Adjunta una imagen
       </h2>
       <h3 className="mx-[32px] my-[20px] w-[254px] self-start font-coolveticaLight text-[15px] leading-none">
-        La imagen debe ser formato .jpg (.jpeg) o .png con una resolución mínima de
-        512x512 píxeles.
+        La imagen debe ser formato .jpg (.jpeg) o .png con una resolución mínima
+        de 512x512 píxeles.
       </h3>
       <div className="relative flex h-[180px] w-[330px] flex-col">
+        {checked ? <ImageUploaderBlack /> : null}
         <SelectedImage
           image={image}
           imageName={imageName}
@@ -39,7 +42,7 @@ function Step1({setShowEdit} : Step1Props) {
           updateImageData={updateImageData}
         />
       </div>
-      <NoImageOption/>
+      <NoImageOption setChecked={setChecked} checked={checked} />
     </>
   );
 }

@@ -1,9 +1,13 @@
-import { useState } from "react";
 import Checked from "./Checked";
 import Unchecked from "./Unchecked";
+import {Dispatch, SetStateAction} from 'react'
 
-function NoImageOption() {
-  const [checked, setChecked] = useState(false);
+interface NoImageOptionProps {
+    setChecked: Dispatch<SetStateAction<boolean>>
+    checked: SetStateAction<boolean>
+}
+
+function NoImageOption({setChecked, checked} : NoImageOptionProps) {
   const handleCheck = () => {
     setChecked(!checked);
   };
