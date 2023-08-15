@@ -37,24 +37,25 @@ function index() {
       for (const pair of formData.entries()) {
         inputData.push(pair);
       }
-      const image = inputData[0] ? inputData[0][1] : "";
+      const input_image = inputData[0] ? inputData[0][1] : "";
+      const mask_image = "";
       const budget = inputData[1] ? inputData[1][1] : "";
       const style = inputData[2] ? inputData[2][1] : "";
-      const type = inputData[3] ? inputData[3][1] : "";
-      const climate = inputData[4] ? inputData[4][1] : "";
+      const environment = inputData[3] ? inputData[3][1] : "";
+      const weather = inputData[4] ? inputData[4][1] : "";
       const disability = inputData[5] ? inputData[5][1] : "";
-      const imgNumber = inputData[6] ? inputData[6][1] : "";
+      const num_images = inputData[6] ? inputData[6][1] : "";
       const obj = {
-        image: image,
-        // inpainting: inpainting;
+        input_image: input_image,
+        // mask_image: inpainting;
         budget: budget,
         style: style,
-        type: type,
-        climate: climate,
+        environment: environment,
+        weather: weather,
         disability: disability,
-        imgNumber: imgNumber,
+        num_images: num_images,
       };
-      fetch("localhost:9000/txt2img", {
+      fetch("localhost:8000/txt2img/v2/v1", {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify(obj),
