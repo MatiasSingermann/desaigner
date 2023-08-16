@@ -18,13 +18,13 @@ function InpaintingEditor({ setShowEdit }: InpaintingEditorProps) {
         >
           <Cross />
         </button>
-        <h1 className="mt-[40px] text-center font-coolveticaRegular text-[30px] leading-none">
+        <h1 className="mt-[40px] text-center font-coolveticaRegular text-[30px] leading-none text-[#FBF9FA]">
           Dibuje sobre lo que quiere modificar
         </h1>
         <div className="my-[20px] flex h-[160px] w-[292px] items-center justify-center rounded-xl bg-black"></div>
         <button
           form="false"
-          className="mb-[38px] bottom-0 absolute flex h-[36px] w-[94px] items-center justify-center rounded-3xl bg-[#228187] font-coolveticaRegular text-[18px] text-[#FBF9FA] shadow-md shadow-[#111]"
+          className="absolute bottom-0 mb-[38px] flex h-[36px] w-[94px] items-center justify-center rounded-3xl bg-[#228187] font-coolveticaRegular text-[18px] text-[#FBF9FA] shadow-md shadow-[#111]"
         >
           Aceptar
         </button>
