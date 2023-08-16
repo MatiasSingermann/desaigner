@@ -31,12 +31,16 @@ function index() {
   if (status === "authenticated") {
     const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
       e.preventDefault();
+      console.log(e.currentTarget);
       const formData = new FormData(e.currentTarget);
       console.log(formData.entries());
       const inputData = [];
       for (const pair of formData.entries()) {
         inputData.push(pair);
       }
+
+      console.log(inputData)
+
       const input_image = inputData[0] ? inputData[0][1] : "";
       const mask_image = "";
       const budget = inputData[1] ? inputData[1][1] : "";

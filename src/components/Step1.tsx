@@ -6,9 +6,10 @@ import ImageUploaderBlack from "./ImageUploaderBlack";
 
 interface Step1Props {
   setShowEdit: Dispatch<SetStateAction<boolean>>;
+  counter: SetStateAction<number>;
 }
 
-function Step1({ setShowEdit }: Step1Props) {
+function Step1({ setShowEdit, counter }: Step1Props) {
   const [image, setImage] = useState();
   const [imageName, setImageName] = useState("");
   const [checked, setChecked] = useState(false);
@@ -17,7 +18,11 @@ function Step1({ setShowEdit }: Step1Props) {
     setImageName(newImageName);
   };
   return (
-    <>
+    <div
+      className={`h-full w-full items-center justify-center ${
+        counter === 1 ? "flex flex-col" : "hidden"
+      }`}
+    >
       <h1 className="mx-[32px] mb-[52px] self-start bg-gradient-to-tr from-[#228187] to-[#59C3C3] bg-clip-text font-coolveticaRegular text-[40px] leading-none text-transparent">
         Comencemos
       </h1>
@@ -43,7 +48,7 @@ function Step1({ setShowEdit }: Step1Props) {
         />
       </div>
       <NoImageOption setChecked={setChecked} checked={checked} />
-    </>
+    </div>
   );
 }
 

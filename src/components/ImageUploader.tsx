@@ -81,6 +81,7 @@ function ImageUploader({
           type="file"
           onChange={handleImage}
           value=""
+          name="selectedImage"
           className="absolute inset-0 flex h-full w-full opacity-0"
         />
         <div className="flex h-[24px] w-[88px] cursor-pointer items-center justify-center rounded-xl bg-[#228187] text-center font-coolveticaRegular text-[12px] text-[#FBF9FA] shadow-xl">

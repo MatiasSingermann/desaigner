@@ -13,6 +13,7 @@ function Slider({setSlider} : SliderProps) {
     <input
       className="mb-[8px] mt-[44px] h-[10px] w-[226px] cursor-pointer"
       type="range"
+      name="slider"
       min={1}
       max={4}
       defaultValue={1}

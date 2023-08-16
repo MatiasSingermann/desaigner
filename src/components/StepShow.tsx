@@ -13,9 +13,9 @@ function StepShow({setShowEdit} : StepShowProps) {
   let [counter, setCounter] = useState(1);
   return (
     <>
-      {counter === 1 && <Step1 setShowEdit={setShowEdit}/>}
-      {counter === 2 && <Step2 />}
-      {counter === 3 && <Step3 />}
+      <Step1 counter={counter} setShowEdit={setShowEdit}/>
+      <Step2 counter={counter} />
+      <Step3 counter={counter} />
       <Steps setCounter={setCounter} counter={counter} />
       {counter === 3 && <CreateButton />}
     </>
