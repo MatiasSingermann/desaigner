@@ -45,6 +45,16 @@ function index() {
       const weather = inputData[4] ? inputData[4][1] : "";
       const disability = inputData[5] ? inputData[5][1] : "";
       const num_images = inputData[6] ? inputData[6][1] : "";
+
+      console.log("1: " + input_image);
+      console.log("2: " + mask_image);
+      console.log("3: " + String(budget));
+      console.log("4: " + style);
+      console.log("5: " + environment);
+      console.log("6: " + weather);
+      console.log("7: " + disability);
+      console.log("8: " + num_images);
+
       const obj = {
         input_image: input_image,
         // mask_image: inpainting;
