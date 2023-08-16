@@ -18,7 +18,7 @@ function Steps({ setCounter, counter }: StepsProps) {
     }
   };
   return (
-    <div className="mt-[22px] flex">
+    <div className="mt-[22px] mb-[24px] flex">
       <button
         form="false"
         onClick={counterRest}

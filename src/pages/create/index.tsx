@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import StepShow from "~/components/StepShow";
 import { useState } from "react";
+import { fromByteArray } from 'base64-js';
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -41,34 +42,43 @@ function index() {
 
       console.log(inputData)
 
-      const input_image = inputData[0] ? inputData[0][1] : "";
-      const mask_image = "";
+      const inputImage : any = inputData[0] ? inputData[0][1] : "";
+
+      const inputImageBase64 = fromByteArray(new Uint8Array(inputImage))
+      const maskImage = "mask";
       const budget = inputData[1] ? inputData[1][1] : "";
       const style = inputData[2] ? inputData[2][1] : "";
       const environment = inputData[3] ? inputData[3][1] : "";
       const weather = inputData[4] ? inputData[4][1] : "";
       const disability = inputData[5] ? inputData[5][1] : "";
-      const num_images = inputData[6] ? inputData[6][1] : "";
+      const numImages = inputData[6] ? inputData[6][1] : "";
 
-      console.log("1: " + input_image);
-      console.log("2: " + mask_image);
+      console.log("1: " + inputImageBase64);
+      console.log("2: " + maskImage);
       console.log("3: " + String(budget));
       console.log("4: " + style);
       console.log("5: " + environment);
       console.log("6: " + weather);
       console.log("7: " + disability);
-      console.log("8: " + num_images);
+      console.log("8: " + numImages);
+
+      console.log(inputImage)
+
+      if(inputImageBase64 === ""){
+        console.log("F")
+      }
 
       const obj = {
-        input_image: input_image,
-        // mask_image: inpainting;
+        input_image: inputImageBase64,
+        // mask_image: maskImage;
         budget: budget,
         style: style,
         environment: environment,
         weather: weather,
         disability: disability,
-        num_images: num_images,
+        num_images: numImages,
       };
+      
       fetch("localhost:8000/txt2img/v2/v1", {
         method: "POST",
         headers: { "Content-type": "application/json" },

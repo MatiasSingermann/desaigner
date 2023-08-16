@@ -17,7 +17,7 @@ function StepShow({setShowEdit} : StepShowProps) {
       <Step2 counter={counter} />
       <Step3 counter={counter} />
       <Steps setCounter={setCounter} counter={counter} />
-      {counter === 3 && <CreateButton />}
+      <CreateButton counter={counter}/>
     </>
   );
 }

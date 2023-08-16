@@ -6,7 +6,7 @@ function MobileNavBar() {
   const router = useRouter();
   return (
     <header
-      className={`top-0 mb-[18px] flex w-full items-center border-b-[2px] border-[#D9D9D9] p-[24px] dark:border-black ${
+      className={`top-0 mb-[18px] flex w-full items-center border-b-[2px] border-[#D9D9D9] p-[24px] dark:border-[#292F2D] ${
         router.route == "/login" ? "justify-center" : ""
       }`}
     >

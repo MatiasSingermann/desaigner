@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Trash from "./Trash";
-import Pencil from "./Pencil";
 import { Dispatch, SetStateAction } from "react";
+import Brush from "./Brush";
 
 interface SelectedImageProps {
   image: any;
@@ -47,7 +47,7 @@ function SelectedImage({
               className="mr-[2px] flex p-[4px] "
               onClick={pencilClick}
             >
-              <Pencil />
+              <Brush />
             </button>
             <button
               form="false"

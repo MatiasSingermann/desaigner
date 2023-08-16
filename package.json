@@ -21,6 +21,7 @@
     "@trpc/server": "^10.26.0",
     "@types/cookie": "^0.5.1",
     "@types/jsonwebtoken": "^9.0.2",
+    "base64-js": "^1.5.1",
     "cloudinary": "^1.37.0",
     "cookie": "^0.5.0",
     "framer-motion": "^10.15.1",
