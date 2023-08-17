@@ -3,8 +3,6 @@ import Upload from "./Upload";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { SetStateAction, useState } from 'react';
-
 interface ImageUploaderProps {
   image: any;
   imageName: string;
