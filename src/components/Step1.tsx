@@ -13,9 +13,11 @@ function Step1({ setShowEdit, counter }: Step1Props) {
   const [image, setImage] = useState();
   const [imageName, setImageName] = useState("");
   const [checked, setChecked] = useState(false);
-  const updateImageData = (newImage: any, newImageName: string) => {
+  const [value, setValue] = useState("")
+  const updateImageData = (newImage: any, newImageName: string, newValue: string) => {
     setImage(newImage);
     setImageName(newImageName);
+    setValue(newValue)
   };
   return (
     <div
@@ -45,6 +47,7 @@ function Step1({ setShowEdit, counter }: Step1Props) {
           image={image}
           imageName={imageName}
           updateImageData={updateImageData}
+          value={value}
         />
       </div>
       <NoImageOption setChecked={setChecked} checked={checked} />

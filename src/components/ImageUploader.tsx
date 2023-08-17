@@ -3,16 +3,20 @@ import Upload from "./Upload";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import { SetStateAction, useState } from 'react';
+
 interface ImageUploaderProps {
   image: any;
   imageName: string;
-  updateImageData: (newImage: any, newImageName: string) => void;
+  updateImageData: (newImage: any, newImageName: string, newValue: string) => void;
+  value : string
 }
 
 function ImageUploader({
   image,
   imageName,
   updateImageData,
+  value,
 }: ImageUploaderProps) {
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedImage = e.target.files![0];
@@ -43,9 +47,12 @@ function ImageUploader({
 
       image = URL.createObjectURL(selectedImage!);
 
+      // setValue("C:\\fakepath\\" + String(imageName))
+
       console.log(imageName);
       console.log(e.target.files);
-      updateImageData(image, imageName);
+      updateImageData(image, imageName, "C:\\fakepath\\" + String(imageName));
+      // console.log("VALUE: " + value)
     }
   };
   const dragImage = (e: React.DragEvent) => {
@@ -80,7 +87,7 @@ function ImageUploader({
         <input
           type="file"
           onChange={handleImage}
-          value=""
+          value={value}
           name="selectedImage"
           className="absolute inset-0 flex h-full w-full opacity-0"
         />
