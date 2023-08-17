@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import StepShow from "~/components/StepShow";
 import { useState } from "react";
+import base64 from 'base64-js';
 import { fromByteArray } from 'base64-js';
 
 import { ToastContainer, toast } from "react-toastify";
@@ -34,17 +35,32 @@ function index() {
       e.preventDefault();
       console.log(e.currentTarget);
       const formData = new FormData(e.currentTarget);
-      console.log(formData.entries());
       const inputData = [];
       for (const pair of formData.entries()) {
+        console.log(pair);
         inputData.push(pair);
       }
 
-      console.log(inputData)
+      console.log(inputData);
 
       const inputImage : any = inputData[0] ? inputData[0][1] : "";
 
-      const inputImageBase64 = fromByteArray(new Uint8Array(inputImage))
+      console.log("input image: " + inputImage)
+
+      if(inputImage) {
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+          console.log(reader);
+          const imageData = new Uint8Array(reader.result as ArrayBuffer)
+          const base64Data = base64.fromByteArray(imageData)
+          console.log("data: " + imageData)
+          console.log("base64: " + base64Data)
+          return base64Data
+        }
+        reader.readAsArrayBuffer(inputImage);
+      }
+
       const maskImage = "mask";
       const budget = inputData[1] ? inputData[1][1] : "";
       const style = inputData[2] ? inputData[2][1] : "";
@@ -53,7 +69,7 @@ function index() {
       const disability = inputData[5] ? inputData[5][1] : "";
       const numImages = inputData[6] ? inputData[6][1] : "";
 
-      console.log("1: " + inputImageBase64);
+      console.log("1: " + "base64Data");
       console.log("2: " + maskImage);
       console.log("3: " + String(budget));
       console.log("4: " + style);
@@ -62,14 +78,12 @@ function index() {
       console.log("7: " + disability);
       console.log("8: " + numImages);
 
-      console.log(inputImage)
-
-      if(inputImageBase64 === ""){
+      if(true){
         console.log("F")
       }
 
       const obj = {
-        input_image: inputImageBase64,
+        input_image: inputImage,
         // mask_image: maskImage;
         budget: budget,
         style: style,
