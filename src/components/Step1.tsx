@@ -14,10 +14,9 @@ function Step1({ setShowEdit, counter }: Step1Props) {
   const [imageName, setImageName] = useState("");
   const [checked, setChecked] = useState(false);
   const [value, setValue] = useState("")
-  const updateImageData = (newImage: any, newImageName: string, newValue: string) => {
+  const updateImageData = (newImage: any, newImageName: string) => {
     setImage(newImage);
     setImageName(newImageName);
-    setValue(newValue)
   };
   return (
     <div

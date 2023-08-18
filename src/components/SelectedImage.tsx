@@ -6,7 +6,7 @@ import Brush from "./Brush";
 interface SelectedImageProps {
   image: any;
   imageName: string;
-  updateImageData: (newImage: any, newImageName: string, newValue: string) => void;
+  updateImageData: (newImage: any, newImageName: string) => void;
   setShowEdit: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -20,7 +20,7 @@ function SelectedImage({
     setShowEdit(true);
   };
   const trashClick = () => {
-    updateImageData(null, "", "");
+    updateImageData(null, "");
   };
   return (
     <>

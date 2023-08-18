@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 interface ImageUploaderProps {
   image: any;
   imageName: string;
-  updateImageData: (newImage: any, newImageName: string, newValue: string) => void;
+  updateImageData: (newImage: any, newImageName: string) => void;
   value : string
 }
 
@@ -57,7 +57,7 @@ function ImageUploader({
 
       console.log(imageName);
       console.log(e.target.files);
-      updateImageData(image, imageName, "C:\\fakepath\\" + String(imageName));
+      updateImageData(image, imageName) //"C:\\fakepath\\" + String(imageName));
     }
   };
   const dragImage = (e: React.DragEvent) => {
