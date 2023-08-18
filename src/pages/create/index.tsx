@@ -41,26 +41,7 @@ function index() {
         inputData.push(pair);
       }
 
-      console.log(inputData);
-
       const inputImage : any = inputData[0] ? inputData[0][1] : "";
-
-      console.log("input image: " + inputImage)
-
-      if(inputImage) {
-        const reader = new FileReader();
-
-        reader.onloadend = () => {
-          console.log(reader);
-          const imageData = new Uint8Array(reader.result as ArrayBuffer)
-          const base64Data = base64.fromByteArray(imageData)
-          console.log("data: " + imageData)
-          console.log("base64: " + base64Data)
-          return base64Data
-        }
-        reader.readAsArrayBuffer(inputImage);
-      }
-
       const maskImage = "mask";
       const budget = inputData[1] ? inputData[1][1] : "";
       const style = inputData[2] ? inputData[2][1] : "";
@@ -69,68 +50,73 @@ function index() {
       const disability = inputData[5] ? inputData[5][1] : "";
       const numImages = inputData[6] ? inputData[6][1] : "";
 
-      console.log("1: " + "base64Data");
-      console.log("2: " + maskImage);
-      console.log("3: " + String(budget));
-      console.log("4: " + style);
-      console.log("5: " + environment);
-      console.log("6: " + weather);
-      console.log("7: " + disability);
-      console.log("8: " + numImages);
+      if(inputImage) {
+        const reader = new FileReader();
 
-      if(true){
-        console.log("F")
-      }
-
-      const obj = {
-        input_image: inputImage,
-        // mask_image: maskImage;
-        budget: budget,
-        style: style,
-        environment: environment,
-        weather: weather,
-        disability: disability,
-        num_images: numImages,
-      };
-      
-      fetch("localhost:8000/txt2img/v2/v1", {
-        method: "POST",
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify(obj),
-      })
-        .then((response) => {
-          if (response.ok) {
-            toast.success("¡Los datos han sido subidos exitosamente!", {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
+        reader.onloadend = () => {
+          const imageData = new Uint8Array(reader.result as ArrayBuffer)
+          const base64Data = base64.fromByteArray(imageData)
+          console.log("1: " + base64Data);
+          console.log("2: " + maskImage);
+          console.log("3: " + String(budget));
+          console.log("4: " + style);
+          console.log("5: " + environment);
+          console.log("6: " + weather);
+          console.log("7: " + disability);
+          console.log("8: " + numImages);
+    
+          const obj = {
+            input_image: base64Data,
+            mask_image: maskImage,
+            budget: budget,
+            style: style,
+            environment: environment,
+            weather: weather,
+            disability: disability,
+            num_images: numImages,
+          };
+          
+          fetch("localhost:8000/txt2img/v2/v1", {
+            method: "POST",
+            headers: { "Content-type": "application/json" },
+            body: JSON.stringify(obj),
+          })
+            .then((response) => {
+              if (response.ok) {
+                toast.success("¡Los datos han sido subidos exitosamente!", {
+                  position: "top-center",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "colored",
+                });
+              }
+            })
+            .catch((error) => {
+              console.log(
+                "Hubo un error inesperado. Revisa tu conexión o inténtalo más tarde"
+              );
+              console.log(error);
+              toast.error(
+                "Hubo un error inesperado. Revisa tu conexión o inténtalo más tarde",
+                {
+                  position: "top-center",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "colored",
+                }
+              );
             });
-          }
-        })
-        .catch((error) => {
-          console.log(
-            "Hubo un error inesperado. Revisa tu conexión o inténtalo más tarde"
-          );
-          console.log(error);
-          toast.error(
-            "Hubo un error inesperado. Revisa tu conexión o inténtalo más tarde",
-            {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            }
-          );
-        });
+        }
+        reader.readAsArrayBuffer(inputImage);
+      }
     };
     return (
       <>

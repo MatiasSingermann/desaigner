@@ -45,12 +45,19 @@ function ImageUploader({
 
       image = URL.createObjectURL(selectedImage!);
 
+      // selectedImage.arrayBuffer().then(buffer => {
+      //   console.log(base64.fromByteArray(new Uint8Array(buffer)))
+      // })
+
+      // selectedImage.stream().getReader().read().then(hola => {console.log(base64.fromByteArray(new Uint8Array(hola.value as ArrayBuffer)))})
+
       // setValue("C:\\fakepath\\" + String(imageName))
+
+      console.log("Selected Image: " + JSON.stringify(selectedImage))
 
       console.log(imageName);
       console.log(e.target.files);
       updateImageData(image, imageName, "C:\\fakepath\\" + String(imageName));
-      // console.log("VALUE: " + value)
     }
   };
   const dragImage = (e: React.DragEvent) => {
@@ -84,8 +91,9 @@ function ImageUploader({
       >
         <input
           type="file"
+          accept="image/png, image/jpg, image/jpeg"
           onChange={handleImage}
-          value={value}
+          //value={value}
           name="selectedImage"
           className="absolute inset-0 flex h-full w-full opacity-0"
         />
