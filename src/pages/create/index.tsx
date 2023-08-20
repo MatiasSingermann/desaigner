@@ -51,9 +51,155 @@ function index() {
       const numImages = inputData[7] ? inputData[7][1] : "";
       const maskImage = inputData[8] ? inputData[8][1] : "";
 
+      let requiredInputs = true
+      let isNoImage = false
+      let isNoMask = false
+
+      if(!budget && !style && !environment && !weather && !disability){
+        toast.error(
+          "Faltan llenar campos",
+          {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          }
+        );
+        requiredInputs = false;
+      }
+
+      if(!inputImage){
+        isNoImage = true;
+      }
+
+      if(!maskImage){
+        isNoMask = true;
+      }
+
       console.log("inputData: " + inputData)
 
-      if(inputImage) {
+      if(requiredInputs && !isNoImage && isNoMask) {
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+          const imageData = new Uint8Array(reader.result as ArrayBuffer)
+          const base64Data = base64.fromByteArray(imageData)
+    
+          const obj = {
+            input_image: base64Data,
+            budget: budget,
+            style: style,
+            environment: environment,
+            weather: weather,
+            disability: disability,
+            num_images: numImages,
+          };
+          
+          fetch("localhost:8000/img2img/v2", {
+            method: "POST",
+            headers: { "Content-type": "application/json" },
+            body: JSON.stringify(obj),
+          })
+            .then((response) => {
+              if (response.ok) {
+                toast.success("¡Los datos han sido subidos exitosamente!", {
+                  position: "top-center",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "colored",
+                });
+              }
+            })
+            .catch((error) => {
+              console.log(
+                "Hubo un error inesperado. Revisa tu conexión o inténtalo más tarde"
+              );
+              console.log(error);
+              toast.error(
+                "Hubo un error inesperado. Revisa tu conexión o inténtalo más tarde",
+                {
+                  position: "top-center",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "colored",
+                }
+              );
+            });
+        }
+        reader.readAsArrayBuffer(inputImage);
+      }
+
+      if(requiredInputs && isNoImage) {
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+          const imageData = new Uint8Array(reader.result as ArrayBuffer)
+          const base64Data = base64.fromByteArray(imageData)
+    
+          const obj = {
+            budget: budget,
+            style: style,
+            environment: environment,
+            weather: weather,
+            disability: disability,
+            num_images: numImages,
+          };
+          
+          fetch("localhost:8000/txt2img/v2/v1", {
+            method: "POST",
+            headers: { "Content-type": "application/json" },
+            body: JSON.stringify(obj),
+          })
+            .then((response) => {
+              if (response.ok) {
+                toast.success("¡Los datos han sido subidos exitosamente!", {
+                  position: "top-center",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "colored",
+                });
+              }
+            })
+            .catch((error) => {
+              console.log(
+                "Hubo un error inesperado. Revisa tu conexión o inténtalo más tarde"
+              );
+              console.log(error);
+              toast.error(
+                "Hubo un error inesperado. Revisa tu conexión o inténtalo más tarde",
+                {
+                  position: "top-center",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "colored",
+                }
+              );
+            });
+        }
+        reader.readAsArrayBuffer(inputImage);
+      }
+
+      if(requiredInputs && !isNoImage && !isNoMask) {
         const reader = new FileReader();
 
         reader.onloadend = () => {
@@ -72,7 +218,7 @@ function index() {
             mask_image: maskImage,
           };
           
-          fetch("localhost:8000/txt2img/v2/v1", {
+          fetch("localhost:8000/inpaint/v2", {
             method: "POST",
             headers: { "Content-type": "application/json" },
             body: JSON.stringify(obj),
