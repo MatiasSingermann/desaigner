@@ -3,18 +3,20 @@ import { Dispatch, SetStateAction } from "react";
 
 interface InpaintingEditorProps {
   setShowEdit: Dispatch<SetStateAction<boolean>>;
+  showEdit: SetStateAction<boolean>;
 }
 
-function InpaintingEditor({ setShowEdit }: InpaintingEditorProps) {
+function InpaintingEditor({ setShowEdit, showEdit }: InpaintingEditorProps) {
   const handleClick = () => {
     setShowEdit(false);
   };
   return (
-    <div className="fixed top-0 z-10 flex h-[100vh] w-full items-center justify-center bg-black bg-opacity-70">
+    <div className={`top-0 z-10 flex h-[100vh] w-full items-center justify-center bg-black bg-opacity-70 ${showEdit ? "fixed " : "hidden"}`}>
       <div className="relative flex h-[380px] w-[324px] flex-col items-center justify-start rounded-2xl bg-[#22302D] px-[14px]">
         <button
           onClick={handleClick}
           className="absolute right-0 top-0 m-[12px] flex"
+          form="false"
         >
           <Cross />
         </button>
@@ -29,6 +31,7 @@ function InpaintingEditor({ setShowEdit }: InpaintingEditorProps) {
           Aceptar
         </button>
       </div>
+      <input type="text" name="maskImage" className="hidden" readOnly={true} value="TEST" />
     </div>
   );
 }

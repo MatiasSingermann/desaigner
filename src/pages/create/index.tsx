@@ -42,13 +42,16 @@ function index() {
       }
 
       const inputImage : any = inputData[0] ? inputData[0][1] : "";
-      const maskImage = "mask";
-      const budget = inputData[1] ? inputData[1][1] : "";
-      const style = inputData[2] ? inputData[2][1] : "";
-      const environment = inputData[3] ? inputData[3][1] : "";
-      const weather = inputData[4] ? inputData[4][1] : "";
-      const disability = inputData[5] ? inputData[5][1] : "";
-      const numImages = inputData[6] ? inputData[6][1] : "";
+      const noImage = inputData[1] ? inputData[1][1] : "";
+      const budget = inputData[2] ? inputData[2][1] : "";
+      const style = inputData[3] ? inputData[3][1] : "";
+      const environment = inputData[4] ? inputData[4][1] : "";
+      const weather = inputData[5] ? inputData[5][1] : "";
+      const disability = inputData[6] ? inputData[6][1] : "";
+      const numImages = inputData[7] ? inputData[7][1] : "";
+      const maskImage = inputData[8] ? inputData[8][1] : "";
+
+      console.log("inputData: " + inputData)
 
       if(inputImage) {
         const reader = new FileReader();
@@ -56,24 +59,17 @@ function index() {
         reader.onloadend = () => {
           const imageData = new Uint8Array(reader.result as ArrayBuffer)
           const base64Data = base64.fromByteArray(imageData)
-          console.log("1: " + base64Data);
-          console.log("2: " + maskImage);
-          console.log("3: " + String(budget));
-          console.log("4: " + style);
-          console.log("5: " + environment);
-          console.log("6: " + weather);
-          console.log("7: " + disability);
-          console.log("8: " + numImages);
     
           const obj = {
             input_image: base64Data,
-            mask_image: maskImage,
+            no_image: noImage,
             budget: budget,
             style: style,
             environment: environment,
             weather: weather,
             disability: disability,
             num_images: numImages,
+            mask_image: maskImage,
           };
           
           fetch("localhost:8000/txt2img/v2/v1", {
@@ -135,7 +131,7 @@ function index() {
             className="flex w-full flex-col items-center justify-center"
           >
             <StepShow setShowEdit={setShowEdit} />
-            {showEdit ? <InpaintingEditor setShowEdit={setShowEdit} /> : null}
+            <InpaintingEditor setShowEdit={setShowEdit} showEdit={showEdit} />
           </form>
           <ToastContainer limit={3} />
         </main>

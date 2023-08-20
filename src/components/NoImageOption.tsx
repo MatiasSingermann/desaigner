@@ -21,7 +21,7 @@ function NoImageOption({setChecked, checked} : NoImageOptionProps) {
         {checked ? <Checked /> : <Unchecked />}
       </button>
     </div>
-    <input type="hidden" className="hidden" value={String(checked)} />
+    <input type="hidden" name="noImage" className="hidden" value={String(checked)} />
     </>
   );
 }
