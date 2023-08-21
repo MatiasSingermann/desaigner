@@ -4,8 +4,8 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import StepShow from "~/components/StepShow";
 import { useState } from "react";
-import base64 from 'base64-js';
-import { fromByteArray } from 'base64-js';
+import base64 from "base64-js";
+import { fromByteArray } from "base64-js";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -33,16 +33,15 @@ function index() {
   if (status === "authenticated") {
     const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
       e.preventDefault();
-      console.log(e.currentTarget);
+      console.log("HOLAAAAAAAAAAAAAAA")
       const formData = new FormData(e.currentTarget);
       const inputData = [];
       for (const pair of formData.entries()) {
-        console.log(pair);
         inputData.push(pair);
       }
 
-      const inputImage : any = inputData[0] ? inputData[0][1] : "";
-      const noImage = inputData[1] ? inputData[1][1] : "";
+      const inputImage: any = inputData[0] ? inputData[0][1] : "";
+      let noImage = inputData[1] ? inputData[1][1] : "";
       const budget = inputData[2] ? inputData[2][1] : "";
       const style = inputData[3] ? inputData[3][1] : "";
       const environment = inputData[4] ? inputData[4][1] : "";
@@ -51,13 +50,48 @@ function index() {
       const numImages = inputData[7] ? inputData[7][1] : "";
       const maskImage = inputData[8] ? inputData[8][1] : "";
 
-      let requiredInputs = true
-      let isNoImage = false
-      let isNoMask = false
+      let requiredInputs = true;
+      let isNoImage = false;
+      let isNoMask = false;
+      let isNoNumber = false;
 
-      if(!budget && !style && !environment && !weather && !disability){
+      console.log("BUDGET: " + budget);
+
+      if (
+        budget == "" ||
+        style == "" ||
+        environment == "" ||
+        weather == "" ||
+        disability == ""
+      ) {
+        toast.error("Faltan llenar campos", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        requiredInputs = false;
+      }
+
+      if (inputImage == "[object File]" || noImage == "true") {
+        isNoImage = true;
+      }
+
+      if (inputImage == "[object File]" || noImage == "false") {
+        noImage = "true";
+      }
+
+      if (maskImage == "TEST") {
+        isNoMask = true;
+      }
+
+      if (typeof numImages != typeof 1) {
         toast.error(
-          "Faltan llenar campos",
+          "Hubo un error inesperado. Revisa tu conexión o inténtalo más tarde",
           {
             position: "top-center",
             autoClose: 5000,
@@ -69,85 +103,18 @@ function index() {
             theme: "colored",
           }
         );
-        requiredInputs = false;
+        isNoNumber = true;
       }
 
-      if(!inputImage){
-        isNoImage = true;
-      }
+      console.log("inputData: " + inputData);
 
-      if(!maskImage){
-        isNoMask = true;
-      }
-
-      console.log("inputData: " + inputData)
-
-      if(requiredInputs && !isNoImage && isNoMask) {
+      if (requiredInputs && isNoImage && !isNoNumber) {
         const reader = new FileReader();
 
         reader.onloadend = () => {
-          const imageData = new Uint8Array(reader.result as ArrayBuffer)
-          const base64Data = base64.fromByteArray(imageData)
-    
-          const obj = {
-            input_image: base64Data,
-            budget: budget,
-            style: style,
-            environment: environment,
-            weather: weather,
-            disability: disability,
-            num_images: numImages,
-          };
-          
-          fetch("localhost:8000/img2img/v2", {
-            method: "POST",
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify(obj),
-          })
-            .then((response) => {
-              if (response.ok) {
-                toast.success("¡Los datos han sido subidos exitosamente!", {
-                  position: "top-center",
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: "colored",
-                });
-              }
-            })
-            .catch((error) => {
-              console.log(
-                "Hubo un error inesperado. Revisa tu conexión o inténtalo más tarde"
-              );
-              console.log(error);
-              toast.error(
-                "Hubo un error inesperado. Revisa tu conexión o inténtalo más tarde",
-                {
-                  position: "top-center",
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: "colored",
-                }
-              );
-            });
-        }
-        reader.readAsArrayBuffer(inputImage);
-      }
+          const imageData = new Uint8Array(reader.result as ArrayBuffer);
+          const base64Data = base64.fromByteArray(imageData);
 
-      if(requiredInputs && isNoImage) {
-        const reader = new FileReader();
-
-        reader.onloadend = () => {
-          const imageData = new Uint8Array(reader.result as ArrayBuffer)
-          const base64Data = base64.fromByteArray(imageData)
-    
           const obj = {
             budget: budget,
             style: style,
@@ -156,7 +123,9 @@ function index() {
             disability: disability,
             num_images: numImages,
           };
-          
+
+          console.log("NO IMG");
+
           fetch("localhost:8000/txt2img/v2/v1", {
             method: "POST",
             headers: { "Content-type": "application/json" },
@@ -195,17 +164,74 @@ function index() {
                 }
               );
             });
-        }
+        };
         reader.readAsArrayBuffer(inputImage);
-      }
-
-      if(requiredInputs && !isNoImage && !isNoMask) {
+      } else if (requiredInputs && !isNoImage && isNoMask && !isNoNumber) {
         const reader = new FileReader();
 
         reader.onloadend = () => {
-          const imageData = new Uint8Array(reader.result as ArrayBuffer)
-          const base64Data = base64.fromByteArray(imageData)
-    
+          const imageData = new Uint8Array(reader.result as ArrayBuffer);
+          const base64Data = base64.fromByteArray(imageData);
+
+          const obj = {
+            input_image: base64Data,
+            budget: budget,
+            style: style,
+            environment: environment,
+            weather: weather,
+            disability: disability,
+            num_images: numImages,
+          };
+
+          console.log("IMG NO MASK");
+
+          fetch("localhost:8000/img2img/v2", {
+            method: "POST",
+            headers: { "Content-type": "application/json" },
+            body: JSON.stringify(obj),
+          })
+            .then((response) => {
+              if (response.ok) {
+                toast.success("¡Los datos han sido subidos exitosamente!", {
+                  position: "top-center",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "colored",
+                });
+              }
+            })
+            .catch((error) => {
+              console.log(
+                "Hubo un error inesperado. Revisa tu conexión o inténtalo más tarde"
+              );
+              console.log(error);
+              toast.error(
+                "Hubo un error inesperado. Revisa tu conexión o inténtalo más tarde",
+                {
+                  position: "top-center",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "colored",
+                }
+              );
+            });
+        };
+        reader.readAsArrayBuffer(inputImage);
+      } else if (requiredInputs && !isNoImage && !isNoMask && !isNoNumber) {
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+          const imageData = new Uint8Array(reader.result as ArrayBuffer);
+          const base64Data = base64.fromByteArray(imageData);
+
           const obj = {
             input_image: base64Data,
             no_image: noImage,
@@ -217,7 +243,9 @@ function index() {
             num_images: numImages,
             mask_image: maskImage,
           };
-          
+
+          console.log("ALL");
+
           fetch("localhost:8000/inpaint/v2", {
             method: "POST",
             headers: { "Content-type": "application/json" },
@@ -256,7 +284,7 @@ function index() {
                 }
               );
             });
-        }
+        };
         reader.readAsArrayBuffer(inputImage);
       }
     };

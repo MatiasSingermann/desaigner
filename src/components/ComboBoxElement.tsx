@@ -1,4 +1,4 @@
-import { ChangeEvent, ChangeEventHandler, Dispatch, SetStateAction } from "react";
+import { ChangeEventHandler } from "react";
 
 interface ComboBoxElementProps {
   name: string;
@@ -16,6 +16,7 @@ function ComboBoxElement({ name, text, value, handleRadioChange }: ComboBoxEleme
         value={value}
         onChange={handleRadioChange}
         className="absolute opacity-0 h-[52px] w-[310px] 480:h-[58px] 480:w-[342px]"
+        required
       />
       <p className="mx-[24px] text-[20px] 480:text-[22px]">{text}</p>
     </div>
