@@ -33,7 +33,6 @@ function index() {
   if (status === "authenticated") {
     const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
       e.preventDefault();
-      console.log("HOLAAAAAAAAAAAAAAA")
       const formData = new FormData(e.currentTarget);
       const inputData = [];
       for (const pair of formData.entries()) {
@@ -77,13 +76,13 @@ function index() {
         requiredInputs = false;
       }
 
-      if (inputImage == "[object File]" || noImage == "true") {
+      if (noImage == "true") {
         isNoImage = true;
       }
 
-      if (inputImage == "[object File]" || noImage == "false") {
-        noImage = "true";
-      }
+      // if (inputImage == "[object File]" || noImage == "false") {
+      //   noImage = "true";
+      // }
 
       if (maskImage == "TEST") {
         isNoMask = true;
@@ -108,7 +107,7 @@ function index() {
 
       console.log("inputData: " + inputData);
 
-      if (requiredInputs && isNoImage && !isNoNumber) {
+      if (requiredInputs && isNoImage) { //&& !isNoNumber) {
         const reader = new FileReader();
 
         reader.onloadend = () => {
@@ -166,7 +165,7 @@ function index() {
             });
         };
         reader.readAsArrayBuffer(inputImage);
-      } else if (requiredInputs && !isNoImage && isNoMask && !isNoNumber) {
+      } else if (requiredInputs && !isNoImage && isNoMask) { // && !isNoNumber) {
         const reader = new FileReader();
 
         reader.onloadend = () => {
@@ -225,7 +224,7 @@ function index() {
             });
         };
         reader.readAsArrayBuffer(inputImage);
-      } else if (requiredInputs && !isNoImage && !isNoMask && !isNoNumber) {
+      } else if (requiredInputs && !isNoImage && !isNoMask) { // && !isNoNumber) {
         const reader = new FileReader();
 
         reader.onloadend = () => {
