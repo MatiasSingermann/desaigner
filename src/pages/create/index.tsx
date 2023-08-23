@@ -40,13 +40,13 @@ function index() {
       }
 
       const inputImage: any = inputData[0] ? inputData[0][1] : "";
-      let noImage = inputData[1] ? inputData[1][1] : "";
-      const budget = inputData[2] ? inputData[2][1] : "";
-      const style = inputData[3] ? inputData[3][1] : "";
-      const environment = inputData[4] ? inputData[4][1] : "";
-      const weather = inputData[5] ? inputData[5][1] : "";
-      const disability = inputData[6] ? inputData[6][1] : "";
-      const numImages = inputData[7] ? inputData[7][1] : "";
+      let noImage = inputData[1] ? inputData[1][1].toString() : "";
+      const budget = inputData[2] ? inputData[2][1].toString()  : "";
+      const style = inputData[3] ? inputData[3][1].toString()  : "";
+      const environment = inputData[4] ? inputData[4][1].toString()  : "";
+      const weather = inputData[5] ? inputData[5][1].toString()  : "";
+      const disability = inputData[6] ? inputData[6][1].toString()  : "";
+      const numImages = inputData[7] ? Number(inputData[7][1]) : "";
       const maskImage = inputData[8] ? inputData[8][1] : "";
 
       let requiredInputs = true;
@@ -115,17 +115,20 @@ function index() {
           const base64Data = base64.fromByteArray(imageData);
 
           const obj = {
-            budget: budget,
-            style: style,
-            environment: environment,
-            weather: weather,
-            disability: disability,
-            num_images: numImages,
+            "budget": budget,
+            "style": style,
+            "environment": environment,
+            "weather": weather,
+            "disability": disability,
+            "num_images": numImages,
+            "steps": 20,
+            "guidance_scale": 7,
           };
 
           console.log("NO IMG");
 
-          fetch("localhost:8000/txt2img/v2/v1", {
+          fetch("http://localhost:8000/txt2img/v2/v1", {
+            mode: "no-cors",
             method: "POST",
             headers: { "Content-type": "application/json" },
             body: JSON.stringify(obj),
@@ -173,18 +176,21 @@ function index() {
           const base64Data = base64.fromByteArray(imageData);
 
           const obj = {
-            input_image: base64Data,
-            budget: budget,
-            style: style,
-            environment: environment,
-            weather: weather,
-            disability: disability,
-            num_images: numImages,
+            "input_image": base64Data,
+            "budget": budget,
+            "style": style,
+            "environment": environment,
+            "weather": weather,
+            "disability": disability,
+            "num_images": numImages,
+            "steps": 20,
+            "guidance_scale": 7,
           };
 
           console.log("IMG NO MASK");
 
-          fetch("localhost:8000/img2img/v2", {
+          fetch("http://localhost:8000/img2img/v2", {
+            mode: "no-cors",
             method: "POST",
             headers: { "Content-type": "application/json" },
             body: JSON.stringify(obj),
@@ -232,20 +238,23 @@ function index() {
           const base64Data = base64.fromByteArray(imageData);
 
           const obj = {
-            input_image: base64Data,
-            no_image: noImage,
-            budget: budget,
-            style: style,
-            environment: environment,
-            weather: weather,
-            disability: disability,
-            num_images: numImages,
-            mask_image: maskImage,
+            "input_image": base64Data,
+            "no_image": noImage,
+            "budget": budget,
+            "style": style,
+            "environment": environment,
+            "weather": weather,
+            "disability": disability,
+            "num_images": numImages,
+            "mask_image": maskImage,
+            "steps": 20,
+            "guidance_scale": 7,
           };
 
           console.log("ALL");
 
-          fetch("localhost:8000/inpaint/v2", {
+          fetch("http://localhost:8000/inpaint/v2", {
+            mode: "no-cors",
             method: "POST",
             headers: { "Content-type": "application/json" },
             body: JSON.stringify(obj),
