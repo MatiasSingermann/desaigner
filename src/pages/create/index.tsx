@@ -117,14 +117,14 @@ function index() {
           const base64Data = base64.fromByteArray(imageData);
 
           const obj = {
-            budget: budget,
-            style: style,
-            environment: environment,
-            weather: weather,
-            disability: disability,
-            num_images: numImages,
-            steps: 20,
-            guidance_scale: 7,
+            "budget": budget,
+            "style": style,
+            "environment": environment,
+            "weather": weather,
+            "disability": disability,
+            "num_images": numImages,
+            "steps": 20,
+            "guidance_scale": 7,
           };
 
           console.log("NO IMG");
@@ -183,15 +183,15 @@ function index() {
           const base64Data = base64.fromByteArray(imageData);
 
           const obj = {
-            input_image: base64Data,
-            budget: budget,
-            style: style,
-            environment: environment,
-            weather: weather,
-            disability: disability,
-            num_images: numImages,
-            steps: 20,
-            guidance_scale: 7,
+            "input_image": base64Data,
+            "budget": budget,
+            "style": style,
+            "environment": environment,
+            "weather": weather,
+            "disability": disability,
+            "num_images": numImages,
+            "steps": 20,
+            "guidance_scale": 7,
           };
 
           console.log("IMG NO MASK");
@@ -246,17 +246,17 @@ function index() {
           const base64Data = base64.fromByteArray(imageData);
 
           const obj = {
-            input_image: base64Data,
-            no_image: noImage,
-            budget: budget,
-            style: style,
-            environment: environment,
-            weather: weather,
-            disability: disability,
-            num_images: numImages,
-            mask_image: maskImage,
-            steps: 20,
-            guidance_scale: 7,
+            "input_image": base64Data,
+            "no_image": noImage,
+            "budget": budget,
+            "style": style,
+            "environment": environment,
+            "weather": weather,
+            "disability": disability,
+            "num_images": numImages,
+            "mask_image": maskImage,
+            "steps": 20,
+            "guidance_scale": 7,
           };
 
           console.log("ALL");
