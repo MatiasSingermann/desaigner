@@ -18,6 +18,7 @@ function index() {
   const formRef = useRef<HTMLFormElement>(null);
   const [showEdit, setShowEdit] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [finished, setFinished] = useState(false);
 
   const { data: session, status } = useSession({
     required: false,
@@ -110,70 +111,66 @@ function index() {
 
       if (requiredInputs && isNoImage) {
         //&& !isNoNumber) {
-        const reader = new FileReader();
 
-        reader.onloadend = () => {
-          const imageData = new Uint8Array(reader.result as ArrayBuffer);
-          const base64Data = base64.fromByteArray(imageData);
-
-          const obj = {
-            "budget": budget,
-            "style": style,
-            "environment": environment,
-            "weather": weather,
-            "disability": disability,
-            "num_images": numImages,
-            "steps": 20,
-            "guidance_scale": 7,
-          };
-
-          console.log("NO IMG");
-
-          setLoading(true);
-
-          fetch("http://localhost:8000/txt2img/v2/v1", {
-            mode: "no-cors",
-            method: "POST",
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify(obj),
-          })
-            .then((response) => {
-              setLoading(false);
-              if (response.ok) {
-                toast.success("¡Los datos han sido subidos exitosamente!", {
-                  position: "top-center",
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: "colored",
-                });
-              }
-            })
-            .catch((error) => {
-              setLoading(false);
-              console.log(
-                "Hubo un error inesperado. Revisa tu conexión o inténtalo más tarde"
-              );
-              console.log(error);
-              toast.error(
-                "Hubo un error inesperado. Revisa tu conexión o inténtalo más tarde",
-                {
-                  position: "top-center",
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: "colored",
-                }
-              );
-            });
+        const obj = {
+          budget: budget,
+          style: style,
+          environment: environment,
+          weather: weather,
+          disability: disability,
+          num_images: numImages,
+          steps: 20,
+          guidance_scale: 7,
         };
-        reader.readAsArrayBuffer(inputImage);
+
+        console.log("NO IMG");
+
+        setLoading(true);
+
+        fetch("http://localhost:8000/txt2img/v2/v1", {
+          method: "POST",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify(obj),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            setLoading(false);
+            setFinished(true);
+          })
+          // .then((response.ok) => {
+          //   setLoading(false);
+          //   toast.success("¡Los datos han sido subidos exitosamente!", {
+          //     position: "top-center",
+          //     autoClose: 5000,
+          //     hideProgressBar: false,
+          //     closeOnClick: true,
+          //     pauseOnHover: true,
+          //     draggable: true,
+          //     progress: undefined,
+          //     theme: "colored",
+          //   });
+          // })
+          .catch((error) => {
+            setLoading(false);
+            console.log(
+              "Hubo un error inesperado. Revisa tu conexión o inténtalo más tarde"
+            );
+            console.log(error);
+            toast.error(
+              "Hubo un error inesperado. Revisa tu conexión o inténtalo más tarde",
+              {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              }
+            );
+          });
       } else if (requiredInputs && !isNoImage && isNoMask) {
         // && !isNoNumber) {
         const reader = new FileReader();
@@ -183,38 +180,31 @@ function index() {
           const base64Data = base64.fromByteArray(imageData);
 
           const obj = {
-            "input_image": base64Data,
-            "budget": budget,
-            "style": style,
-            "environment": environment,
-            "weather": weather,
-            "disability": disability,
-            "num_images": numImages,
-            "steps": 20,
-            "guidance_scale": 7,
+            input_image: base64Data,
+            budget: budget,
+            style: style,
+            environment: environment,
+            weather: weather,
+            disability: disability,
+            num_images: numImages,
+            steps: 20,
+            guidance_scale: 7,
           };
 
           console.log("IMG NO MASK");
 
+          setLoading(true);
+
           fetch("http://localhost:8000/img2img/v2", {
-            mode: "no-cors",
             method: "POST",
             headers: { "Content-type": "application/json" },
             body: JSON.stringify(obj),
           })
-            .then((response) => {
-              if (response.ok) {
-                toast.success("¡Los datos han sido subidos exitosamente!", {
-                  position: "top-center",
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: "colored",
-                });
-              }
+            .then((response) => response.json())
+            .then((data) => {
+              console.log(data);
+              setLoading(false);
+              setFinished(true);
             })
             .catch((error) => {
               console.log(
@@ -246,40 +236,33 @@ function index() {
           const base64Data = base64.fromByteArray(imageData);
 
           const obj = {
-            "input_image": base64Data,
-            "no_image": noImage,
-            "budget": budget,
-            "style": style,
-            "environment": environment,
-            "weather": weather,
-            "disability": disability,
-            "num_images": numImages,
-            "mask_image": maskImage,
-            "steps": 20,
-            "guidance_scale": 7,
+            input_image: base64Data,
+            no_image: noImage,
+            budget: budget,
+            style: style,
+            environment: environment,
+            weather: weather,
+            disability: disability,
+            num_images: numImages,
+            mask_image: maskImage,
+            steps: 20,
+            guidance_scale: 7,
           };
 
           console.log("ALL");
 
+          setLoading(true);
+
           fetch("http://localhost:8000/inpaint/v2", {
-            mode: "no-cors",
             method: "POST",
             headers: { "Content-type": "application/json" },
             body: JSON.stringify(obj),
           })
-            .then((response) => {
-              if (response.ok) {
-                toast.success("¡Los datos han sido subidos exitosamente!", {
-                  position: "top-center",
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: "colored",
-                });
-              }
+            .then((response) => response.json())
+            .then((data) => {
+              console.log(data);
+              setLoading(false);
+              setFinished(true);
             })
             .catch((error) => {
               console.log(
@@ -313,6 +296,7 @@ function index() {
         </Head>
         <main className="flex grow flex-col items-center justify-start font-coolveticaLight">
           {loading && <ResLoad />}
+          {finished ? null : (
             <form
               action=""
               method="POST"
@@ -324,6 +308,7 @@ function index() {
               <StepShow setShowEdit={setShowEdit} />
               <InpaintingEditor setShowEdit={setShowEdit} showEdit={showEdit} />
             </form>
+          )}
           <ToastContainer limit={3} />
         </main>
         <Footer />
