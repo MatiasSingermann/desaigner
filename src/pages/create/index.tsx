@@ -19,6 +19,8 @@ function index() {
   const [showEdit, setShowEdit] = useState(false);
   const [loading, setLoading] = useState(false);
   const [finished, setFinished] = useState(false);
+  const [moreThan1, setMoreThan1] = useState(false);
+  const [result, setResult] = useState(false);
 
   const { data: session, status } = useSession({
     required: false,
@@ -55,6 +57,8 @@ function index() {
       let isNoImage = false;
       let isNoMask = false;
       let isNoNumber = false;
+
+      var images;
 
       console.log("BUDGET: " + budget);
 
@@ -136,7 +140,14 @@ function index() {
           .then((data) => {
             console.log(data);
             setLoading(false);
-            setFinished(true);
+            images = data;
+            if (images.length > 1) {
+              setMoreThan1(true);
+              setFinished(true);
+            } else {
+              setResult(true);
+              setFinished(true);
+            }
           })
           // .then((response.ok) => {
           //   setLoading(false);
@@ -309,6 +320,26 @@ function index() {
               <InpaintingEditor setShowEdit={setShowEdit} showEdit={showEdit} />
             </form>
           )}
+          {moreThan1 ? (
+            <div className="flex h-full w-full flex-col items-center justify-center">
+              <h1 className="mx-[32px] mb-[52px] self-start bg-gradient-to-tr from-[#228187] to-[#59C3C3] bg-clip-text font-coolveticaRegular text-[40px] leading-none text-transparent">
+                Listo
+              </h1>
+              <h2 className="mx-[32px] self-start font-coolveticaRegular text-[30px] leading-none">
+                Elige la imagen con la que te quieras quedar
+              </h2>
+            </div>
+          ) : null}
+          {result ? (
+            <div className="flex h-full w-full flex-col items-center justify-center">
+              <h1 className="mx-[32px] mb-[52px] self-start bg-gradient-to-tr from-[#228187] to-[#59C3C3] bg-clip-text font-coolveticaRegular text-[40px] leading-none text-transparent">
+                Aquí tienes tu imagen
+              </h1>
+              <h2 className="mx-[32px] self-start font-coolveticaRegular text-[30px] leading-none">
+                Puedes ver los links de los muebles
+              </h2>
+            </div>
+          ) : null}
           <ToastContainer limit={3} />
         </main>
         <Footer />
