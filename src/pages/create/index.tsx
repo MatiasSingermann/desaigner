@@ -58,7 +58,7 @@ function index() {
       let isNoMask = false;
       let isNoNumber = false;
 
-      var images;
+      var imgs;
 
       console.log("BUDGET: " + budget);
 
@@ -140,8 +140,9 @@ function index() {
           .then((data) => {
             console.log(data);
             setLoading(false);
-            images = data;
-            if (images.length > 1) {
+            imgs = data.images;
+            console.log("LENGTH: " + imgs.length)
+            if (imgs.length > 1) {
               setMoreThan1(true);
               setFinished(true);
             } else {
