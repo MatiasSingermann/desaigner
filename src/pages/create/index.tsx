@@ -3,6 +3,7 @@ import Footer from "~/components/Footer";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import StepShow from "~/components/StepShow";
+import Image from "next/image";
 import { useState } from "react";
 import base64 from "base64-js";
 
@@ -21,6 +22,11 @@ function index() {
   const [finished, setFinished] = useState(false);
   const [moreThan1, setMoreThan1] = useState(false);
   const [result, setResult] = useState(false);
+  const [imageURL, setImageURL] = useState("");
+  const [imageURL1, setImageURL1] = useState("");
+  const [imageURL2, setImageURL2] = useState("");
+  const [imageURL3, setImageURL3] = useState("");
+  const [imageURL4, setImageURL4] = useState("");
 
   const { data: session, status } = useSession({
     required: false,
@@ -35,6 +41,53 @@ function index() {
   }
 
   if (status === "authenticated") {
+    const imageProssesor = (data : any, imgs : any) => {
+      console.log(data);
+      setLoading(false);
+      imgs = data.images;
+      console.log("LENGTH: " + imgs.length);
+      if (imgs.length > 1) {
+        const finalImage1 = imgs[0];
+        const finalImage2 = imgs[1];
+        const finalImageByteArray1 = base64.toByteArray(finalImage1);
+        const finalImageByteArray2 = base64.toByteArray(finalImage2);
+        const blob1 = new Blob([finalImageByteArray1], {
+          type: "image/jpeg",
+        });
+        const blob2 = new Blob([finalImageByteArray2], {
+          type: "image/jpeg",
+        });
+        setImageURL1(URL.createObjectURL(blob1));
+        setImageURL2(URL.createObjectURL(blob2));
+        if (imgs.length > 2) {
+          const finalImage3 = imgs[2];
+          const finalImageByteArray3 = base64.toByteArray(finalImage3);
+          const blob3 = new Blob([finalImageByteArray3], {
+            type: "image/jpeg",
+          });
+          setImageURL3(URL.createObjectURL(blob3));
+        }
+        if (imgs.length > 3) {
+          const finalImage4 = imgs[3];
+          const finalImageByteArray4 = base64.toByteArray(finalImage4);
+          const blob4 = new Blob([finalImageByteArray4], {
+            type: "image/jpeg",
+          });
+          setImageURL4(URL.createObjectURL(blob4));
+        }
+        setMoreThan1(true);
+        setFinished(true);
+      } else {
+        const finalImage = imgs[0];
+        const finalImageByteArray = base64.toByteArray(finalImage);
+        const blob = new Blob([finalImageByteArray], {
+          type: "image/jpeg",
+        });
+        setImageURL(URL.createObjectURL(blob));
+        setResult(true);
+        setFinished(true);
+      }
+    }
     const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
       e.preventDefault();
       const formData = new FormData(e.currentTarget);
@@ -58,7 +111,7 @@ function index() {
       let isNoMask = false;
       let isNoNumber = false;
 
-      var imgs;
+      var imgs : any;
 
       console.log("BUDGET: " + budget);
 
@@ -123,7 +176,7 @@ function index() {
           weather: weather,
           disability: disability,
           num_images: numImages,
-          steps: 20,
+          steps: 1,
           guidance_scale: 7,
         };
 
@@ -138,31 +191,8 @@ function index() {
         })
           .then((response) => response.json())
           .then((data) => {
-            console.log(data);
-            setLoading(false);
-            imgs = data.images;
-            console.log("LENGTH: " + imgs.length)
-            if (imgs.length > 1) {
-              setMoreThan1(true);
-              setFinished(true);
-            } else {
-              setResult(true);
-              setFinished(true);
-            }
+            imageProssesor(data, imgs);
           })
-          // .then((response.ok) => {
-          //   setLoading(false);
-          //   toast.success("¡Los datos han sido subidos exitosamente!", {
-          //     position: "top-center",
-          //     autoClose: 5000,
-          //     hideProgressBar: false,
-          //     closeOnClick: true,
-          //     pauseOnHover: true,
-          //     draggable: true,
-          //     progress: undefined,
-          //     theme: "colored",
-          //   });
-          // })
           .catch((error) => {
             setLoading(false);
             console.log(
@@ -329,6 +359,46 @@ function index() {
               <h2 className="mx-[32px] self-start font-coolveticaRegular text-[30px] leading-none">
                 Elige la imagen con la que te quieras quedar
               </h2>
+              <div className="relative mb-[110px] mt-[30px] flex h-[180px] w-[330px] flex-col">
+                <Image
+                  src={imageURL1}
+                  alt="image"
+                  width={500}
+                  height={300}
+                  className="absolute flex h-full w-full items-center justify-center rounded-xl object-cover"
+                ></Image>
+              </div>
+              <div className="relative mb-[110px] mt-[30px] flex h-[180px] w-[330px] flex-col">
+                <Image
+                  src={imageURL2}
+                  alt="image"
+                  width={500}
+                  height={300}
+                  className="absolute flex h-full w-full items-center justify-center rounded-xl object-cover"
+                ></Image>
+              </div>
+              {imageURL3 ? (
+                <div className="relative mb-[110px] mt-[30px] flex h-[180px] w-[330px] flex-col">
+                  <Image
+                    src={imageURL3}
+                    alt="image"
+                    width={500}
+                    height={300}
+                    className="absolute flex h-full w-full items-center justify-center rounded-xl object-cover"
+                  ></Image>
+                </div>
+              ) : null}
+              {imageURL4 ? (
+                <div className="relative mb-[110px] mt-[30px] flex h-[180px] w-[330px] flex-col">
+                  <Image
+                    src={imageURL4}
+                    alt="image"
+                    width={500}
+                    height={300}
+                    className="absolute flex h-full w-full items-center justify-center rounded-xl object-cover"
+                  ></Image>
+                </div>
+              ) : null}
             </div>
           ) : null}
           {result ? (
@@ -339,6 +409,15 @@ function index() {
               <h2 className="mx-[32px] self-start font-coolveticaRegular text-[30px] leading-none">
                 Puedes ver los links de los muebles
               </h2>
+              <div className="relative mb-[110px] mt-[30px] flex h-[180px] w-[330px] flex-col">
+                <Image
+                  src={imageURL}
+                  alt="image"
+                  width={500}
+                  height={300}
+                  className="absolute flex h-full w-full items-center justify-center rounded-xl object-cover"
+                ></Image>
+              </div>
             </div>
           ) : null}
           <ToastContainer limit={3} />
