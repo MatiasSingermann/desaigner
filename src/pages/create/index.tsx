@@ -13,6 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useRef } from "react";
 import InpaintingEditor from "~/components/InpaintingEditor";
 import ResLoad from "~/components/ResLoad";
+import SwiperResultShow from "~/components/SwiperResultShow";
 
 function index() {
   const router = useRouter();
@@ -27,6 +28,7 @@ function index() {
   const [imageURL2, setImageURL2] = useState("");
   const [imageURL3, setImageURL3] = useState("");
   const [imageURL4, setImageURL4] = useState("");
+  const [selectedImage, setSelectedImage] = useState();
 
   const { data: session, status } = useSession({
     required: false,
@@ -41,7 +43,27 @@ function index() {
   }
 
   if (status === "authenticated") {
-    const imageProssesor = (data : any, imgs : any) => {
+    const imageError = (error: any) => {
+      setLoading(false);
+      console.log(
+        "Hubo un error inesperado. Revisa tu conexión o inténtalo más tarde"
+      );
+      console.log(error);
+      toast.error(
+        "Hubo un error inesperado. Revisa tu conexión o inténtalo más tarde",
+        {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        }
+      );
+    };
+    const imageProcessor = (data: any, imgs: any) => {
       console.log(data);
       setLoading(false);
       imgs = data.images;
@@ -87,7 +109,23 @@ function index() {
         setResult(true);
         setFinished(true);
       }
-    }
+    };
+    const handleImageSelect = () => {
+      if (selectedImage === 0) {
+        setImageURL(imageURL1);
+      }
+      if (selectedImage === 1) {
+        setImageURL(imageURL2);
+      }
+      if (selectedImage === 2) {
+        setImageURL(imageURL3);
+      }
+      if (selectedImage === 3) {
+        setImageURL(imageURL4);
+      }
+      setMoreThan1(false);
+      setResult(true);
+    };
     const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
       e.preventDefault();
       const formData = new FormData(e.currentTarget);
@@ -111,7 +149,7 @@ function index() {
       let isNoMask = false;
       let isNoNumber = false;
 
-      var imgs : any;
+      var imgs: any;
 
       console.log("BUDGET: " + budget);
 
@@ -138,6 +176,9 @@ function index() {
       if (noImage == "true") {
         isNoImage = true;
       }
+
+      console.log("WIDTH: " + inputImage.width);
+      console.log("HEIGHT: " + inputImage.height);
 
       // if (inputImage == "[object File]" || noImage == "false") {
       //   noImage = "true";
@@ -186,147 +227,108 @@ function index() {
 
         fetch("http://localhost:8000/txt2img/v2/v1", {
           method: "POST",
-          headers: { "Content-type": "application/json" },
+          headers: {
+            accept: "application/json",
+            "x-api-key": "lsakslaoañ209sk1",
+            "Content-type": "application/json",
+          },
           body: JSON.stringify(obj),
         })
           .then((response) => response.json())
           .then((data) => {
-            imageProssesor(data, imgs);
+            imageProcessor(data, imgs);
           })
           .catch((error) => {
-            setLoading(false);
-            console.log(
-              "Hubo un error inesperado. Revisa tu conexión o inténtalo más tarde"
-            );
-            console.log(error);
-            toast.error(
-              "Hubo un error inesperado. Revisa tu conexión o inténtalo más tarde",
-              {
-                position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-              }
-            );
+            imageError(error);
           });
       } else if (requiredInputs && !isNoImage && isNoMask) {
         // && !isNoNumber) {
-        const reader = new FileReader();
 
-        reader.onloadend = () => {
-          const imageData = new Uint8Array(reader.result as ArrayBuffer);
-          const base64Data = base64.fromByteArray(imageData);
-
-          const obj = {
-            input_image: base64Data,
-            budget: budget,
-            style: style,
-            environment: environment,
-            weather: weather,
-            disability: disability,
-            num_images: numImages,
-            steps: 20,
-            guidance_scale: 7,
-          };
-
-          console.log("IMG NO MASK");
-
-          setLoading(true);
-
-          fetch("http://localhost:8000/img2img/v2", {
-            method: "POST",
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify(obj),
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              console.log(data);
-              setLoading(false);
-              setFinished(true);
-            })
-            .catch((error) => {
-              console.log(
-                "Hubo un error inesperado. Revisa tu conexión o inténtalo más tarde"
-              );
-              console.log(error);
-              toast.error(
-                "Hubo un error inesperado. Revisa tu conexión o inténtalo más tarde",
-                {
-                  position: "top-center",
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: "colored",
-                }
-              );
-            });
+        const obj = {
+          budget: budget,
+          style: style,
+          environment: environment,
+          weather: weather,
+          disability: disability,
+          num_images: numImages,
+          steps: 20,
+          guidance_scale: 7,
+          controlnet_conditioning_scale: 1,
         };
-        reader.readAsArrayBuffer(inputImage);
+
+        console.log("IMG NO MASK");
+
+        setLoading(true);
+
+        const formData = new FormData();
+
+        formData.append("budget", budget);
+        formData.append("style", style);
+        formData.append("environment", environment);
+        formData.append("weather", weather);
+        formData.append("disability", disability);
+        formData.append("num_images", numImages.toString());
+        formData.append("steps", (21).toString());
+        formData.append("guidance_scale", (7).toString());
+        formData.append("controlnet_conditioning_scale", (1).toString());
+        formData.append("input_image", inputImage);
+
+        fetch("http://localhost:8000/img2img/v3", {
+          method: "POST",
+          headers: { "x-api-key": "lsakslaoañ209sk1" },
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            imageProcessor(data, imgs);
+          })
+          .catch((error) => {
+            imageError(error);
+          });
       } else if (requiredInputs && !isNoImage && !isNoMask) {
         // && !isNoNumber) {
-        const reader = new FileReader();
 
-        reader.onloadend = () => {
-          const imageData = new Uint8Array(reader.result as ArrayBuffer);
-          const base64Data = base64.fromByteArray(imageData);
-
-          const obj = {
-            input_image: base64Data,
-            no_image: noImage,
-            budget: budget,
-            style: style,
-            environment: environment,
-            weather: weather,
-            disability: disability,
-            num_images: numImages,
-            mask_image: maskImage,
-            steps: 20,
-            guidance_scale: 7,
-          };
-
-          console.log("ALL");
-
-          setLoading(true);
-
-          fetch("http://localhost:8000/inpaint/v2", {
-            method: "POST",
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify(obj),
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              console.log(data);
-              setLoading(false);
-              setFinished(true);
-            })
-            .catch((error) => {
-              console.log(
-                "Hubo un error inesperado. Revisa tu conexión o inténtalo más tarde"
-              );
-              console.log(error);
-              toast.error(
-                "Hubo un error inesperado. Revisa tu conexión o inténtalo más tarde",
-                {
-                  position: "top-center",
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: "colored",
-                }
-              );
-            });
+        const obj = {
+          budget: budget,
+          style: style,
+          environment: environment,
+          weather: weather,
+          disability: disability,
+          num_images: numImages,
+          steps: 20,
+          guidance_scale: 7,
         };
-        reader.readAsArrayBuffer(inputImage);
+
+        console.log("ALL");
+
+        setLoading(true);
+
+        const formData = new FormData();
+
+        formData.append("budget", budget);
+        formData.append("style", style);
+        formData.append("environment", environment);
+        formData.append("weather", weather);
+        formData.append("disability", disability);
+        formData.append("num_images", numImages.toString());
+        formData.append("steps", (21).toString());
+        formData.append("guidance_scale", (7).toString());
+        formData.append("controlnet_conditioning_scale", (1).toString());
+        formData.append("input_image", inputImage);
+        formData.append("mask_image", maskImage);
+
+        fetch("http://localhost:8000/inpaint/v3", {
+          method: "POST",
+          headers: { "x-api-key": "lsakslaoañ209sk1" },
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            imageProcessor(data, imgs);
+          })
+          .catch((error) => {
+            imageError(error);
+          });
       }
     };
     return (
@@ -359,46 +361,19 @@ function index() {
               <h2 className="mx-[32px] self-start font-coolveticaRegular text-[30px] leading-none">
                 Elige la imagen con la que te quieras quedar
               </h2>
-              <div className="relative mb-[110px] mt-[30px] flex h-[180px] w-[330px] flex-col">
-                <Image
-                  src={imageURL1}
-                  alt="image"
-                  width={500}
-                  height={300}
-                  className="absolute flex h-full w-full items-center justify-center rounded-xl object-cover"
-                ></Image>
-              </div>
-              <div className="relative mb-[110px] mt-[30px] flex h-[180px] w-[330px] flex-col">
-                <Image
-                  src={imageURL2}
-                  alt="image"
-                  width={500}
-                  height={300}
-                  className="absolute flex h-full w-full items-center justify-center rounded-xl object-cover"
-                ></Image>
-              </div>
-              {imageURL3 ? (
-                <div className="relative mb-[110px] mt-[30px] flex h-[180px] w-[330px] flex-col">
-                  <Image
-                    src={imageURL3}
-                    alt="image"
-                    width={500}
-                    height={300}
-                    className="absolute flex h-full w-full items-center justify-center rounded-xl object-cover"
-                  ></Image>
-                </div>
-              ) : null}
-              {imageURL4 ? (
-                <div className="relative mb-[110px] mt-[30px] flex h-[180px] w-[330px] flex-col">
-                  <Image
-                    src={imageURL4}
-                    alt="image"
-                    width={500}
-                    height={300}
-                    className="absolute flex h-full w-full items-center justify-center rounded-xl object-cover"
-                  ></Image>
-                </div>
-              ) : null}
+              <SwiperResultShow
+                imageURL1={imageURL1}
+                imageURL2={imageURL2}
+                imageURL3={imageURL3}
+                imageURL4={imageURL4}
+                setSelectedImage={setSelectedImage}
+              />
+              <button
+                onClick={handleImageSelect}
+                className="mb-[130px] flex h-[54px] w-[216px] items-center justify-center rounded-3xl bg-gradient-to-b from-[#59C3C3] to-[#228187] font-coolveticaRegular text-[27px] text-[#FBF9FA] shadow-md shadow-[#999] dark:shadow-[#111]"
+              >
+                Elegir
+              </button>
             </div>
           ) : null}
           {result ? (

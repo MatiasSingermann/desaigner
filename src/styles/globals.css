@@ -60,3 +60,8 @@
   .swiper-pagination-bullet-active {
     background-color: #FBF9FA !important;
 }
+
+.swiper-slide-shadow {
+  background: none !important;
+  fill: none !important;
+}

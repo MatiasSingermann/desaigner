@@ -1,7 +1,6 @@
-import React from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination, Navigation } from "swiper/modules";
+import { Autoplay, Pagination } from "swiper/modules";
 import SwiperCore from "swiper";
 import "swiper/css";
 import "swiper/css/autoplay";
@@ -27,6 +26,8 @@ const SwiperSlider: React.FC = () => {
         autoplay={{ delay: 2000 }}
         pagination={{ clickable: true }}
         slidesPerView={1}
+        loop={true}
+        grabCursor={true}
         className="flex h-[220px] w-[280px] flex-col"
       >
         <SwiperSlide>
