@@ -152,6 +152,7 @@ function index() {
       var imgs: any;
 
       console.log("BUDGET: " + budget);
+      console.log("NUM IMAGES: " + numImages);
 
       if (
         budget == "" ||
