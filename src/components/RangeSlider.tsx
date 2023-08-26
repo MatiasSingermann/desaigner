@@ -9,7 +9,7 @@ interface SliderProps {
 function RangeSlider({ setSlider, slider }: SliderProps) {
   return (
     <>
-      <div className="mb-[8px] mt-[58px] p-[8px]">
+      <div className="flex flex-col mb-[8px] mt-[58px] p-[8px]">
         <Range
           step={1}
           min={1}
@@ -19,7 +19,7 @@ function RangeSlider({ setSlider, slider }: SliderProps) {
           renderTrack={({ props, children }) => (
             <div
               {...props}
-              className="h-[8px] w-[226px] rounded-2xl bg-[#D9D9D9]"
+              className="flex h-[8px] w-[226px] rounded-2xl bg-[#D9D9D9]"
               style={{
                 background: getTrackBackground({
                   values: slider,
@@ -35,7 +35,7 @@ function RangeSlider({ setSlider, slider }: SliderProps) {
           renderThumb={({ props }) => (
             <div
               {...props}
-              className="h-[36px] w-[36px] rounded-full bg-[#009E95] shadow-md shadow-[#999] dark:shadow-[#111]"
+              className="flex h-[36px] w-[36px] rounded-full bg-[#009E95] shadow-sm shadow-[#999] dark:shadow-[#111]"
             />
           )}
         />
