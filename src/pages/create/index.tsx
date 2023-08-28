@@ -29,6 +29,14 @@ function index() {
   const [imageURL3, setImageURL3] = useState("");
   const [imageURL4, setImageURL4] = useState("");
   const [selectedImage, setSelectedImage] = useState();
+  const [blob1, setBlob1] = useState<Blob | null>(null);
+  const [blob2, setBlob2] = useState<Blob | null>(null);
+  const [blob3, setBlob3] = useState<Blob | null>(null);
+  const [blob4, setBlob4] = useState<Blob | null>(null);
+  const [imagePrompt, setImagePrompt] = useState("");
+  const [imageLink1, setImageLink1] = useState("");
+  const [imageLink2, setImageLink2] = useState("");
+  const [imageLink3, setImageLink3] = useState("");
 
   const { data: session, status } = useSession({
     required: false,
@@ -43,6 +51,31 @@ function index() {
   }
 
   if (status === "authenticated") {
+    const getLinks = (blob: Blob) => {
+      const formData = new FormData();
+      formData.append("data", blob);
+
+      fetch("http://localhost:9000/", {
+        method: "POST",
+        headers: {
+          "content-type": "multipart/form-data",
+          "x-api-key": "lsakslaoañ209sk1",
+        },
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setImagePrompt(data.prompt);
+          const imageLinks = data.links;
+          setImageLink1(imageLinks[0]);
+          setImageLink2(imageLinks[1]);
+          setImageLink3(imageLinks[2]);
+        })
+        .catch((error) => {
+          imageError(error);
+        });
+    };
+
     const imageError = (error: any) => {
       setLoading(false);
       console.log(
@@ -63,6 +96,7 @@ function index() {
         }
       );
     };
+
     const imageProcessor = (data: any, imgs: any) => {
       console.log(data);
       setLoading(false);
@@ -73,60 +107,75 @@ function index() {
         const finalImage2 = imgs[1];
         const finalImageByteArray1 = base64.toByteArray(finalImage1);
         const finalImageByteArray2 = base64.toByteArray(finalImage2);
-        const blob1 = new Blob([finalImageByteArray1], {
+        const myBlob1 = new Blob([finalImageByteArray1], {
           type: "image/jpeg",
         });
-        const blob2 = new Blob([finalImageByteArray2], {
+        setBlob1(myBlob1);
+        const myBlob2 = new Blob([finalImageByteArray2], {
           type: "image/jpeg",
         });
-        setImageURL1(URL.createObjectURL(blob1));
-        setImageURL2(URL.createObjectURL(blob2));
+        setBlob2(myBlob2);
+        setImageURL1(URL.createObjectURL(myBlob1));
+        setImageURL2(URL.createObjectURL(myBlob2));
         if (imgs.length > 2) {
           const finalImage3 = imgs[2];
           const finalImageByteArray3 = base64.toByteArray(finalImage3);
-          const blob3 = new Blob([finalImageByteArray3], {
+          const myBlob3 = new Blob([finalImageByteArray3], {
             type: "image/jpeg",
           });
-          setImageURL3(URL.createObjectURL(blob3));
+          setBlob3(myBlob3);
+          setImageURL3(URL.createObjectURL(myBlob3));
         }
         if (imgs.length > 3) {
           const finalImage4 = imgs[3];
           const finalImageByteArray4 = base64.toByteArray(finalImage4);
-          const blob4 = new Blob([finalImageByteArray4], {
+          const myBlob4 = new Blob([finalImageByteArray4], {
             type: "image/jpeg",
           });
-          setImageURL4(URL.createObjectURL(blob4));
+          setBlob4(myBlob4);
+          setImageURL4(URL.createObjectURL(myBlob4));
         }
         setMoreThan1(true);
         setFinished(true);
       } else {
         // fetch a api blanco
+
         const finalImage = imgs[0];
         const finalImageByteArray = base64.toByteArray(finalImage);
         const blob = new Blob([finalImageByteArray], {
           type: "image/jpeg",
         });
+
+        getLinks(blob);
         setImageURL(URL.createObjectURL(blob));
+
         setResult(true);
         setFinished(true);
       }
     };
+
     const handleImageSelect = () => {
       if (selectedImage === 0) {
+        getLinks(blob1!);
         setImageURL(imageURL1);
       }
       if (selectedImage === 1) {
+        getLinks(blob2!);
         setImageURL(imageURL2);
       }
       if (selectedImage === 2) {
+        getLinks(blob3!);
         setImageURL(imageURL3);
       }
       if (selectedImage === 3) {
+        getLinks(blob4!);
         setImageURL(imageURL4);
       }
       setMoreThan1(false);
       setResult(true);
+      setFinished(true);
     };
+
     const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
       e.preventDefault();
       const formData = new FormData(e.currentTarget);
@@ -394,6 +443,16 @@ function index() {
                   height={300}
                   className="absolute flex h-full w-full items-center justify-center rounded-xl object-cover"
                 ></Image>
+              </div>
+              <div className="flex h-[300px] w-[300px] items-center justify-center rounded-2xl bg-[#000] p-[20px] dark:bg-[#111]">
+                <h3 className="font-coolveticaRegular text-[27px] text-[#FBF9FA]">
+                  {imagePrompt}
+                </h3>
+                <ul className="font-coolveticaBook text-[16px] text-[#FBF9FA]">
+                  <li>{imageLink1}</li>
+                  <li>{imageLink2}</li>
+                  <li>{imageLink3}</li>
+                </ul>
               </div>
             </div>
           ) : null}
