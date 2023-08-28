@@ -100,6 +100,7 @@ function index() {
         setMoreThan1(true);
         setFinished(true);
       } else {
+        // fetch a api blanco
         const finalImage = imgs[0];
         const finalImageByteArray = base64.toByteArray(finalImage);
         const blob = new Blob([finalImageByteArray], {
