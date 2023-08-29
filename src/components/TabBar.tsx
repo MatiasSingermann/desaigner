@@ -8,32 +8,24 @@ import Folder from "./Folder";
 import TabCurve from "./TabCurve";
 
 const TabBar = memo(function TabBar() {
-  const [targetX, setTargetX] = useState<number | null>(null);
   const elementRef = useRef<HTMLDivElement>(null);
-  const [translateX, setTranslateX] = useState<string>(
-    `calc(${24}px - ${88 / 4.6}px )`
-  );
+  const [translateX, setTranslateX] = useState<number>(0);
 
   const handleClick = (e: React.MouseEvent<HTMLUListElement>) => {
-    console.log("CLICK");
     const targetDiv = e.currentTarget;
-    console.log("TARGET DIV: " + targetDiv);
     const targetRect = targetDiv.getBoundingClientRect();
-    const targetRectX = targetRect.x
-    console.log("TARGET RECT X: " + targetRectX);
-    setTargetX(targetRectX);
-    console.log("TARGET X: " + targetX);
+    const targetRectX = targetRect.x;
 
     const element = elementRef.current;
     const width = element!.offsetWidth;
-    setTranslateX(`calc(${targetX}px - ${width / 4.6}px )`);
-    element!.style.transform = (`translateX(${translateX})`);
+    setTranslateX(Math.floor(targetRectX - width / 4.6));
   };
   return (
     <div className="fixed bottom-0 z-[100] flex h-[70px] w-full 480:hidden">
       <div
         className="absolute bottom-[66px] flex items-center justify-center transition-all"
         ref={elementRef}
+        style={{ translate: translateX }}
       >
         <TabCurve />
       </div>

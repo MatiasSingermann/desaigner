@@ -10,7 +10,7 @@ function TabBarButton({ href, image, handleClick }: TabBarButtonProps) {
   return (
     <li>
       <Link href={href}>
-        <div className="flex h-[50px] w-[50px] items-center justify-center rounded-full bg-[#59C3C3]" onClick={handleClick}>
+        <div className="flex h-[50px] w-[50px] items-center justify-center rounded-full bg-[#59C3C3] transition-all" onClick={handleClick}>
           {image}
         </div>
       </Link>
