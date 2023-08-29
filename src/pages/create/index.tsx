@@ -33,10 +33,7 @@ function index() {
   const [blob2, setBlob2] = useState<Blob | null>(null);
   const [blob3, setBlob3] = useState<Blob | null>(null);
   const [blob4, setBlob4] = useState<Blob | null>(null);
-  const [imagePrompt, setImagePrompt] = useState("");
-  const [imageLink1, setImageLink1] = useState("");
-  const [imageLink2, setImageLink2] = useState("");
-  const [imageLink3, setImageLink3] = useState("");
+  const [imageFullData, setImageFullData] = useState<any | null>(null);
 
   const { data: session, status } = useSession({
     required: false,
@@ -51,6 +48,23 @@ function index() {
   }
 
   if (status === "authenticated") {
+    const linkShow = () => {
+      for (let i = 0; i < imageFullData.length; i++) {
+        return (
+          <>
+            <h3 className="font-coolveticaRegular text-[27px] text-[#FBF9FA]">
+              {imageFullData[i][0]}
+            </h3>
+            <ul className="font-coolveticaBook text-[16px] text-[#FBF9FA]">
+              <li>{imageFullData[i][1][0]}</li>
+              <li>{imageFullData[i][1][1]}</li>
+              <li>{imageFullData[i][1][2]}</li>
+            </ul>
+          </>
+        );
+      }
+    };
+
     const getLinks = (blob: Blob) => {
       const formData = new FormData();
       formData.append("data", blob);
@@ -65,11 +79,20 @@ function index() {
       })
         .then((response) => response.json())
         .then((data) => {
-          setImagePrompt(data.prompt);
-          const imageLinks = data.links;
-          setImageLink1(imageLinks[0]);
-          setImageLink2(imageLinks[1]);
-          setImageLink3(imageLinks[2]);
+          const numImageItems = data.length;
+          let imagePrompts = [];
+          let imageLinks = [];
+          let imageBoxes = [];
+          let imgFullData = [];
+          for (let i = 0; numImageItems; i++) {
+            imagePrompts.push(data[i].prompt);
+            imageLinks.push(data[i].links);
+            imageBoxes.push(data[i].boxes);
+          }
+          for (let i = 0; i < numImageItems; i++) {
+            imgFullData.push([imagePrompts[i], imageLinks[i], imageBoxes[i]]);
+          }
+          setImageFullData(imgFullData);
         })
         .catch((error) => {
           imageError(error);
@@ -444,16 +467,11 @@ function index() {
                   className="absolute flex h-full w-full items-center justify-center rounded-xl object-cover"
                 ></Image>
               </div>
-              <div className="flex h-[300px] w-[300px] items-center justify-center rounded-2xl bg-[#000] p-[20px] dark:bg-[#111]">
-                <h3 className="font-coolveticaRegular text-[27px] text-[#FBF9FA]">
-                  {imagePrompt}
-                </h3>
-                <ul className="font-coolveticaBook text-[16px] text-[#FBF9FA]">
-                  <li>{imageLink1}</li>
-                  <li>{imageLink2}</li>
-                  <li>{imageLink3}</li>
-                </ul>
-              </div>
+              {imageFullData ? (
+                <div className="flex h-[300px] w-[300px] items-center justify-center overflow-scroll rounded-2xl bg-[#000] p-[20px] dark:bg-[#111]">
+                  {linkShow()}
+                </div>
+              ) : null}
             </div>
           ) : null}
           <ToastContainer limit={3} />
