@@ -15,6 +15,14 @@ import InpaintingEditor from "~/components/InpaintingEditor";
 import ResLoad from "~/components/ResLoad";
 import SwiperResultShow from "~/components/SwiperResultShow";
 
+interface InputImageDataProps {
+  box: [number, number, number, number];
+  prompt: string;
+  links: [string, string, string];
+}
+
+type FullDataImage = InputImageDataProps[];
+
 function index() {
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
@@ -33,7 +41,9 @@ function index() {
   const [blob2, setBlob2] = useState<Blob | null>(null);
   const [blob3, setBlob3] = useState<Blob | null>(null);
   const [blob4, setBlob4] = useState<Blob | null>(null);
-  const [imageFullData, setImageFullData] = useState<any | null>(null);
+  const [imageFullData, setImageFullData] = useState<FullDataImage>(
+    [] as FullDataImage
+  );
 
   const { data: session, status } = useSession({
     required: false,
@@ -48,17 +58,19 @@ function index() {
   }
 
   if (status === "authenticated") {
+    if (!imageFullData) return;
+
     const linkShow = () => {
       for (let i = 0; i < imageFullData.length; i++) {
         return (
           <>
             <h3 className="font-coolveticaRegular text-[27px] text-[#FBF9FA]">
-              {imageFullData[i][0]}
+              {imageFullData[i]!["prompt"]}
             </h3>
             <ul className="font-coolveticaBook text-[16px] text-[#FBF9FA]">
-              <li>{imageFullData[i][1][0]}</li>
-              <li>{imageFullData[i][1][1]}</li>
-              <li>{imageFullData[i][1][2]}</li>
+              <li>{imageFullData[i]!["links"][0]}</li>
+              <li>{imageFullData[i]!["links"][1]}</li>
+              <li>{imageFullData[i]!["links"][2]}</li>
             </ul>
           </>
         );
@@ -79,20 +91,20 @@ function index() {
       })
         .then((response) => response.json())
         .then((data) => {
-          const numImageItems = data.length;
-          let imagePrompts = [];
-          let imageLinks = [];
-          let imageBoxes = [];
-          let imgFullData = [];
-          for (let i = 0; numImageItems; i++) {
-            imagePrompts.push(data[i].prompt);
-            imageLinks.push(data[i].links);
-            imageBoxes.push(data[i].boxes);
-          }
-          for (let i = 0; i < numImageItems; i++) {
-            imgFullData.push([imagePrompts[i], imageLinks[i], imageBoxes[i]]);
-          }
-          setImageFullData(imgFullData);
+          // const numImageItems = data.length;
+          // let imagePrompts = [];
+          // let imageLinks = [];
+          // let imageBoxes = [];
+          // let imgFullData = [];
+          // for (let i = 0; numImageItems; i++) {
+          //   imagePrompts.push(data[i].prompt);
+          //   imageLinks.push(data[i].links);
+          //   imageBoxes.push(data[i].boxes);
+          // }
+          // for (let i = 0; i < numImageItems; i++) {
+          //   imgFullData.push([imagePrompts[i], imageLinks[i], imageBoxes[i]]);
+          // }
+          setImageFullData(data);
         })
         .catch((error) => {
           imageError(error);
