@@ -5,7 +5,7 @@ import LandingButton from "~/components/LandingButton";
 import SwiperSlider from "~/components/SwiperSlider";
 import { motion } from "framer-motion";
 
-function index() {
+function Index() {
   return (
     <>
       <Head>
@@ -134,4 +134,4 @@ function index() {
   );
 }
 
-export default index;
+export default Index;

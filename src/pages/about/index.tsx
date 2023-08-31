@@ -1,6 +1,6 @@
 import Head from "next/head";
 
-function index() {
+function Index() {
   return (
     <>
       <Head>
@@ -15,4 +15,4 @@ function index() {
   );
 }
 
-export default index;
+export default Index;

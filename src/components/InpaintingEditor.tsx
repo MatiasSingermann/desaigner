@@ -1,5 +1,5 @@
 import Cross from "./Cross";
-import { Dispatch, SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from "react";
 
 interface InpaintingEditorProps {
   setShowEdit: Dispatch<SetStateAction<boolean>>;

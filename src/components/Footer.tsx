@@ -1,11 +1,7 @@
 import Link from "next/link";
-import FacebookLogo from "./FacebookLogo";
 import FooterLinksLeft from "./FooterLinksLeft";
 import FooterLinksRight from "./FooterLinksRight";
-import InstagramLogo from "./InstagramLogo";
 import SocialMedia from "./SocialMedia";
-import TwitterLogo from "./TwitterLogo";
-import XLogo from "./XLogo";
 
 function Footer() {
   return (

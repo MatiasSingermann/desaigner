@@ -3,10 +3,10 @@ import Footer from "~/components/Footer";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
-function index() {
+function Index() {
   const router = useRouter();
 
-  const { data: session, status } = useSession({
+  const { status } = useSession({
     required: false,
   });
 
@@ -35,4 +35,4 @@ function index() {
   }
 }
 
-export default index;
+export default Index;

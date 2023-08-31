@@ -45,19 +45,9 @@ function ImageUploader({
 
       image = URL.createObjectURL(selectedImage!);
 
-      // selectedImage.arrayBuffer().then(buffer => {
-      //   console.log(base64.fromByteArray(new Uint8Array(buffer)))
-      // })
-
-      // selectedImage.stream().getReader().read().then(hola => {console.log(base64.fromByteArray(new Uint8Array(hola.value as ArrayBuffer)))})
-
-      // setValue("C:\\fakepath\\" + String(imageName))
-
-      console.log("Selected Image: " + JSON.stringify(selectedImage))
-
       console.log(imageName);
       console.log(e.target.files);
-      updateImageData(image, imageName) //"C:\\fakepath\\" + String(imageName));
+      updateImageData(image, imageName)
     }
   };
   const dragImage = (e: React.DragEvent) => {

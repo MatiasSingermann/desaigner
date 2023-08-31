@@ -6,7 +6,7 @@ const Home = () => {
 
   const router = useRouter()
 
-  const { data: session, status } = useSession({
+  const { status } = useSession({
     required: false,
   })
 

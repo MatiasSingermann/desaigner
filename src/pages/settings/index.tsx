@@ -2,8 +2,8 @@ import Head from "next/head";
 import ThemeButton from "~/components/ThemeButton";
 import { useSession } from "next-auth/react";
 
-function index() {
-  const { data: session, status } = useSession({
+function Index() {
+  const { status } = useSession({
     required: false,
   })
 
@@ -23,4 +23,4 @@ function index() {
   );
 }
 
-export default index;
+export default Index;

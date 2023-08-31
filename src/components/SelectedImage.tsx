@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Trash from "./Trash";
-import { Dispatch, SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import Brush from "./Brush";
 
 interface SelectedImageProps {

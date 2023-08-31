@@ -23,7 +23,7 @@ interface InputImageDataProps {
 
 type FullDataImage = InputImageDataProps[];
 
-function index() {
+function Index() {
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
   const [showEdit, setShowEdit] = useState(false);
@@ -45,7 +45,7 @@ function index() {
     [] as FullDataImage
   );
 
-  const { data: session, status } = useSession({
+  const { status } = useSession({
     required: false,
   });
 
@@ -136,7 +136,6 @@ function index() {
       console.log(data);
       setLoading(false);
       imgs = data.images;
-      console.log("LENGTH: " + imgs.length);
       if (imgs.length > 1) {
         const finalImage1 = imgs[0];
         const finalImage2 = imgs[1];
@@ -173,12 +172,10 @@ function index() {
         setMoreThan1(true);
         setFinished(true);
       } else {
-        // fetch a api blanco
-
         const finalImage = imgs[0];
         const finalImageByteArray = base64.toByteArray(finalImage);
         const blob = new Blob([finalImageByteArray], {
-          type: "image/jpeg",
+          type : "image/jpeg",
         });
 
         getLinks(blob);
@@ -220,7 +217,7 @@ function index() {
       }
 
       const inputImage: any = inputData[0] ? inputData[0][1] : "";
-      let noImage = inputData[1] ? inputData[1][1].toString() : "";
+      const noImage = inputData[1] ? inputData[1][1].toString() : "";
       const budget = inputData[2] ? inputData[2][1].toString() : "";
       const style = inputData[3] ? inputData[3][1].toString() : "";
       const environment = inputData[4] ? inputData[4][1].toString() : "";
@@ -232,7 +229,6 @@ function index() {
       let requiredInputs = true;
       let isNoImage = false;
       let isNoMask = false;
-      let isNoNumber = false;
 
       var imgs: any;
 
@@ -266,7 +262,7 @@ function index() {
       console.log("WIDTH: " + inputImage.width);
       console.log("HEIGHT: " + inputImage.height);
 
-      // if (inputImage == "[object File]" || noImage == "false") {
+      // if (inputImage == "[object File]" && noImage == "false") {
       //   noImage = "true";
       // }
 
@@ -274,27 +270,7 @@ function index() {
         isNoMask = true;
       }
 
-      if (typeof numImages != typeof 1) {
-        toast.error(
-          "Hubo un error inesperado. Revisa tu conexión o inténtalo más tarde",
-          {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          }
-        );
-        isNoNumber = true;
-      }
-
-      console.log("inputData: " + inputData);
-
       if (requiredInputs && isNoImage) {
-        //&& !isNoNumber) {
 
         const obj = {
           budget: budget,
@@ -328,19 +304,6 @@ function index() {
             imageError(error);
           });
       } else if (requiredInputs && !isNoImage && isNoMask) {
-        // && !isNoNumber) {
-
-        const obj = {
-          budget: budget,
-          style: style,
-          environment: environment,
-          weather: weather,
-          disability: disability,
-          num_images: numImages,
-          steps: 20,
-          guidance_scale: 7,
-          controlnet_conditioning_scale: 1,
-        };
 
         console.log("IMG NO MASK");
 
@@ -354,7 +317,7 @@ function index() {
         formData.append("weather", weather);
         formData.append("disability", disability);
         formData.append("num_images", numImages.toString());
-        formData.append("steps", (21).toString());
+        formData.append("steps", (20).toString());
         formData.append("guidance_scale", (7).toString());
         formData.append("controlnet_conditioning_scale", (1).toString());
         formData.append("input_image", inputImage);
@@ -372,18 +335,6 @@ function index() {
             imageError(error);
           });
       } else if (requiredInputs && !isNoImage && !isNoMask) {
-        // && !isNoNumber) {
-
-        const obj = {
-          budget: budget,
-          style: style,
-          environment: environment,
-          weather: weather,
-          disability: disability,
-          num_images: numImages,
-          steps: 20,
-          guidance_scale: 7,
-        };
 
         console.log("ALL");
 
@@ -397,7 +348,7 @@ function index() {
         formData.append("weather", weather);
         formData.append("disability", disability);
         formData.append("num_images", numImages.toString());
-        formData.append("steps", (21).toString());
+        formData.append("steps", (1).toString());
         formData.append("guidance_scale", (7).toString());
         formData.append("controlnet_conditioning_scale", (1).toString());
         formData.append("input_image", inputImage);
@@ -494,4 +445,4 @@ function index() {
   }
 }
 
-export default index;
+export default Index;

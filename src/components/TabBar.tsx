@@ -11,7 +11,6 @@ const TabBar = memo(function TabBar() {
   const elementRef = useRef<HTMLDivElement>(null);
   const [translateX, setTranslateX] = useState<number>(5);
   const [activated, setActivated] = useState(false);
-  const [activateList, setActivateList] = useState([1, 0, 0, 0, 0]);
   let element: HTMLDivElement | null;
 
   const handleClick = (e: React.MouseEvent<HTMLUListElement>) => {
@@ -48,7 +47,6 @@ const TabBar = memo(function TabBar() {
             image={<Rocket />}
             handleClick={handleClick}
             activated={activated}
-            setActivateList={setActivateList}
           />
           <TabBarButton
             key="House"
@@ -56,7 +54,6 @@ const TabBar = memo(function TabBar() {
             image={<House />}
             handleClick={handleClick}
             activated={activated}
-            setActivateList={setActivateList}
           />
           <TabBarButton
             key="Sparkle"
@@ -64,7 +61,6 @@ const TabBar = memo(function TabBar() {
             image={<Sparkle />}
             handleClick={handleClick}
             activated={activated}
-            setActivateList={setActivateList}
           />
           <TabBarButton
             key="Folder"
@@ -72,7 +68,6 @@ const TabBar = memo(function TabBar() {
             image={<Folder />}
             handleClick={handleClick}
             activated={activated}
-            setActivateList={setActivateList}
           />
           <TabBarButton
             key="Gear"
@@ -80,7 +75,6 @@ const TabBar = memo(function TabBar() {
             image={<Gear />}
             handleClick={handleClick}
             activated={activated}
-            setActivateList={setActivateList}
           />
         </ul>
       </div>

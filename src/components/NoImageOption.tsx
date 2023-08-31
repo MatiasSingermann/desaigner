@@ -1,6 +1,6 @@
 import Checked from "./Checked";
 import Unchecked from "./Unchecked";
-import {Dispatch, SetStateAction} from 'react'
+import type {Dispatch, SetStateAction} from 'react'
 
 interface NoImageOptionProps {
     setChecked: Dispatch<SetStateAction<boolean>>

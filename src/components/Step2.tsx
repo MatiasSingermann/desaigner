@@ -4,7 +4,7 @@ import Estilo from "~/components/Estilo";
 import Plano from "~/components/Plano";
 import Clima from "~/components/Clima";
 import Discapacidad from "~/components/Discapacidad";
-import { SetStateAction } from "react";
+import type { SetStateAction } from "react";
 
 interface Step2Props {
   counter: SetStateAction<number>;

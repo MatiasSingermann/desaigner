@@ -1,7 +1,7 @@
 import ImageNumBox from "./ImageNumBox";
 import RangeSlider from "./RangeSlider";
 import { useState } from "react";
-import { SetStateAction } from "react";
+import type { SetStateAction } from "react";
 
 interface Step3Props {
   counter: SetStateAction<number>;

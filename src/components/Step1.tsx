@@ -1,7 +1,8 @@
 import ImageUploader from "./ImageUploader";
 import NoImageOption from "./NoImageOption";
 import SelectedImage from "./SelectedImage";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import ImageUploaderBlack from "./ImageUploaderBlack";
 
 interface Step1Props {

@@ -2,21 +2,17 @@ import Link from "next/link";
 import { Dispatch, SetStateAction } from "react";
 
 interface TabBarButtonProps {
-  key: string;
   href: string;
   image: JSX.Element;
   handleClick: any;
   activated: SetStateAction<boolean>;
-  setActivateList: Dispatch<SetStateAction<number[]>>;
 }
 
 function TabBarButton({
-  key,
   href,
   image,
   handleClick,
   activated,
-  setActivateList,
 }: TabBarButtonProps) {
   const liContent = () => {
     return (
@@ -24,7 +20,7 @@ function TabBarButton({
         <Link href={href}>
           <div
             className={`flex h-[50px] w-[50px] items-center justify-center rounded-full transition-all ${
-              activated ? "translate-y-[-27px] bg-[#59C3C3]" : null
+              activated ? "translate-y-[-27px] bg-[#59C3C3]" : ""
             }`}
             onClick={handleClick}
           >
