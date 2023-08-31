@@ -23,7 +23,7 @@ function Steps({ setCounter, counter }: StepsProps) {
         form="false"
         onClick={counterRest}
         className={`rotate-[90deg] scale-[.6] fill-[#228187] stroke-[#228187] stroke-2 ${
-          counter === 1 && "fill-[#BABABA] stroke-[#BABABA]"
+          counter === 1 ? "fill-[#BABABA] stroke-[#BABABA]" : ""
         }`}
       >
         <Arrow />
@@ -35,7 +35,7 @@ function Steps({ setCounter, counter }: StepsProps) {
         form="false"
         onClick={counterSum}
         className={`rotate-[270deg] scale-[.6] fill-[#228187] stroke-[#228187] stroke-2 ${
-          counter === 3 && "fill-[#BABABA] stroke-[#BABABA]"
+          counter === 3 ? "fill-[#BABABA] stroke-[#BABABA]" : ""
         }`}
       >
         <Arrow />

@@ -4,9 +4,9 @@ import type { Dispatch, SetStateAction } from "react";
 import Brush from "./Brush";
 
 interface SelectedImageProps {
-  image: any;
+  image: string;
   imageName: string;
-  updateImageData: (newImage: any, newImageName: string) => void;
+  updateImageData: (newImage: object | null, newImageName: string) => void;
   setShowEdit: Dispatch<SetStateAction<boolean>>;
 }
 

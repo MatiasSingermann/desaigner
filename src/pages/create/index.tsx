@@ -21,6 +21,10 @@ interface InputImageDataProps {
   links: [string, string, string];
 }
 
+interface dataImage {
+  images: string[];
+}
+
 type FullDataImage = InputImageDataProps[];
 
 function Index() {
@@ -54,7 +58,7 @@ function Index() {
   }
 
   if (status === "unauthenticated") {
-    router.push("/login");
+    void router.push("/login");
   }
 
   if (status === "authenticated") {
@@ -90,7 +94,7 @@ function Index() {
         body: formData,
       })
         .then((response) => response.json())
-        .then((data) => {
+        .then((data: FullDataImage) => {
           // const numImageItems = data.length;
           // let imagePrompts = [];
           // let imageLinks = [];
@@ -106,12 +110,12 @@ function Index() {
           // }
           setImageFullData(data);
         })
-        .catch((error) => {
+        .catch((error : Error) => {
           imageError(error);
         });
     };
 
-    const imageError = (error: any) => {
+    const imageError = (error: Error) => {
       setLoading(false);
       console.log(
         "Hubo un error inesperado. Revisa tu conexión o inténtalo más tarde"
@@ -132,15 +136,15 @@ function Index() {
       );
     };
 
-    const imageProcessor = (data: any, imgs: any) => {
+    const imageProcessor = (data: dataImage) => {
       console.log(data);
       setLoading(false);
-      imgs = data.images;
-      if (imgs.length > 1) {
-        const finalImage1 = imgs[0];
-        const finalImage2 = imgs[1];
-        const finalImageByteArray1 = base64.toByteArray(finalImage1);
-        const finalImageByteArray2 = base64.toByteArray(finalImage2);
+      
+      if (data.images.length > 1) {
+        const finalImage1 = data.images[0];
+        const finalImage2 = data.images[1];
+        const finalImageByteArray1 = base64.toByteArray(finalImage1!);
+        const finalImageByteArray2 = base64.toByteArray(finalImage2!);
         const myBlob1 = new Blob([finalImageByteArray1], {
           type: "image/jpeg",
         });
@@ -151,18 +155,18 @@ function Index() {
         setBlob2(myBlob2);
         setImageURL1(URL.createObjectURL(myBlob1));
         setImageURL2(URL.createObjectURL(myBlob2));
-        if (imgs.length > 2) {
-          const finalImage3 = imgs[2];
-          const finalImageByteArray3 = base64.toByteArray(finalImage3);
+        if (data.images.length > 2) {
+          const finalImage3 = data.images[2];
+          const finalImageByteArray3 = base64.toByteArray(finalImage3!);
           const myBlob3 = new Blob([finalImageByteArray3], {
             type: "image/jpeg",
           });
           setBlob3(myBlob3);
           setImageURL3(URL.createObjectURL(myBlob3));
         }
-        if (imgs.length > 3) {
-          const finalImage4 = imgs[3];
-          const finalImageByteArray4 = base64.toByteArray(finalImage4);
+        if (data.images.length > 3) {
+          const finalImage4 = data.images[3];
+          const finalImageByteArray4 = base64.toByteArray(finalImage4!);
           const myBlob4 = new Blob([finalImageByteArray4], {
             type: "image/jpeg",
           });
@@ -172,8 +176,8 @@ function Index() {
         setMoreThan1(true);
         setFinished(true);
       } else {
-        const finalImage = imgs[0];
-        const finalImageByteArray = base64.toByteArray(finalImage);
+        const finalImage = data.images[0];
+        const finalImageByteArray = base64.toByteArray(finalImage!);
         const blob = new Blob([finalImageByteArray], {
           type : "image/jpeg",
         });
@@ -216,7 +220,7 @@ function Index() {
         inputData.push(pair);
       }
 
-      const inputImage: any = inputData[0] ? inputData[0][1] : "";
+      const inputImage= inputData[0] ? inputData[0][1] : "";
       const noImage = inputData[1] ? inputData[1][1].toString() : "";
       const budget = inputData[2] ? inputData[2][1].toString() : "";
       const style = inputData[3] ? inputData[3][1].toString() : "";
@@ -229,11 +233,6 @@ function Index() {
       let requiredInputs = true;
       let isNoImage = false;
       let isNoMask = false;
-
-      var imgs: any;
-
-      console.log("BUDGET: " + budget);
-      console.log("NUM IMAGES: " + numImages);
 
       if (
         budget == "" ||
@@ -258,9 +257,6 @@ function Index() {
       if (noImage == "true") {
         isNoImage = true;
       }
-
-      console.log("WIDTH: " + inputImage.width);
-      console.log("HEIGHT: " + inputImage.height);
 
       // if (inputImage == "[object File]" && noImage == "false") {
       //   noImage = "true";
@@ -297,10 +293,10 @@ function Index() {
           body: JSON.stringify(obj),
         })
           .then((response) => response.json())
-          .then((data) => {
-            imageProcessor(data, imgs);
+          .then((data: dataImage) => {
+            imageProcessor(data);
           })
-          .catch((error) => {
+          .catch((error: Error) => {
             imageError(error);
           });
       } else if (requiredInputs && !isNoImage && isNoMask) {
@@ -328,10 +324,10 @@ function Index() {
           body: formData,
         })
           .then((response) => response.json())
-          .then((data) => {
-            imageProcessor(data, imgs);
+          .then((data: dataImage) => {
+            imageProcessor(data);
           })
-          .catch((error) => {
+          .catch((error: Error) => {
             imageError(error);
           });
       } else if (requiredInputs && !isNoImage && !isNoMask) {
@@ -360,10 +356,10 @@ function Index() {
           body: formData,
         })
           .then((response) => response.json())
-          .then((data) => {
-            imageProcessor(data, imgs);
+          .then((data: dataImage) => {
+            imageProcessor(data);
           })
-          .catch((error) => {
+          .catch((error: Error) => {
             imageError(error);
           });
       }

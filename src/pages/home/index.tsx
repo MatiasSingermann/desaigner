@@ -15,7 +15,7 @@ function Index() {
   }
 
   if (status === "unauthenticated") {
-    router.push("/login");
+    void router.push("/login");
   }
 
   if (status === "authenticated") {

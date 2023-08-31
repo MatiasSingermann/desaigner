@@ -19,7 +19,7 @@ function Index() {
   }
 
   if (status === "authenticated") {
-    router.push("/home");
+    void router.push("/home");
   }
 
   const toggleSwitch = () => {

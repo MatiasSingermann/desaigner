@@ -23,8 +23,8 @@ function ImageUploader({
       return;
     }
     if (
-      selectedImage!.type != "image/png" &&
-      selectedImage!.type != "image/jpeg"
+      selectedImage.type != "image/png" &&
+      selectedImage.type != "image/jpeg"
     ) {
       toast.error(
         "Solo se permiten archivos de tipo .png y .jpg (.jpeg)",
@@ -40,13 +40,10 @@ function ImageUploader({
         }
       );
     } else {
-      imageName = selectedImage!.name;
-      console.log(selectedImage!.type);
+      imageName = selectedImage.name;
 
-      image = URL.createObjectURL(selectedImage!);
+      image = URL.createObjectURL(selectedImage);
 
-      console.log(imageName);
-      console.log(e.target.files);
       updateImageData(image, imageName)
     }
   };

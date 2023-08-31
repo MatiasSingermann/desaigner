@@ -10,7 +10,7 @@ interface StepShowProps {
 }
 
 function StepShow({setShowEdit} : StepShowProps) {
-  let [counter, setCounter] = useState(1);
+  const [counter, setCounter] = useState(1);
   return (
     <>
       <Step1 counter={counter} setShowEdit={setShowEdit}/>

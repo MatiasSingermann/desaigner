@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -22,8 +22,8 @@ function SwiperResultShow({
   imageURL4,
   setSelectedImage,
 }: SwiperResultShowProps) {
-    const handleSlideChange = (e : any) => {
-          const activeIndex = e.activeIndex;
+    const handleSlideChange = (swiper: SwiperClass) => {
+          const activeIndex = swiper.activeIndex;
           setSelectedImage(activeIndex);
       };
   return (

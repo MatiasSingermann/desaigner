@@ -11,7 +11,7 @@ const Home = () => {
   })
 
   if (status === "unauthenticated") {
-    router.push("/landing")
+    void router.push("/landing")
   }
 
   if (status === "loading") {
@@ -19,7 +19,7 @@ const Home = () => {
   }
 
   if (status === "authenticated") {
-    router.push("/home")
+    void router.push("/home")
   }
 
   return (

@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { Dispatch, SetStateAction } from "react";
+import { MouseEventHandler, SetStateAction } from "react";
 
 interface TabBarButtonProps {
   href: string;
   image: JSX.Element;
-  handleClick: any;
+  handleClick: MouseEventHandler<HTMLDivElement>;
   activated: SetStateAction<boolean>;
 }
 
