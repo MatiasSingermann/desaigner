@@ -12,7 +12,7 @@ interface SwiperResultShowProps {
   imageURL2 : string;
   imageURL3 : string;
   imageURL4 : string;
-  setSelectedImage : Dispatch<SetStateAction<undefined>>;
+  setSelectedImage : Dispatch<SetStateAction<number>>;
 }
 
 function SwiperResultShow({

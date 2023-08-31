@@ -2,6 +2,7 @@ import Link from "next/link";
 import { MouseEventHandler, SetStateAction } from "react";
 
 interface TabBarButtonProps {
+  name: string;
   href: string;
   image: JSX.Element;
   handleClick: MouseEventHandler<HTMLDivElement>;
@@ -9,6 +10,7 @@ interface TabBarButtonProps {
 }
 
 function TabBarButton({
+  name,
   href,
   image,
   handleClick,
@@ -19,9 +21,7 @@ function TabBarButton({
       <li>
         <Link href={href}>
           <div
-            className={`flex h-[50px] w-[50px] items-center justify-center rounded-full transition-all ${
-              activated ? "translate-y-[-27px] bg-[#59C3C3]" : ""
-            }`}
+            className={`flex h-[50px] w-[50px] items-center justify-center rounded-full transition-all ${name}`}
             onClick={handleClick}
           >
             {image}

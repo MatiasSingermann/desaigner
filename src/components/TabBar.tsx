@@ -12,11 +12,30 @@ const TabBar = memo(function TabBar() {
   const [translateX, setTranslateX] = useState<number>(5);
   const [activated, setActivated] = useState(false);
   let element: HTMLDivElement | null;
+  const [counter, setCounter] = useState(0)
+  const [previousDiv, setPreviousDiv] = useState<EventTarget & HTMLDivElement>()
+  const [previousDivClassName, setPreviousDivClassName] = useState("")
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const targetDiv = e.currentTarget;
     const targetRect = targetDiv.getBoundingClientRect();
     const targetRectX = targetRect.x;
+    let targetDivClassName = "";
+   
+    if(targetDiv != previousDiv){
+      if(targetDiv.className.includes("tabbar-selected") === false){
+        targetDivClassName = targetDiv.className += " tabbar-selected";
+      }
+      if(counter === 1){
+        previousDiv!.className = previousDivClassName;
+      }
+      setPreviousDiv(targetDiv);
+      setPreviousDivClassName("flex h-[50px] w-[50px] items-center justify-center rounded-full transition-all")
+    }
+
+    if(counter == 0) {
+      setCounter(1);
+    }
 
     if (elementRef.current != element) {
       element = elementRef.current;
@@ -42,35 +61,35 @@ const TabBar = memo(function TabBar() {
       <div className="flex h-[70px] w-full items-center justify-center bg-[#228187] px-[24px]">
         <ul className="flex h-full w-full items-center justify-between">
           <TabBarButton
-            key="Rocket"
+            name="Rocket"
             href="/landing"
             image={<Rocket />}
             handleClick={handleClick}
             activated={activated}
           />
           <TabBarButton
-            key="House"
+            name="House"
             href="/home"
             image={<House />}
             handleClick={handleClick}
             activated={activated}
           />
           <TabBarButton
-            key="Sparkle"
+            name="Sparkle"
             href="/create"
             image={<Sparkle />}
             handleClick={handleClick}
             activated={activated}
           />
           <TabBarButton
-            key="Folder"
+            name="Folder"
             href="/collections"
             image={<Folder />}
             handleClick={handleClick}
             activated={activated}
           />
           <TabBarButton
-            key="Gear"
+            name="Gear"
             href="/settings"
             image={<Gear />}
             handleClick={handleClick}

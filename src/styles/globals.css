@@ -40,6 +40,13 @@
     }
 }
 
+@layer components {
+  .tabbar-selected {
+    translate: 0 -27px;
+    background-color: #59C3C3;
+  }
+}
+
 ::-webkit-scrollbar {
     width: 8px; /* width of the scrollbar */
   }

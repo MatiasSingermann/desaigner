@@ -15,7 +15,30 @@ import { signIn } from "next-auth/react";
 function LoginForm() {
   const formRef = useRef<HTMLFormElement>(null);
 
-  const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
+  const loginSuccess = async (userEmail : string, userPassword : string) => {
+    const result = await signIn("credentials", {
+      email: userEmail.toLocaleLowerCase(),
+      contrasenia: userPassword,
+      redirect: false,
+    });
+    if (result!.ok) {
+      console.log("Inicio de sesión exitoso");
+    } else if (result!.status !== 200) {
+      console.log("Ese email o la contraseña son incorrectos");
+      toast.error("Ese email o la contraseña son incorrectos", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
+  }
+
+  const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
@@ -78,27 +101,7 @@ function LoginForm() {
           theme: "colored",
         });
       } else {
-        const result = await signIn("credentials", {
-          email: userEmail.toLocaleLowerCase(),
-          contrasenia: userPassword,
-          redirect: false,
-          // callbackUrl: "/home",
-        });
-        if (result!.ok) {
-          console.log("Inicio de sesión exitoso");
-        } else if (result!.status !== 200) {
-          console.log("Ese email o la contraseña son incorrectos");
-          toast.error("Ese email o la contraseña son incorrectos", {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
-        }
+        void loginSuccess(userEmail, userPassword);
       }
     }
   };

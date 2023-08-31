@@ -40,7 +40,7 @@ function Index() {
   const [imageURL2, setImageURL2] = useState("");
   const [imageURL3, setImageURL3] = useState("");
   const [imageURL4, setImageURL4] = useState("");
-  const [selectedImage, setSelectedImage] = useState();
+  const [selectedImage, setSelectedImage] = useState(0);
   const [blob1, setBlob1] = useState<Blob | null>(null);
   const [blob2, setBlob2] = useState<Blob | null>(null);
   const [blob3, setBlob3] = useState<Blob | null>(null);
@@ -313,7 +313,7 @@ function Index() {
         formData.append("weather", weather);
         formData.append("disability", disability);
         formData.append("num_images", numImages.toString());
-        formData.append("steps", (20).toString());
+        formData.append("steps", (1).toString());
         formData.append("guidance_scale", (7).toString());
         formData.append("controlnet_conditioning_scale", (1).toString());
         formData.append("input_image", inputImage);
