@@ -6,7 +6,6 @@ interface TabBarButtonProps {
   href: string;
   image: JSX.Element;
   handleClick: MouseEventHandler<HTMLDivElement>;
-  activated: SetStateAction<boolean>;
 }
 
 function TabBarButton({
@@ -14,7 +13,6 @@ function TabBarButton({
   href,
   image,
   handleClick,
-  activated,
 }: TabBarButtonProps) {
   const liContent = () => {
     return (

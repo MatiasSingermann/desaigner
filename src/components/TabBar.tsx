@@ -16,8 +16,11 @@ const TabBar = memo(function TabBar() {
   const [previousDiv, setPreviousDiv] = useState<EventTarget & HTMLDivElement>()
   const [previousDivClassName, setPreviousDivClassName] = useState("")
 
+  const firstDivClassName = "flex h-[50px] w-[50px] items-center justify-center rounded-full transition-all Rocket";
+
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const targetDiv = e.currentTarget;
+    console.log(targetDiv)
     const targetRect = targetDiv.getBoundingClientRect();
     const targetRectX = targetRect.x;
     let targetDivClassName = "";
@@ -43,11 +46,6 @@ const TabBar = memo(function TabBar() {
 
     const width = element!.offsetWidth;
     setTranslateX(Math.floor(targetRectX - width / 4.8));
-    if (activated === false) {
-      setActivated(true);
-    } else {
-      setActivated(false);
-    }
   };
   return (
     <div className="fixed bottom-0 z-[100] flex h-[70px] w-full 480:hidden">
@@ -65,35 +63,30 @@ const TabBar = memo(function TabBar() {
             href="/landing"
             image={<Rocket />}
             handleClick={handleClick}
-            activated={activated}
           />
           <TabBarButton
             name="House"
             href="/home"
             image={<House />}
             handleClick={handleClick}
-            activated={activated}
           />
           <TabBarButton
             name="Sparkle"
             href="/create"
             image={<Sparkle />}
             handleClick={handleClick}
-            activated={activated}
           />
           <TabBarButton
             name="Folder"
             href="/collections"
             image={<Folder />}
             handleClick={handleClick}
-            activated={activated}
           />
           <TabBarButton
             name="Gear"
             href="/settings"
             image={<Gear />}
             handleClick={handleClick}
-            activated={activated}
           />
         </ul>
       </div>
