@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Link from "next/link";
 import Footer from "~/components/Footer";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
@@ -62,55 +63,60 @@ function Index() {
   }
 
   if (status === "authenticated") {
-    if (!imageFullData) return;
-
     const linkShow = () => {
-      for (let i = 0; i < imageFullData.length; i++) {
-        return (
-          <>
-            <h3 className="font-coolveticaRegular text-[27px] text-[#FBF9FA]">
-              {imageFullData[i]!["prompt"]}
-            </h3>
-            <ul className="font-coolveticaBook text-[16px] text-[#FBF9FA]">
-              <li>{imageFullData[i]!["links"][0]}</li>
-              <li>{imageFullData[i]!["links"][1]}</li>
-              <li>{imageFullData[i]!["links"][2]}</li>
-            </ul>
-          </>
-        );
-      }
+      // if (!imageFullData) return;
+      return (
+        <>
+          {imageFullData.map((furniture, index) => (
+            <div key={index} className="flex w-full flex-col items-start">
+              <h3 className="mt-[16px] flex items-start justify-center text-start font-coolveticaRegular text-[27px] text-[#FBF9FA]">
+                {furniture["prompt"]}
+              </h3>
+              <div className="flex flex-col items-start justify-center text-start font-coolveticaBook text-[16px] text-[#00a]">
+                {furniture["links"][0] == "No hay link" ? (
+                  <p className="text-[#FBF9FA]">No hay link</p>
+                ) : (
+                  <Link href={furniture["links"][0]}>
+                    {furniture["links"][0]}
+                  </Link>
+                )}
+                {furniture["links"][1] == "No hay link" ? (
+                  <p className="text-[#FBF9FA]">No hay link</p>
+                ) : (
+                  <Link href={furniture["links"][1]}>
+                    {furniture["links"][1]}
+                  </Link>
+                )}
+                {furniture["links"][2] == "No hay link" ? (
+                  <p className="text-[#FBF9FA]">No hay link</p>
+                ) : (
+                  <Link href={furniture["links"][2]}>
+                    {furniture["links"][2]}
+                  </Link>
+                )}
+              </div>
+            </div>
+          ))}
+        </>
+      );
     };
 
     const getLinks = (blob: Blob) => {
       const formData = new FormData();
-      formData.append("data", blob);
+      formData.append("image", blob);
 
       fetch("http://localhost:9000/", {
         method: "POST",
-        headers: {
-          "content-type": "multipart/form-data",
-          "x-api-key": "lsakslaoañ209sk1",
-        },
         body: formData,
       })
         .then((response) => response.json())
         .then((data: FullDataImage) => {
-          // const numImageItems = data.length;
-          // let imagePrompts = [];
-          // let imageLinks = [];
-          // let imageBoxes = [];
-          // let imgFullData = [];
-          // for (let i = 0; numImageItems; i++) {
-          //   imagePrompts.push(data[i].prompt);
-          //   imageLinks.push(data[i].links);
-          //   imageBoxes.push(data[i].boxes);
-          // }
-          // for (let i = 0; i < numImageItems; i++) {
-          //   imgFullData.push([imagePrompts[i], imageLinks[i], imageBoxes[i]]);
-          // }
           setImageFullData(data);
+          setMoreThan1(false);
+          setResult(true);
+          setLoading(false);
         })
-        .catch((error : Error) => {
+        .catch((error: Error) => {
           imageError(error);
         });
     };
@@ -137,10 +143,8 @@ function Index() {
     };
 
     const imageProcessor = (data: dataImage) => {
-      console.log(data);
-      setLoading(false);
-      
       if (data.images.length > 1) {
+        setLoading(false);
         const finalImage1 = data.images[0];
         const finalImage2 = data.images[1];
         const finalImageByteArray1 = base64.toByteArray(finalImage1!);
@@ -179,9 +183,9 @@ function Index() {
         const finalImage = data.images[0];
         const finalImageByteArray = base64.toByteArray(finalImage!);
         const blob = new Blob([finalImageByteArray], {
-          type : "image/jpeg",
+          type: "image/jpeg",
         });
-
+        setLoading(true);
         getLinks(blob);
         setImageURL(URL.createObjectURL(blob));
 
@@ -207,9 +211,7 @@ function Index() {
         getLinks(blob4!);
         setImageURL(imageURL4);
       }
-      setMoreThan1(false);
-      setResult(true);
-      setFinished(true);
+      setLoading(true);
     };
 
     const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
@@ -220,7 +222,7 @@ function Index() {
         inputData.push(pair);
       }
 
-      const inputImage= inputData[0] ? inputData[0][1] : "";
+      const inputImage = inputData[0] ? inputData[0][1] : "";
       const noImage = inputData[1] ? inputData[1][1].toString() : "";
       const budget = inputData[2] ? inputData[2][1].toString() : "";
       const style = inputData[3] ? inputData[3][1].toString() : "";
@@ -258,16 +260,11 @@ function Index() {
         isNoImage = true;
       }
 
-      // if (inputImage == "[object File]" && noImage == "false") {
-      //   noImage = "true";
-      // }
-
       if (maskImage == "TEST") {
         isNoMask = true;
       }
 
       if (requiredInputs && isNoImage) {
-
         const obj = {
           budget: budget,
           style: style,
@@ -275,7 +272,7 @@ function Index() {
           weather: weather,
           disability: disability,
           num_images: numImages,
-          steps: 1,
+          steps: 20,
           guidance_scale: 7,
         };
 
@@ -300,7 +297,6 @@ function Index() {
             imageError(error);
           });
       } else if (requiredInputs && !isNoImage && isNoMask) {
-
         console.log("IMG NO MASK");
 
         setLoading(true);
@@ -313,7 +309,7 @@ function Index() {
         formData.append("weather", weather);
         formData.append("disability", disability);
         formData.append("num_images", numImages.toString());
-        formData.append("steps", (1).toString());
+        formData.append("steps", (20).toString());
         formData.append("guidance_scale", (7).toString());
         formData.append("controlnet_conditioning_scale", (1).toString());
         formData.append("input_image", inputImage);
@@ -331,7 +327,6 @@ function Index() {
             imageError(error);
           });
       } else if (requiredInputs && !isNoImage && !isNoMask) {
-
         console.log("ALL");
 
         setLoading(true);
@@ -411,13 +406,13 @@ function Index() {
           ) : null}
           {result ? (
             <div className="flex h-full w-full flex-col items-center justify-center">
-              <h1 className="mx-[32px] mb-[52px] self-start bg-gradient-to-tr from-[#228187] to-[#59C3C3] bg-clip-text font-coolveticaRegular text-[40px] leading-none text-transparent">
+              <h1 className="mx-[32px] mb-[52px] self-start bg-gradient-to-tr from-[#228187] to-[#59C3C3] bg-clip-text p-[6px] font-coolveticaRegular text-[40px] leading-none text-transparent">
                 Aquí tienes tu imagen
               </h1>
               <h2 className="mx-[32px] self-start font-coolveticaRegular text-[30px] leading-none">
                 Puedes ver los links de los muebles
               </h2>
-              <div className="relative mb-[110px] mt-[30px] flex h-[180px] w-[330px] flex-col">
+              <div className="relative mb-[30px] mt-[30px] flex h-[180px] w-[330px] flex-col">
                 <Image
                   src={imageURL}
                   alt="image"
@@ -426,11 +421,9 @@ function Index() {
                   className="absolute flex h-full w-full items-center justify-center rounded-xl object-cover"
                 ></Image>
               </div>
-              {imageFullData ? (
-                <div className="flex h-[300px] w-[300px] items-center justify-center overflow-scroll rounded-2xl bg-[#000] p-[20px] dark:bg-[#111]">
-                  {linkShow()}
-                </div>
-              ) : null}
+              <div className="relative mb-[110px] flex h-[300px] w-[300px] flex-col items-center justify-center overflow-x-hidden overflow-y-scroll rounded-2xl bg-[#000] p-[20px] dark:bg-[#111]">
+                <div className="absolute top-0 flex flex-col">{linkShow()}</div>
+              </div>
             </div>
           ) : null}
           <ToastContainer limit={3} />
