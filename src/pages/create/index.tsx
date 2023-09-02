@@ -76,23 +76,17 @@ function Index() {
                 {furniture["links"][0] == "No hay link" ? (
                   <p className="text-[#FBF9FA]">No hay link</p>
                 ) : (
-                  <Link href={furniture["links"][0]}>
-                    {furniture["links"][0]}
-                  </Link>
+                  <Link href={furniture["links"][0]}>Link 1</Link>
                 )}
                 {furniture["links"][1] == "No hay link" ? (
                   <p className="text-[#FBF9FA]">No hay link</p>
                 ) : (
-                  <Link href={furniture["links"][1]}>
-                    {furniture["links"][1]}
-                  </Link>
+                  <Link href={furniture["links"][1]}>Link 2</Link>
                 )}
                 {furniture["links"][2] == "No hay link" ? (
                   <p className="text-[#FBF9FA]">No hay link</p>
                 ) : (
-                  <Link href={furniture["links"][2]}>
-                    {furniture["links"][2]}
-                  </Link>
+                  <Link href={furniture["links"][2]}>Link 3</Link>
                 )}
               </div>
             </div>
@@ -418,10 +412,10 @@ function Index() {
                   alt="image"
                   width={500}
                   height={300}
-                  className="absolute flex h-full w-full items-center justify-center rounded-xl object-cover"
+                  className="absolute flex h-full w-full items-center justify-center rounded-xl object-contain shadow-md shadow-[#999] dark:shadow-[#111]"
                 ></Image>
               </div>
-              <div className="relative mb-[110px] flex h-[300px] w-[300px] flex-col items-center justify-center overflow-x-hidden overflow-y-scroll rounded-2xl bg-[#000] p-[20px] dark:bg-[#111]">
+              <div className="relative mb-[110px] flex h-[300px] w-[300px] flex-col items-center justify-center overflow-x-hidden overflow-y-scroll rounded-2xl bg-[#000] p-[20px] shadow-md shadow-[#999] dark:bg-[#111] dark:shadow-[#111]">
                 <div className="absolute top-0 flex flex-col">{linkShow()}</div>
               </div>
             </div>
