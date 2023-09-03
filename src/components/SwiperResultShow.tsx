@@ -1,11 +1,12 @@
 import Image from "next/image";
-import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import type { SwiperClass } from "swiper/react";
 import { Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/effect-cards";
 import { EffectCards } from "swiper/modules";
-import { Dispatch, SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from "react";
 
 interface SwiperResultShowProps {
   imageURL1: string;

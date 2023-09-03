@@ -10,24 +10,20 @@ import TabCurve from "./TabCurve";
 const TabBar = memo(function TabBar() {
   const elementRef = useRef<HTMLDivElement>(null);
   const [translateX, setTranslateX] = useState<number>(5);
-  const [activated, setActivated] = useState(false);
   let element: HTMLDivElement | null;
   const [counter, setCounter] = useState(0)
   const [previousDiv, setPreviousDiv] = useState<EventTarget & HTMLDivElement>()
   const [previousDivClassName, setPreviousDivClassName] = useState("")
-
-  const firstDivClassName = "flex h-[50px] w-[50px] items-center justify-center rounded-full transition-all Rocket";
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const targetDiv = e.currentTarget;
     console.log(targetDiv)
     const targetRect = targetDiv.getBoundingClientRect();
     const targetRectX = targetRect.x;
-    let targetDivClassName = "";
    
     if(targetDiv != previousDiv){
       if(targetDiv.className.includes("tabbar-selected") === false){
-        targetDivClassName = targetDiv.className += " tabbar-selected";
+        targetDiv.className += " tabbar-selected";
       }
       if(counter === 1){
         previousDiv!.className = previousDivClassName;

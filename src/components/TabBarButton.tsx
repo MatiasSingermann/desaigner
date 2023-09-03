@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MouseEventHandler, SetStateAction } from "react";
+import type { MouseEventHandler } from "react";
 
 interface TabBarButtonProps {
   name: string;
