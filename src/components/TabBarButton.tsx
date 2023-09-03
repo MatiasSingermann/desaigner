@@ -17,7 +17,7 @@ function TabBarButton({
   const liContent = () => {
     return (
       <li>
-        <Link href={href}>
+        <Link href={href} aria-label={"Ir a" + href}>
           <div
             className={`flex h-[50px] w-[50px] items-center justify-center rounded-full transition-all ${name}`}
             onClick={handleClick}
