@@ -34,7 +34,7 @@ const SwiperSlider: React.FC = () => {
           <div className="flex flex-col">
             <Image
               className="flex object-contain"
-              src="/../public/Pieza.png"
+              src="/Pieza.png"
               alt="Pieza"
               height={280}
               width={280}
@@ -46,7 +46,7 @@ const SwiperSlider: React.FC = () => {
           <div className="flex flex-col">
             <Image
               className="flex object-contain"
-              src="/../public/Living.png"
+              src="/Living.png"
               alt="Living"
               height={280}
               width={280}
@@ -58,7 +58,7 @@ const SwiperSlider: React.FC = () => {
           <div className="flex flex-col">
             <Image
               className="flex object-contain"
-              src="/../public/Baño.png"
+              src="/Baño.png"
               alt="Baño"
               height={280}
               width={280}
