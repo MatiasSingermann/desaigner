@@ -3,16 +3,16 @@ import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
-import 'swiper/css/effect-cards';
+import "swiper/css/effect-cards";
 import { EffectCards } from "swiper/modules";
 import { Dispatch, SetStateAction } from "react";
 
 interface SwiperResultShowProps {
-  imageURL1 : string;
-  imageURL2 : string;
-  imageURL3 : string;
-  imageURL4 : string;
-  setSelectedImage : Dispatch<SetStateAction<number>>;
+  imageURL1: string;
+  imageURL2: string;
+  imageURL3: string;
+  imageURL4: string;
+  setSelectedImage: Dispatch<SetStateAction<number>>;
 }
 
 function SwiperResultShow({
@@ -22,12 +22,12 @@ function SwiperResultShow({
   imageURL4,
   setSelectedImage,
 }: SwiperResultShowProps) {
-    const handleSlideChange = (swiper: SwiperClass) => {
-          const activeIndex = swiper.activeIndex;
-          setSelectedImage(activeIndex);
-      };
+  const handleSlideChange = (swiper: SwiperClass) => {
+    const activeIndex = swiper.activeIndex;
+    setSelectedImage(activeIndex);
+  };
   return (
-    <div className="my-[30px] flex h-[220px] w-[320px] flex-col items-center justify-center rounded-2xl shadow-md shadow-[#999] dark:shadow-[#111]">
+    <div className="mb-[20px] mt-[30px] flex h-[260px] w-full flex-col items-center justify-center overflow-hidden">
       <Swiper
         onSlideChange={handleSlideChange}
         effect={"cards"}
@@ -38,7 +38,7 @@ function SwiperResultShow({
         className="flex h-full w-full flex-col rounded-2xl"
       >
         <SwiperSlide>
-          <div className="flex flex-col rounded-2xl items-center justify-center">
+          <div className="flex flex-col items-center justify-center rounded-2xl">
             <Image
               className="flex rounded-2xl object-scale-down"
               src={imageURL1}
@@ -49,7 +49,7 @@ function SwiperResultShow({
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <div className="flex flex-col rounded-2xl items-center justify-center">
+          <div className="flex flex-col items-center justify-center rounded-2xl">
             <Image
               className="flex rounded-2xl object-scale-down"
               src={imageURL2}
@@ -61,7 +61,7 @@ function SwiperResultShow({
         </SwiperSlide>
         {imageURL3 ? (
           <SwiperSlide>
-            <div className="flex flex-col rounded-2xl items-center justify-center">
+            <div className="flex flex-col items-center justify-center rounded-2xl">
               <Image
                 className="flex rounded-2xl object-scale-down"
                 src={imageURL3}
@@ -74,7 +74,7 @@ function SwiperResultShow({
         ) : null}
         {imageURL4 ? (
           <SwiperSlide>
-            <div className="flex flex-col rounded-2xl items-center justify-center">
+            <div className="flex flex-col items-center justify-center rounded-2xl">
               <Image
                 className="flex rounded-2xl object-scale-down"
                 src={imageURL4}

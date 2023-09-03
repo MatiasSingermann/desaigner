@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useState, useRef, TouchEvent } from "react";
 import { motion } from "framer-motion";
+import CompArrows from "./CompArrows";
 
 function CompSlider() {
   const [imgRevealFraq, setImgRevealFraq] = useState(0.5);
@@ -81,15 +82,15 @@ function CompSlider() {
           style={{ left: `${imgRevealFraq * 100}%` }}
         >
           <div className="relative h-full">
-            <div className="bg-gradient-radial absolute inset-y-0 -ml-px w-[0.5] from-[#1D1B25] via-transparent"></div>
-            <div className="absolute -ml-px h-full w-[2px] bg-[#1D1B25]"></div>
+            <div className="bg-gradient-radial absolute inset-y-0 -ml-px w-[0.5] from-[#1D1B25] via-transparent dark:from-[#FBF9FA]"></div>
+            <div className="absolute -ml-px h-full w-[2px] bg-[#1D1B25] dark:bg-[#FBF9FA]"></div>
             <div
-              className="absolute top-1/2 -ml-[10px] -mt-[10px] flex h-[20px] w-[20px] cursor-pointer items-center justify-center rounded-full bg-[#1D1B25]"
+              className="absolute top-1/2 -ml-[10px] -mt-[10px] flex h-[20px] w-[20px] cursor-pointer items-center justify-center rounded-full bg-[#1D1B25] dark:bg-[#FBF9FA]"
               style={{ touchAction: "none" }}
               onMouseDown={handleMouseDown}
               onTouchMove={handleTouchMove}
             >
-              SVG
+              <CompArrows />
             </div>
           </div>
         </div>

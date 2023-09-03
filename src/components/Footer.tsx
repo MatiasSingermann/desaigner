@@ -46,7 +46,7 @@ function Footer() {
             <div className="flex flex-col text-[9px] text-[#FBF9FA] 360:text-[14px] 720:text-[18px]">
               <ul className="ml-[20px] mt-[6px] 360:ml-[36px] 720:ml-[48px]">
                 <FooterLinksRight hlink="/" text="Inicio" />
-                <FooterLinksRight hlink="/about" text="Login/Registrarse" />
+                <FooterLinksRight hlink="/login" text="Login/Registrarse" />
                 <FooterLinksRight hlink="/create" text="Generar" />
                 <FooterLinksRight hlink="/collections" text="Carpetas" />
                 <FooterLinksRight hlink="/settings" text="Configuración" />

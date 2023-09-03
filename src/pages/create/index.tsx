@@ -68,27 +68,54 @@ function Index() {
       return (
         <>
           {imageFullData.map((furniture, index) => (
-            <div key={index} className="flex w-full flex-col items-start">
-              <h3 className="mt-[16px] flex items-start justify-center text-start font-coolveticaRegular text-[27px] text-[#FBF9FA]">
-                {furniture["prompt"]}
-              </h3>
-              <div className="flex flex-col items-start justify-center text-start font-coolveticaBook text-[16px] text-[#00a]">
-                {furniture["links"][0] == "No hay link" ? (
-                  <p className="text-[#FBF9FA]">No hay link</p>
-                ) : (
-                  <Link href={furniture["links"][0]}>Link 1</Link>
-                )}
-                {furniture["links"][1] == "No hay link" ? (
-                  <p className="text-[#FBF9FA]">No hay link</p>
-                ) : (
-                  <Link href={furniture["links"][1]}>Link 2</Link>
-                )}
-                {furniture["links"][2] == "No hay link" ? (
-                  <p className="text-[#FBF9FA]">No hay link</p>
-                ) : (
-                  <Link href={furniture["links"][2]}>Link 3</Link>
-                )}
+            <div
+              key={index}
+              className="flex w-full flex-col items-center leading-none"
+            >
+              <div className="flex w-11/12 flex-col items-start justify-start">
+                <h3 className="mx-[12px] mb-[14px] mt-[26px] flex w-11/12 items-start justify-start text-start font-coolveticaRegular text-[20px] text-[#292F2D] dark:text-[#FBF9FA]">
+                  {furniture["prompt"]}
+                </h3>
+                <div className="mx-[12px] flex w-11/12 flex-col items-start justify-start text-start font-coolveticaBook text-[15px] text-[#2A9DA5]">
+                  {furniture["links"][0] == "No hay link" ? (
+                    <p className="mb-[14px] text-[#FBF9FA] no-underline">
+                      No hay link
+                    </p>
+                  ) : (
+                    <Link
+                      className="mb-[14px] underline"
+                      href={furniture["links"][0]}
+                    >
+                      Link 1
+                    </Link>
+                  )}
+                  {furniture["links"][1] == "No hay link" ? (
+                    <p className="mb-[14px] text-[#FBF9FA] no-underline">
+                      No hay link
+                    </p>
+                  ) : (
+                    <Link
+                      className="mb-[14px] underline"
+                      href={furniture["links"][1]}
+                    >
+                      Link 2
+                    </Link>
+                  )}
+                  {furniture["links"][2] == "No hay link" ? (
+                    <p className="mb-[22px] text-[#FBF9FA] no-underline">
+                      No hay link
+                    </p>
+                  ) : (
+                    <Link
+                      className="mb-[22px] underline"
+                      href={furniture["links"][2]}
+                    >
+                      Link 3
+                    </Link>
+                  )}
+                </div>
               </div>
+              <div className="mx-[16px] flex h-[1px] w-11/12 items-center justify-center bg-[#BABABA] dark:bg-[#228187]"></div>
             </div>
           ))}
         </>
@@ -377,11 +404,16 @@ function Index() {
           )}
           {moreThan1 ? (
             <div className="flex h-full w-full flex-col items-center justify-center">
-              <h1 className="mx-[32px] mb-[52px] self-start bg-gradient-to-tr from-[#228187] to-[#59C3C3] bg-clip-text font-coolveticaRegular text-[40px] leading-none text-transparent">
-                Listo
+              <h1 className="mx-[32px] mb-[30px] self-start font-coolveticaRegular text-[30px] leading-none">
+                <span className="bg-gradient-to-tr from-[#228187] to-[#59C3C3] bg-clip-text text-transparent">
+                  Listo!&#160;
+                </span>
+                <span className="text-[#22302D] dark:text-[#FBF9FA]">
+                  Aquí están tus diseños
+                </span>
               </h1>
-              <h2 className="mx-[32px] self-start font-coolveticaRegular text-[30px] leading-none">
-                Elige la imagen con la que te quieras quedar
+              <h2 className="mx-[32px] self-start font-coolveticaBook text-[20px] leading-none">
+                Elige el que más te guste
               </h2>
               <SwiperResultShow
                 imageURL1={imageURL1}
@@ -392,7 +424,7 @@ function Index() {
               />
               <button
                 onClick={handleImageSelect}
-                className="mb-[130px] flex h-[54px] w-[216px] items-center justify-center rounded-3xl bg-gradient-to-b from-[#59C3C3] to-[#228187] font-coolveticaRegular text-[27px] text-[#FBF9FA] shadow-md shadow-[#999] dark:shadow-[#111]"
+                className="mb-[130px] flex h-[40px] w-[120px] items-center justify-center rounded-3xl bg-gradient-to-b from-[#59C3C3] to-[#228187] font-coolveticaRegular text-[20px] text-[#FBF9FA] shadow-md shadow-[#999] dark:shadow-[#111]"
               >
                 Elegir
               </button>
@@ -400,23 +432,25 @@ function Index() {
           ) : null}
           {result ? (
             <div className="flex h-full w-full flex-col items-center justify-center">
-              <h1 className="mx-[32px] mb-[52px] self-start bg-gradient-to-tr from-[#228187] to-[#59C3C3] bg-clip-text p-[6px] font-coolveticaRegular text-[40px] leading-none text-transparent">
-                Aquí tienes tu imagen
+              <h1 className="mx-[32px] mb-[30px] self-start font-coolveticaRegular text-[30px] leading-none text-[#22302D] dark:text-[#FBF9FA]">
+                Basado en la imagen, encontramos estos muebles
               </h1>
-              <h2 className="mx-[32px] self-start font-coolveticaRegular text-[30px] leading-none">
-                Puedes ver los links de los muebles
+              <h2 className="mx-[32px] self-start font-coolveticaBook text-[20px] leading-none">
+                Clickea los links debajo de la imagen para ir a los artículos
               </h2>
-              <div className="relative mb-[30px] mt-[30px] flex h-[180px] w-[330px] flex-col">
-                <Image
-                  src={imageURL}
-                  alt="image"
-                  width={500}
-                  height={300}
-                  className="absolute flex h-full w-full items-center justify-center rounded-xl object-contain shadow-md shadow-[#999] dark:shadow-[#111]"
-                ></Image>
-              </div>
-              <div className="relative mb-[110px] flex h-[300px] w-[300px] flex-col items-center justify-center overflow-x-hidden overflow-y-scroll rounded-2xl bg-[#000] p-[20px] shadow-md shadow-[#999] dark:bg-[#111] dark:shadow-[#111]">
-                <div className="absolute top-0 flex flex-col">{linkShow()}</div>
+
+              <Image
+                src={imageURL}
+                alt="image"
+                width={300}
+                height={200}
+                className="relative mx-[32px] my-[32px] flex h-[290px] w-[290px] items-center justify-center rounded-xl object-contain shadow-md shadow-[#999] dark:shadow-[#111]"
+              ></Image>
+
+              <div className="relative mb-[110px] flex h-[300px] w-[300px] flex-col items-center justify-center overflow-x-hidden overflow-y-scroll rounded-2xl border-[2px] border-[#BABABA] bg-[#E8E8E8] dark:border-none dark:bg-[#293433]">
+                <div className="absolute top-0 flex w-full flex-col">
+                  {linkShow()}
+                </div>
               </div>
             </div>
           ) : null}
