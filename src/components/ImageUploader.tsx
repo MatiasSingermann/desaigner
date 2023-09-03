@@ -4,17 +4,15 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 interface ImageUploaderProps {
-  image: any;
+  image: string | null;
   imageName: string;
   updateImageData: (newImage: string | null, newImageName: string) => void;
-  value : string
 }
 
 function ImageUploader({
   image,
   imageName,
   updateImageData,
-  value,
 }: ImageUploaderProps) {
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedImage = e.target.files![0];
@@ -47,19 +45,19 @@ function ImageUploader({
       updateImageData(image, imageName)
     }
   };
-  const dragImage = (e: React.DragEvent) => {
-    e.preventDefault();
-    const files = e.dataTransfer.files;
-    if (files.length > 0) {
-      const file = files[0];
-    }
-  };
+  // const dragImage = (e: React.DragEvent) => {
+  //   e.preventDefault();
+  //   const files = e.dataTransfer.files;
+  //   if (files.length > 0) {
+  //     const file = files[0];
+  //   }
+  // };
   return (
     <div
       className={`absolute flex h-full w-full flex-col items-center justify-center rounded-xl bg-[#E8E8E8] p-[22px] text-[#292F2D] dark:bg-[#293433] dark:text-[#FBF9FA] ${
         imageName === "" ? "z-10" : "-z-10"
       }`}
-      onDrag={dragImage}
+      // onDrag={dragImage}
     >
       <div className="flex flex-col">
         <Upload />

@@ -3,7 +3,8 @@ import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
 import Steps from "./Steps";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
 
 interface StepShowProps {
   setShowEdit: Dispatch<SetStateAction<boolean>>;

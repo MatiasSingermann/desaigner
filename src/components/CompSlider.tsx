@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { useState, useRef, TouchEvent } from "react";
+import { useState, useRef } from "react";
+import type { TouchEvent } from 'react';
 import { motion } from "framer-motion";
 import CompArrows from "./CompArrows";
 
@@ -33,7 +34,7 @@ function CompSlider() {
     slide(event.clientX);
   };
 
-  const handleMouseUp = (event: MouseEvent): void => {
+  const handleMouseUp = (): void => {
     window.onmousemove = null;
     window.onmouseup = null;
   };
