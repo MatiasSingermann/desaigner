@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 interface ImageUploaderProps {
   image: any;
   imageName: string;
-  updateImageData: (newImage: any, newImageName: string) => void;
+  updateImageData: (newImage: string | null, newImageName: string) => void;
   value : string
 }
 

@@ -11,11 +11,11 @@ interface Step1Props {
 }
 
 function Step1({ setShowEdit, counter }: Step1Props) {
-  const [image, setImage] = useState();
+  const [image, setImage] = useState<string | null>(null);
   const [imageName, setImageName] = useState("");
   const [checked, setChecked] = useState(false);
   const [value, setValue] = useState("")
-  const updateImageData = (newImage: SetStateAction<undefined>, newImageName: string) => {
+  const updateImageData = (newImage: SetStateAction<string | null>, newImageName: string) => {
     setImage(newImage);
     setImageName(newImageName);
   };
@@ -38,7 +38,7 @@ function Step1({ setShowEdit, counter }: Step1Props) {
       <div className="relative flex h-[180px] w-[330px] flex-col">
         {checked ? <ImageUploaderBlack /> : null}
         <SelectedImage
-          image={image}
+          image={image!}
           imageName={imageName}
           updateImageData={updateImageData}
           setShowEdit={setShowEdit}

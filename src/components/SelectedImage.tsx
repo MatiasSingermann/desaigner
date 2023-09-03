@@ -6,7 +6,7 @@ import Brush from "./Brush";
 interface SelectedImageProps {
   image: string;
   imageName: string;
-  updateImageData: (newImage: object | null, newImageName: string) => void;
+  updateImageData: (newImage: string | null, newImageName: string) => void;
   setShowEdit: Dispatch<SetStateAction<boolean>>;
 }
 
