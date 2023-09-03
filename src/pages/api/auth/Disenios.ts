@@ -1,11 +1,9 @@
-import { PrismaClient, coleccion, usuario } from "@prisma/client";
-import { NextApiRequest, NextApiResponse } from "next";
-import { disenioFromUserExists, isArrayEmpty, disenioExists, isbase64, userExists, checkEmail, coleccionExists, coleccionIsFromUser, objectHasData } from "../functions";
-import { v2 } from "cloudinary";
+import { PrismaClient } from "@prisma/client";
+import type { NextApiRequest, NextApiResponse } from "next";
+import { userExists, checkEmail, coleccionExists } from "../functions";
 import { getSession } from "next-auth/react";
 
 const prisma = new PrismaClient();
-const cloudinary = v2;
 
 interface ExtendedNextApiRequestDisenios extends NextApiRequest{
     body: {

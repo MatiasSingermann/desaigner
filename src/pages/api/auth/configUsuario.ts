@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
-import { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
-import { checkContrasenia, checkEmail } from "../functions";
+import { checkEmail } from "../functions";
 
 const prisma = new PrismaClient();
 

@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 import { checkContrasenia, checkEmail } from "../functions";
 
@@ -47,7 +47,7 @@ async function deleteUsuario(req: ExtendedNextApiRequest, res: NextApiResponse, 
             }
         })
         if(user){
-            const autorizados = await prisma.autorizados.deleteMany({
+            await prisma.autorizados.deleteMany({
                 where:{
                     usuario_email: email
                 }
@@ -59,29 +59,29 @@ async function deleteUsuario(req: ExtendedNextApiRequest, res: NextApiResponse, 
             })
             if(disenios){
                 for(let i = 0; i < disenios.length; i++){
-                    const muebles = await prisma.mueble.deleteMany({
+                    await prisma.mueble.deleteMany({
                         where:{
                             disenio_id: disenios[i]?.id
                         }
                     })
-                    const relaciones = await prisma.disenioYcoleccion.deleteMany({
+                    await prisma.disenioYcoleccion.deleteMany({
                         where:{
                             disenio_id: disenios[i]?.id
                         }
                     })
-                    const permitidos = await prisma.autorizados.deleteMany({
+                    await prisma.autorizados.deleteMany({
                         where:{
                             disenio_id: disenios[i]?.id
                         }
                     })
                 }
-                const deletedDisenios = await prisma.disenio.deleteMany({
+                await prisma.disenio.deleteMany({
                     where:{
                         duenio_id: email
                     }
                 })
             }
-            const colecciones = await prisma.coleccion.deleteMany({
+            await prisma.coleccion.deleteMany({
                 where:{
                     duenio_id: email
                 }

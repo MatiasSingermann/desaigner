@@ -1,5 +1,5 @@
-import { PrismaClient, coleccion, usuario } from "@prisma/client";
-import { NextApiRequest, NextApiResponse } from "next";
+import { PrismaClient } from "@prisma/client";
+import type { NextApiRequest, NextApiResponse } from "next";
 import { v2 } from "cloudinary";
 import { getSession } from "next-auth/react";
 import { checkEmail, coleccionExists, disenioFromUserExists, isbase64, objectHasData, userExists } from "../functions";

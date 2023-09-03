@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-import { NextApiRequest, NextApiResponse } from "next";
-import { coleccionExists, checkEmail, userExists, coleccionIsFromUser } from "../functions";
+import type { NextApiRequest, NextApiResponse } from "next";
+import { coleccionExists, checkEmail, userExists } from "../functions";
 import { getSession } from "next-auth/react";
 
 const prisma = new PrismaClient();
