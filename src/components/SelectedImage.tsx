@@ -40,7 +40,7 @@ function SelectedImage({
         ) : null}
         <div className="absolute flex h-1/2 w-full rounded-xl bg-gradient-to-b from-transparent to-black"></div>
         <div className="absolute flex w-full items-center justify-between rounded-b-xl px-[8px] pb-[2px]">
-          <h3 className="p-[4px]">{imageName}</h3>
+          <h3 className="p-[4px]">{imageName.length > 23 ? imageName.substring(0, 26) + "..." : imageName}</h3>
           <div className="flex items-center justify-center">
             <button
               form="false"
