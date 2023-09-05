@@ -17,7 +17,7 @@ interface ExtendedNextApiRequestCreateDisenios extends NextApiRequest{
             prompt: string,
             links: Array<string>
         }>,
-        presupuesto: number,
+        presupuesto: string,
         estilo: string,
         colecciones: string[]
     }
@@ -122,7 +122,6 @@ async function crearDisenio(req: ExtendedNextApiRequestCreateDisenios, res: Next
                     nombre: body.colecciones[i]?.toString()
                 }
             })
-            console.log(coleccionConnect);
             if(coleccionConnect){
                 await prisma.disenioYcoleccion.create({
                     data: {
@@ -132,7 +131,35 @@ async function crearDisenio(req: ExtendedNextApiRequestCreateDisenios, res: Next
                 })
             }
             else{
-                return res.status(404).json({message: "Las colecciones no existen"});
+                const newColeccion = await prisma.coleccion.create({
+                    data: {
+                        nombre: body.nombre,
+                        favorito: false,
+                        duenio_id: email
+                    }
+                })
+                if(!newColeccion){
+                    return res.status(404).json({message: "No se pudo crear la coleccion"});
+                }
+                else if(newColeccion){
+                    const coleccionConnect1 = await prisma.coleccion.findFirst({
+                        where: {
+                            duenio_id: email,
+                            nombre: body.colecciones[i]?.toString()
+                        }
+                    })
+                    if(coleccionConnect1){
+                        await prisma.disenioYcoleccion.create({
+                            data: {
+                                disenio_id: newDisenio.id,
+                                coleccion_id: coleccionConnect1.id
+                            }
+                        })
+                    }
+                    else{
+                        return res.status(404).json({message: "Algo salio mal"});
+                    }
+                }
             }
         }
         if(newDisenio){ //Revisable

@@ -40,8 +40,8 @@ model disenio {
   imagen             String
   muebles            mueble[]
   ambiente           String               @db.VarChar(20)
-  presupuesto        Int
-  estilo             String               @db.VarChar(20)
+  presupuesto        String               @db.VarChar(20)
+  estilo             String               @db.VarChar(30)
   permitidos         autorizados[]
 
   @@index([duenio_id])
