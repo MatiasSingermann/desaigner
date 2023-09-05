@@ -15,6 +15,7 @@ import { useRef } from "react";
 import InpaintingEditor from "~/components/InpaintingEditor";
 import ResLoad from "~/components/ResLoad";
 import SwiperResultShow from "~/components/SwiperResultShow";
+import SaveImageButton from "~/components/SaveImageButton";
 
 interface InputImageDataProps {
   box: [number, number, number, number];
@@ -63,6 +64,19 @@ function Index() {
   }
 
   if (status === "authenticated") {
+    const handleSaveImage = () => {
+      console.log("click");
+      const obj = {
+        nombre: "", // string
+        ambiente: "", // string
+        presupuesto: "", // string
+        estilo: "", // string
+        colecciones: "", // string[]
+        disenioIMG: "", // string (base64)
+        muebles: "", // object[] todo lo que me devuelve blanco
+      }
+    }
+
     const linkShow = () => {
       // if (!imageFullData) return;
       return (
@@ -452,6 +466,7 @@ function Index() {
                   {linkShow()}
                 </div>
               </div>
+              <SaveImageButton handleSaveImage={handleSaveImage}/>
             </div>
           ) : null}
           <ToastContainer limit={3} />
