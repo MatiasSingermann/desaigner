@@ -66,15 +66,15 @@ function Index() {
   if (status === "authenticated") {
     const handleSaveImage = () => {
       console.log("click");
-      const obj = {
-        nombre: "", // string
-        ambiente: "", // string
-        presupuesto: "", // string
-        estilo: "", // string
-        colecciones: "", // string[]
-        disenioIMG: "", // string (base64)
-        muebles: "", // object[] todo lo que me devuelve blanco
-      }
+      // const obj = {
+      //   nombre: "", // string
+      //   ambiente: "", // string
+      //   presupuesto: "", // string
+      //   estilo: "", // string
+      //   colecciones: "", // string[]
+      //   disenioIMG: "", // string (base64)
+      //   muebles: "", // object[] todo lo que me devuelve blanco
+      // }
     }
 
     const linkShow = () => {

@@ -2,6 +2,7 @@ import Footer from "~/components/Footer";
 import Head from "next/head";
 import ThemeButton from "~/components/ThemeButton";
 import { useSession } from "next-auth/react";
+import SignOutButton from "~/components/SignOutButton";
 
 function Index() {
   const { status } = useSession({
@@ -17,7 +18,7 @@ function Index() {
       </Head>
       <main className="flex grow flex-col items-center justify-start font-coolveticaLight">
         <ThemeButton/>
-        {status === "authenticated" && "<componente/>"}
+        {status === "authenticated" && <SignOutButton />}
       </main>
       <Footer />
     </>

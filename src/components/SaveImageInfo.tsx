@@ -6,7 +6,10 @@ interface SaveImageInfo {
     furniture: string[];
 }
 
-function SaveImageInfo({environment, budget, style, image, furniture} : SaveImageInfo) {
+
+// environment, budget, style, image, furniture
+
+function SaveImageInfo({} : SaveImageInfo) {
   return (
     <form>
         <input name="Nombre" type="text" />
