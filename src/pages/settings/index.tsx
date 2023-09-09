@@ -3,11 +3,12 @@ import Head from "next/head";
 import ThemeButton from "~/components/ThemeButton";
 import { useSession } from "next-auth/react";
 import SignOutButton from "~/components/SignOutButton";
+import DeleteAccountButton from "~/components/DeleteAccountButton";
 
 function Index() {
   const { status } = useSession({
     required: false,
-  })
+  });
 
   return (
     <>
@@ -17,8 +18,12 @@ function Index() {
         <link rel="icon" href="/DesAIgnerIco.ico" />
       </Head>
       <main className="flex grow flex-col items-center justify-start font-coolveticaLight">
-        <ThemeButton/>
+        <h1 className="mx-[32px] mb-[30px] self-start font-coolveticaRegular text-[30px] leading-none text-[#22302D] dark:text-[#FBF9FA]">
+          Configuración
+        </h1>
+        <ThemeButton />
         {status === "authenticated" && <SignOutButton />}
+        {status === "authenticated" && <DeleteAccountButton />}
       </main>
       <Footer />
     </>
