@@ -27,7 +27,9 @@ function Index() {
           <link rel="icon" href="/DesAIgnerIco.ico" />
         </Head>
         <main className="flex grow flex-col items-center justify-start font-coolveticaLight">
-          <div>Collections</div>
+          <h1 className="mx-[32px] mb-[30px] self-start font-coolveticaRegular text-[30px] leading-none text-[#22302D] dark:text-[#FBF9FA]">
+            Carpetas
+          </h1>
         </main>
         <Footer />
       </>

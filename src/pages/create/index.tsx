@@ -461,7 +461,7 @@ function Index() {
                 className="relative mx-[32px] my-[32px] flex h-[290px] w-[290px] items-center justify-center rounded-xl object-contain shadow-md shadow-[#999] dark:shadow-[#111]"
               ></Image>
 
-              <div className="relative mb-[110px] flex h-[300px] w-[300px] flex-col items-center justify-center overflow-x-hidden overflow-y-scroll rounded-2xl border-[2px] border-[#BABABA] bg-[#E8E8E8] dark:border-none dark:bg-[#293433]">
+              <div className="relative flex h-[300px] w-[300px] flex-col items-center justify-center overflow-x-hidden overflow-y-scroll rounded-2xl border-[2px] border-[#BABABA] bg-[#E8E8E8] dark:border-none dark:bg-[#293433]">
                 <div className="absolute top-0 flex w-full flex-col">
                   {linkShow()}
                 </div>
