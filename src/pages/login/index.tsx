@@ -5,6 +5,18 @@ import RegisterForm from "~/components/RegisterForm";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { motion } from "framer-motion";
+
+const motionProps = {
+  initial: "hidden",
+  whileInView: "visible",
+  viewport: { once: true },
+  transition: { duration: 0.4 },
+  variants: {
+    visible: { opacity: 1, scale: 1, translateY: 0 },
+    hidden: { opacity: 0, scale: 1, translateY: 22 },
+  },
+};
 
 function Index() {
   const router = useRouter();
@@ -35,9 +47,12 @@ function Index() {
           <link rel="icon" href="/DesAIgnerIco.ico" />
         </Head>
         <main className="flex grow flex-col items-center justify-start font-coolveticaLight text-[#22302D] dark:text-[#FBF9FA]">
-          <div className="flex h-full w-full items-center justify-center">
+          <motion.div
+            {...motionProps}
+            className="flex h-full w-full items-center justify-center"
+          >
             {login ? <LoginForm /> : <RegisterForm />}
-          </div>
+          </motion.div>
           <LoginSwitch login={login} toggleSwitch={toggleSwitch} />
         </main>
       </>

@@ -1,4 +1,16 @@
 import type { MouseEventHandler } from "react";
+import { motion } from "framer-motion";
+
+const motionProps = {
+  initial: "hidden",
+  whileInView: "visible",
+  viewport: { once: true },
+  transition: { duration: 0.4 },
+  variants: {
+    visible: { opacity: 1, scale: 1, translateY: 0 },
+    hidden: { opacity: 0, scale: 1, translateY: 22 },
+  },
+};
 
 interface LoginSwitchProps {
   login: boolean;
@@ -7,7 +19,10 @@ interface LoginSwitchProps {
 
 function LoginSwitch({ login, toggleSwitch }: LoginSwitchProps) {
   return (
-    <div className="relative mb-[100px] mt-[20px] flex h-[38px] w-[250px] items-center justify-center 480:my-[36px] 480:h-[46px] 480:w-[300pxs]">
+    <motion.div
+      {...motionProps}
+      className="relative mb-[100px] mt-[20px] flex h-[38px] w-[250px] items-center justify-center 480:my-[36px] 480:h-[46px] 480:w-[300pxs]"
+    >
       <button
         className="relative flex h-[38px] w-[250px] items-center rounded-3xl bg-[#228187] shadow-md shadow-[#999] dark:bg-[#293433] dark:shadow-[#111] 480:h-[46px] 480:w-[300px]"
         onClick={toggleSwitch}
@@ -27,7 +42,7 @@ function LoginSwitch({ login, toggleSwitch }: LoginSwitchProps) {
           </span>
         </div>
       </button>
-    </div>
+    </motion.div>
   );
 }
 

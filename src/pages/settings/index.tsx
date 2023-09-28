@@ -4,6 +4,18 @@ import ThemeButton from "~/components/ThemeButton";
 import { useSession } from "next-auth/react";
 import SignOutButton from "~/components/SignOutButton";
 import DeleteAccountButton from "~/components/DeleteAccountButton";
+import { motion } from "framer-motion";
+
+const motionProps = {
+  initial: "hidden",
+  whileInView: "visible",
+  viewport: { once: true },
+  transition: { duration: 0.4 },
+  variants: {
+    visible: { opacity: 1, scale: 1, translateY: 0 },
+    hidden: { opacity: 0, scale: 1, translateY: 22 },
+  },
+};
 
 function Index() {
   const { status } = useSession({
@@ -18,9 +30,12 @@ function Index() {
         <link rel="icon" href="/DesAIgnerIco.ico" />
       </Head>
       <main className="flex grow flex-col items-center justify-start font-coolveticaLight">
-        <h1 className="mx-[32px] mb-[30px] self-start font-coolveticaRegular text-[30px] leading-none text-[#22302D] dark:text-[#FBF9FA]">
+        <motion.h1
+          {...motionProps}
+          className="mx-[32px] mb-[30px] self-start font-coolveticaRegular text-[30px] leading-none text-[#22302D] dark:text-[#FBF9FA]"
+        >
           Configuración
-        </h1>
+        </motion.h1>
         <ThemeButton />
         {status === "authenticated" && <SignOutButton />}
         {status === "authenticated" && <DeleteAccountButton />}
