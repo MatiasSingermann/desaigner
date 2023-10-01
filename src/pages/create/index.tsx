@@ -17,6 +17,19 @@ import ResLoad from "~/components/ResLoad";
 import SwiperResultShow from "~/components/SwiperResultShow";
 import SaveImageButton from "~/components/SaveImageButton";
 
+import { motion } from "framer-motion";
+
+const motionProps = {
+  initial: "hidden",
+  whileInView: "visible",
+  viewport: { once: true },
+  transition: { duration: 0.4 },
+  variants: {
+    visible: { opacity: 1, scale: 1, translateY: 0 },
+    hidden: { opacity: 0, scale: 1, translateY: 22 },
+  },
+};
+
 interface InputImageDataProps {
   box: [number, number, number, number];
   prompt: string;
@@ -50,6 +63,8 @@ function Index() {
   const [imageFullData, setImageFullData] = useState<FullDataImage>(
     [] as FullDataImage
   );
+
+  const apiKey = process.env.NEXT_PUBLIC_API_KEY!.toString();
 
   const { status } = useSession({
     required: false,
@@ -319,7 +334,7 @@ function Index() {
           method: "POST",
           headers: {
             accept: "application/json",
-            "x-api-key": "lsakslaoañ209sk1",
+            "x-api-key": apiKey,
             "Content-type": "application/json",
           },
           body: JSON.stringify(obj),
@@ -351,7 +366,7 @@ function Index() {
 
         fetch("http://localhost:8000/img2img/v3", {
           method: "POST",
-          headers: { "x-api-key": "lsakslaoañ209sk1" },
+          headers: { "x-api-key": apiKey },
           body: formData,
         })
           .then((response) => response.json())
@@ -382,7 +397,7 @@ function Index() {
 
         fetch("http://localhost:8000/inpaint/v3", {
           method: "POST",
-          headers: { "x-api-key": "lsakslaoañ209sk1" },
+          headers: { "x-api-key": apiKey },
           body: formData,
         })
           .then((response) => response.json())
@@ -404,7 +419,8 @@ function Index() {
         <main className="flex grow flex-col items-center justify-start font-coolveticaLight">
           {loading && <ResLoad />}
           {finished ? null : (
-            <form
+            <motion.form
+            {...motionProps}
               action=""
               method="POST"
               onSubmit={handleSubmit}
@@ -414,7 +430,7 @@ function Index() {
             >
               <StepShow setShowEdit={setShowEdit} />
               <InpaintingEditor setShowEdit={setShowEdit} showEdit={showEdit} />
-            </form>
+            </motion.form>
           )}
           {moreThan1 ? (
             <div className="flex h-full w-full flex-col items-center justify-center">

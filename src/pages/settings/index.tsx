@@ -4,6 +4,8 @@ import ThemeButton from "~/components/ThemeButton";
 import { useSession } from "next-auth/react";
 import SignOutButton from "~/components/SignOutButton";
 import DeleteAccountButton from "~/components/DeleteAccountButton";
+import { useState } from 'react'
+import AcceptDeletion from '~/components/AcceptDeletion'
 import { motion } from "framer-motion";
 
 const motionProps = {
@@ -18,6 +20,8 @@ const motionProps = {
 };
 
 function Index() {
+  const [showEdit, setShowEdit] = useState(false)
+
   const { status } = useSession({
     required: false,
   });
@@ -30,6 +34,7 @@ function Index() {
         <link rel="icon" href="/DesAIgnerIco.ico" />
       </Head>
       <main className="flex grow flex-col items-center justify-start font-coolveticaLight">
+        {showEdit && <AcceptDeletion setShowEdit={setShowEdit} showEdit={showEdit}/>}
         <motion.h1
           {...motionProps}
           className="mx-[32px] mb-[30px] self-start font-coolveticaRegular text-[30px] leading-none text-[#22302D] dark:text-[#FBF9FA]"
@@ -38,7 +43,7 @@ function Index() {
         </motion.h1>
         <ThemeButton />
         {status === "authenticated" && <SignOutButton />}
-        {status === "authenticated" && <DeleteAccountButton />}
+        {status === "authenticated" && <DeleteAccountButton setShowEdit={setShowEdit}/>}
       </main>
       <Footer />
     </>
