@@ -10,7 +10,7 @@ interface ExtendedNextApiRequest extends NextApiRequest{
         readonly contrasenia: string
     }
 }
-
+// TODO: Problema con la nueva version de nextjs, endoponts DELETE no tienen body. Posible solucion, volver a una version anterior de nextjs
 export default async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     const session = await getSession({req});
     if(req.method === "DELETE"){
@@ -26,11 +26,8 @@ export default async function handler(req: ExtendedNextApiRequest, res: NextApiR
 
 async function deleteUsuario(req: ExtendedNextApiRequest, res: NextApiResponse, email: string){
     const body = req.body;
-    if (!('contrasenia' in body)) {
-        return res.status(400).json({message: "La contraseña"});
-    }
     if(!body.contrasenia || !email){
-        return res.status(400).json({message: "Algun parametro no cumple con los requisitos"});
+        return res.status(400).json({message: "Falta algun parametro"});
     }
     if(!checkContrasenia(body.contrasenia)){
         return res.status(400).json({message: "La contrasenia no es valida"});
