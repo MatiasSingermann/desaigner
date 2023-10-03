@@ -5,18 +5,16 @@ import { getSession } from "next-auth/react";
 
 const prisma = new PrismaClient();
 
-interface ExtendedNextApiRequestDisenios extends NextApiRequest{
-    body: {
-        nombre: string
-    }
-}
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const session = await getSession({req});
     if(req.method === "DELETE"){
+        const nombre = req.query.nombre as string;
+        if(!nombre){
+            return res.status(400).json({message: "No se recibio el id de ningun disenio"});
+        }
         if(session){
             const email = session?.user.email;
-            return await deleteColeccion(req, res, email);
+            return await deleteColeccion(req, res, email, nombre);
         }
         return res.status(403).end();
     }
@@ -25,9 +23,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 }
 
-async function deleteColeccion(req: ExtendedNextApiRequestDisenios, res: NextApiResponse, email: string){
-    const body = req.body;
-
+async function deleteColeccion(req: NextApiRequest, res: NextApiResponse, email: string, nombre: string){
+    if(!nombre){
+        return res.status(400).json({message: "No se recibio ningun nombre de coleccion"});
+    }
     if(!checkEmail(email)){
         return res.status(400).json({message: "El usuario no es valido"});
     }
@@ -35,7 +34,7 @@ async function deleteColeccion(req: ExtendedNextApiRequestDisenios, res: NextApi
     if(!usuarioExistente){
         return res.status(400).json({message: "El usuario enviado no existe, quizas escribiste algun parametro mal"});
     }
-    const coleccionExistente: boolean = await coleccionExists(body.nombre, email);
+    const coleccionExistente: boolean = await coleccionExists(nombre, email);
     if(!coleccionExistente){
         return res.status(400).json({message: "La coleccion enviada no existe"});
     }
@@ -43,7 +42,7 @@ async function deleteColeccion(req: ExtendedNextApiRequestDisenios, res: NextApi
     try{
         const coleccion = await prisma.coleccion.findFirst({
             where:{
-                nombre: body.nombre,
+                nombre: nombre,
                 duenio_id: email
             }
         })

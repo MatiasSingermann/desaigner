@@ -12,7 +12,7 @@ interface ExtendedNextApiRequestCreateColeccion extends NextApiRequest{
     }
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: ExtendedNextApiRequestCreateColeccion, res: NextApiResponse) {
     const session = await getSession({req});
     if(req.method === "POST"){
         if(session){

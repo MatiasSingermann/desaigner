@@ -5,22 +5,16 @@ import { checkEmail, disenioExists, userExists } from "../functions";
 
 const prisma = new PrismaClient();
 
-interface ExtendedNextApiRequestDeleteDisenio extends NextApiRequest{
-    body:{
-        id: number
-    }
-}
-
-export default async function handler(req: ExtendedNextApiRequestDeleteDisenio, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const session = await getSession({req});
-    if(req.method === "DELETE"){
-        const id = req.body.id;
+    if(req.method === "GET"){
+        const id = parseInt(req.query.id as string);
         if(!id){
             return res.status(400).json({message: "No se recibio el id de ningun disenio"});
         }
         if(session){
             const email = session?.user.email;
-            return await deleteDisenio(req, res, email);
+            return await deleteDisenio(req, res, email, id);
         }
         else{
             return res.status(403).end();
@@ -31,10 +25,8 @@ export default async function handler(req: ExtendedNextApiRequestDeleteDisenio, 
     }
 }
 
-async function deleteDisenio(req: ExtendedNextApiRequestDeleteDisenio, res: NextApiResponse, email: string){
-    const body = req.body;
-    
-    if(!email || body.id <= 0){
+async function deleteDisenio(req: NextApiRequest, res: NextApiResponse, email: string, id: number){
+    if(!email || id <= 0){
         return res.status(400).json({message: "El email de la sesion esta vacio o el id del disenio es inexistente"});
     }
     if(!checkEmail(email)){
@@ -44,14 +36,14 @@ async function deleteDisenio(req: ExtendedNextApiRequestDeleteDisenio, res: Next
     if(!usuarioExistente){
         return res.status(400).json({message: "El usuario enviado no existe, quizas escribiste algun parametro mal"});
     }
-    const disenioExistente: boolean = await disenioExists(body.id); // tizi was here 🐔🐨
+    const disenioExistente: boolean = await disenioExists(id); // tizi was here 🐔🐨
     if(!disenioExistente){
         return res.status(404).json({message: "El disenio que se quiere visualizar no existe"});
     }
 
     const duenio = !!await prisma.disenio.findFirst({
         where: {
-            id: body.id,
+            id: id,
             duenio_id: email 
         }
     })
@@ -62,32 +54,32 @@ async function deleteDisenio(req: ExtendedNextApiRequestDeleteDisenio, res: Next
     try{
         const autorizados = await prisma.autorizados.findFirst({
             where:{
-                disenio_id: body.id
+                disenio_id: id
             }
         })
         if(autorizados){
             await prisma.autorizados.deleteMany({
                 where:{
-                    disenio_id: body.id
+                    disenio_id: id
                 }
             })
         }
         
         const relacion = await prisma.disenioYcoleccion.deleteMany({
             where:{
-                disenio_id: body.id
+                disenio_id: id
             }
         })
         if(relacion){
             const muebles = await prisma.mueble.deleteMany({
                 where:{
-                    disenio_id: body.id
+                    disenio_id: id
                 }
             })
             if(muebles){
                 const success = await prisma.disenio.delete({
                     where: {
-                        id: body.id
+                        id: id
                     }
                 })
                 if(success){

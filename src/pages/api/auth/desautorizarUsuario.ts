@@ -14,7 +14,7 @@ interface ExtendedNextApiRequestNoPermitirUsuario extends NextApiRequest{
 
 export default async function handler(req: ExtendedNextApiRequestNoPermitirUsuario, res: NextApiResponse) {
     const session = await getSession({req});
-    if(req.method === "DELETE"){
+    if(req.method === "POST"){
         const id = req.body.id;
         if(!id){
             return res.status(400).json({message: "No se recibio el id de ningun disenio"});

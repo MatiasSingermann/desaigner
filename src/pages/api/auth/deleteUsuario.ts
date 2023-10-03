@@ -13,7 +13,7 @@ interface ExtendedNextApiRequest extends NextApiRequest{
 // TODO: Problema con la nueva version de nextjs, endoponts DELETE no tienen body. Posible solucion, volver a una version anterior de nextjs
 export default async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     const session = await getSession({req});
-    if(req.method === "DELETE"){
+    if(req.method === "POST"){
         if(session){
             const email = session?.user.email;
             return await deleteUsuario(req, res, email);
