@@ -26,11 +26,12 @@ function AcceptDeletion({ setShowEdit, showEdit }: AcceptDeletionProps) {
     }
 
     const userPassword = inputData[0]?inputData[0][1]:"";
+    console.log("HOLA")
     const obj = {
       contrasenia: userPassword,
     };
     fetch("api/auth/deleteUsuario", {
-      method: "DELETE",
+      method: "POST",
       headers: {
         "Content-type": "application/json",
       },

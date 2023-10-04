@@ -197,13 +197,13 @@ function Index() {
         setLoading(false);
         const finalImage1 = data.images[0];
         const finalImage2 = data.images[1];
-        const finalImageByteArray1 = base64.toByteArray(finalImage1!);
-        const finalImageByteArray2 = base64.toByteArray(finalImage2!);
-        const myBlob1 = new Blob([finalImageByteArray1], {
+        // const finalImageByteArray1 = base64.toByteArray(finalImage1!);
+        // const finalImageByteArray2 = base64.toByteArray(finalImage2!);
+        const myBlob1 = new Blob([finalImage1!], { // finalImageByteArray1
           type: "image/jpeg",
         });
         setBlob1(myBlob1);
-        const myBlob2 = new Blob([finalImageByteArray2], {
+        const myBlob2 = new Blob([finalImage2!], {
           type: "image/jpeg",
         });
         setBlob2(myBlob2);
@@ -211,8 +211,8 @@ function Index() {
         setImageURL2(URL.createObjectURL(myBlob2));
         if (data.images.length > 2) {
           const finalImage3 = data.images[2];
-          const finalImageByteArray3 = base64.toByteArray(finalImage3!);
-          const myBlob3 = new Blob([finalImageByteArray3], {
+          // const finalImageByteArray3 = base64.toByteArray(finalImage3!);
+          const myBlob3 = new Blob([finalImage3!], {
             type: "image/jpeg",
           });
           setBlob3(myBlob3);
@@ -220,8 +220,8 @@ function Index() {
         }
         if (data.images.length > 3) {
           const finalImage4 = data.images[3];
-          const finalImageByteArray4 = base64.toByteArray(finalImage4!);
-          const myBlob4 = new Blob([finalImageByteArray4], {
+          // const finalImageByteArray4 = base64.toByteArray(finalImage4!);
+          const myBlob4 = new Blob([finalImage4!], {
             type: "image/jpeg",
           });
           setBlob4(myBlob4);
@@ -231,9 +231,9 @@ function Index() {
         setFinished(true);
       } else {
         const finalImage = data.images[0];
-        const finalImageByteArray = base64.toByteArray(finalImage!);
-        const blob = new Blob([finalImageByteArray], {
-          type: "image/jpeg",
+        // const finalImageByteArray = base64.toByteArray(finalImage!);
+        const blob = new Blob([finalImage!], {
+          type: "image/jpeg", // type: "application/octet-stream"
         });
         setLoading(true);
         getLinks(blob);
@@ -330,7 +330,7 @@ function Index() {
 
         setLoading(true);
 
-        fetch("http://localhost:8000/txt2img/v2/v1", {
+        fetch("http://localhost:8000/txt2img/v3", { // http://localhost:8000/txt2img/v2/v1
           method: "POST",
           headers: {
             accept: "application/json",
@@ -341,6 +341,7 @@ function Index() {
         })
           .then((response) => response.json())
           .then((data: dataImage) => {
+            console.log(data);
             imageProcessor(data);
           })
           .catch((error: Error) => {
