@@ -30,7 +30,7 @@ function AcceptDeletion({ setShowEdit, showEdit }: AcceptDeletionProps) {
     const obj = {
       contrasenia: userPassword,
     };
-    fetch("api/auth/deleteUsuario", {
+    fetch("api/hola", {
       method: "POST",
       headers: {
         "Content-type": "application/json",
