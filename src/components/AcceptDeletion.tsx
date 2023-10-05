@@ -3,6 +3,8 @@ import { useRef } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import PasswordInput from "./PasswordInput";
 import PasswordLogo from "~/components/PasswordLogo";
+import { useRouter } from "next/router";
+import { signOut } from "next-auth/react";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -14,6 +16,7 @@ interface AcceptDeletionProps {
 
 function AcceptDeletion({ setShowEdit, showEdit }: AcceptDeletionProps) {
   const formRef = useRef<HTMLFormElement>(null);
+  const router = useRouter();
   const deleteAccount = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -26,11 +29,10 @@ function AcceptDeletion({ setShowEdit, showEdit }: AcceptDeletionProps) {
     }
 
     const userPassword = inputData[0]?inputData[0][1]:"";
-    console.log("HOLA")
     const obj = {
       contrasenia: userPassword,
     };
-    fetch("api/hola", {
+    fetch("api/auth/deleteUsuario", {
       method: "POST",
       headers: {
         "Content-type": "application/json",
@@ -50,6 +52,8 @@ function AcceptDeletion({ setShowEdit, showEdit }: AcceptDeletionProps) {
             progress: undefined,
             theme: "colored",
           });
+          signOut();
+          router.push("/landing");
         }
       })
       .catch((error) => {
