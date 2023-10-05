@@ -64,7 +64,7 @@ function Index() {
   const [imageFullData, setImageFullData] = useState<FullDataImage>(
     [] as FullDataImage
   );
-  const [saveImageButtonClick, setImageButtonClick] = useState(false);
+  const [imageButtonClick, setImageButtonClick] = useState(false);
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY!.toString();
 
@@ -82,7 +82,7 @@ function Index() {
 
   if (status === "authenticated") {
     const handleSaveImage = () => {
-      console.log("click");
+      setImageButtonClick(!imageButtonClick)
       // const obj = {
       //   nombre: "", // string
       //   ambiente: "", // string
@@ -201,11 +201,11 @@ function Index() {
         const finalImage2 = data.images[1];
         const finalImageByteArray1 = base64.toByteArray(finalImage1!);
         const finalImageByteArray2 = base64.toByteArray(finalImage2!);
-        const myBlob1 = new Blob([finalImageByteArray1!], { // finalImageByteArray1
+        const myBlob1 = new Blob([finalImageByteArray1], { // finalImageByteArray1
           type: "image/jpeg",
         });
         setBlob1(myBlob1);
-        const myBlob2 = new Blob([finalImageByteArray2!], {
+        const myBlob2 = new Blob([finalImageByteArray2], {
           type: "image/jpeg",
         });
         setBlob2(myBlob2);
@@ -214,7 +214,7 @@ function Index() {
         if (data.images.length > 2) {
           const finalImage3 = data.images[2];
           const finalImageByteArray3 = base64.toByteArray(finalImage3!);
-          const myBlob3 = new Blob([finalImageByteArray3!], {
+          const myBlob3 = new Blob([finalImageByteArray3], {
             type: "image/jpeg",
           });
           setBlob3(myBlob3);
@@ -223,7 +223,7 @@ function Index() {
         if (data.images.length > 3) {
           const finalImage4 = data.images[3];
           const finalImageByteArray4 = base64.toByteArray(finalImage4!);
-          const myBlob4 = new Blob([finalImageByteArray4!], {
+          const myBlob4 = new Blob([finalImageByteArray4], {
             type: "image/jpeg",
           });
           setBlob4(myBlob4);
@@ -234,7 +234,7 @@ function Index() {
       } else {
         const finalImage = data.images[0];
         const finalImageByteArray = base64.toByteArray(finalImage!);
-        const blob = new Blob([finalImageByteArray!], {
+        const blob = new Blob([finalImageByteArray], {
           type: "image/jpeg", // type: "application/octet-stream"
         });
         setLoading(true);
@@ -486,7 +486,7 @@ function Index() {
                 </div>
               </div>
               <SaveImageButton handleSaveImage={handleSaveImage}/>
-              {saveImageButtonClick && <SaveImageInfo environment="" budget="" style="" image="" furniture={["", ""]}/>}
+              {imageButtonClick && <SaveImageInfo environment="" budget="" style="" image="" furniture={["", ""]}/>}
             </div>
           ) : null}
           <ToastContainer limit={3} />

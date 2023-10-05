@@ -52,8 +52,8 @@ function AcceptDeletion({ setShowEdit, showEdit }: AcceptDeletionProps) {
             progress: undefined,
             theme: "colored",
           });
-          signOut();
-          router.push("/landing");
+          void signOut();
+          void router.push("/landing");
         }
       })
       .catch((error) => {
