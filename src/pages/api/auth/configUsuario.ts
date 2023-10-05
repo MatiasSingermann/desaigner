@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "next-auth/react";
+import { authOptions } from "./[...nextauth]";
+import { getServerSession } from "next-auth/next";
 import { checkEmail } from "../functions";
 
 const prisma = new PrismaClient();
@@ -14,7 +15,7 @@ interface ExtendedNextApiRequest extends NextApiRequest{
 }
 
 export default async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
-    const session = await getSession({req});
+    const session = await getServerSession(req, res, authOptions);
     if(req.method === "PATCH"){
         if(session){
             const email = session?.user.email;
