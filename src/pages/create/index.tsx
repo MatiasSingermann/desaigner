@@ -187,8 +187,8 @@ function Index() {
 
         setLoading(true);
 
-        fetch("http://localhost:8000/txt2img/v3", {
-          // http://localhost:8000/txt2img/v2/v1
+        fetch("http://localhost:8000/txt2img/v2/v1", {
+          // http://localhost:8000/txt2img/v3
           method: "POST",
           headers: {
             accept: "application/json",
