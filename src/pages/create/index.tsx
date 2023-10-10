@@ -44,6 +44,17 @@ function Index() {
   const [selectedImage, setSelectedImage] = useState(0);
   const [imageButtonClick, setImageButtonClick] = useState(false);
 
+  let inputImage : FormDataEntryValue;
+  let noImage = "";
+  let budget = "";
+  let style = "";
+  let environment = "";
+  let weather = "";
+  let disability = "";
+  let numImages : number | string;
+  let maskImage : FormDataEntryValue;
+  let base64Image = "";
+
   const { imageFullData, setImageFullData, images, imageProcessor } =
     useImageData(setLoading, setFinished);
 
@@ -129,15 +140,15 @@ function Index() {
         inputData.push(pair);
       }
 
-      const inputImage = inputData[0] ? inputData[0][1] : "";
-      const noImage = inputData[1] ? inputData[1][1].toString() : "";
-      const budget = inputData[2] ? inputData[2][1].toString() : "";
-      const style = inputData[3] ? inputData[3][1].toString() : "";
-      const environment = inputData[4] ? inputData[4][1].toString() : "";
-      const weather = inputData[5] ? inputData[5][1].toString() : "";
-      const disability = inputData[6] ? inputData[6][1].toString() : "";
-      const numImages = inputData[7] ? Number(inputData[7][1]) : "";
-      const maskImage = inputData[8] ? inputData[8][1] : "";
+      inputImage = inputData[0] ? inputData[0][1] : "";
+      noImage = inputData[1] ? inputData[1][1].toString() : "";
+      budget = inputData[2] ? inputData[2][1].toString() : "";
+      style = inputData[3] ? inputData[3][1].toString() : "";
+      environment = inputData[4] ? inputData[4][1].toString() : "";
+      weather = inputData[5] ? inputData[5][1].toString() : "";
+      disability = inputData[6] ? inputData[6][1].toString() : "";
+      numImages = inputData[7] ? Number(inputData[7][1]) : "";
+      maskImage = inputData[8] ? inputData[8][1] : "";
 
       let requiredInputs = true;
       let isNoImage = false;
@@ -344,11 +355,11 @@ function Index() {
               <SaveImageButton handleSaveImage={handleSaveImage} />
               {imageButtonClick && (
                 <SaveImageInfo
-                  environment=""
-                  budget=""
-                  style=""
-                  image=""
-                  furniture={["", ""]}
+                  environment={environment}
+                  budget={budget}
+                  style={style}
+                  image={images[0]!.blob}
+                  furniture={imageFullData} // {["", ""]}
                 />
               )}
             </div>
