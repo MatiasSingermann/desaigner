@@ -17,7 +17,6 @@ const TabBar = memo(function TabBar() {
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const targetDiv = e.currentTarget;
-    console.log(targetDiv)
     const targetRect = targetDiv.getBoundingClientRect();
     const targetRectX = targetRect.x;
    
