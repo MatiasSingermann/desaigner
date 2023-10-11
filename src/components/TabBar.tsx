@@ -1,4 +1,5 @@
 import { useState, useRef, memo } from "react";
+import { useRouter } from "next/router";
 import Rocket from "./Rocket";
 import TabBarButton from "./TabBarButton";
 import House from "./House";
@@ -8,12 +9,15 @@ import Folder from "./Folder";
 import TabCurve from "./TabCurve";
 
 const TabBar = memo(function TabBar() {
+  const router = useRouter();
   const elementRef = useRef<HTMLDivElement>(null);
   const [translateX, setTranslateX] = useState<number>(5);
   let element: HTMLDivElement | null;
   const [counter, setCounter] = useState(0)
   const [previousDiv, setPreviousDiv] = useState<EventTarget & HTMLDivElement>()
   const [previousDivClassName, setPreviousDivClassName] = useState("")
+
+  const myRoute = router.route;
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const targetDiv = e.currentTarget;
@@ -22,7 +26,7 @@ const TabBar = memo(function TabBar() {
    
     if(targetDiv != previousDiv){
       if(targetDiv.className.includes("tabbar-selected") === false){
-        targetDiv.className += " tabbar-selected";
+        // targetDiv.className += " tabbar-selected";
       }
       if(counter === 1){
         previousDiv!.className = previousDivClassName;
@@ -58,30 +62,35 @@ const TabBar = memo(function TabBar() {
             href="/landing"
             image={<Rocket />}
             handleClick={handleClick}
+            myRoute={myRoute}
           />
           <TabBarButton
             name="House"
             href="/home"
             image={<House />}
             handleClick={handleClick}
+            myRoute={myRoute}
           />
           <TabBarButton
             name="Sparkle"
             href="/create"
             image={<Sparkle />}
             handleClick={handleClick}
+            myRoute={myRoute}
           />
           <TabBarButton
             name="Folder"
             href="/collections"
             image={<Folder />}
             handleClick={handleClick}
+            myRoute={myRoute}
           />
           <TabBarButton
             name="Gear"
             href="/settings"
             image={<Gear />}
             handleClick={handleClick}
+            myRoute={myRoute}
           />
         </ul>
       </div>

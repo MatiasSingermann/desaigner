@@ -6,6 +6,7 @@ interface TabBarButtonProps {
   href: string;
   image: JSX.Element;
   handleClick: MouseEventHandler<HTMLDivElement>;
+  myRoute: string;
 }
 
 function TabBarButton({
@@ -13,13 +14,19 @@ function TabBarButton({
   href,
   image,
   handleClick,
+  myRoute,
 }: TabBarButtonProps) {
   const liContent = () => {
+    const rocketCondition = name === "Rocket" && (myRoute === "/landing" || myRoute === "/login") ? "tabbar-selected" : "";
+    const homeCondition = name === "House" && myRoute === "/home" ? "tabbar-selected" : "";
+    const sparkleCondition = name === "Sparkle" && myRoute === "/create" ? "tabbar-selected" : "";
+    const folderCondition = name === "Folder" && myRoute === "/collections" ? "tabbar-selected" : "";
+    const gearCondition = name === "Gear" && myRoute === "/settings" ? "tabbar-selected" : "";
     return (
       <li>
         <Link href={href} aria-label={"Ir a" + href}>
           <div
-            className={`flex h-[50px] w-[50px] items-center justify-center rounded-full transition-all ${name}`}
+            className={`flex h-[50px] w-[50px] items-center justify-center rounded-full transition-all ${name} ${rocketCondition} ${homeCondition} ${sparkleCondition} ${folderCondition} ${gearCondition}`}
             onClick={handleClick}
           >
             {image}

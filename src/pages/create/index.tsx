@@ -53,7 +53,6 @@ function Index() {
   let disability = "";
   let numImages : number | string;
   let maskImage : FormDataEntryValue;
-  let base64Image = "";
 
   const { imageFullData, setImageFullData, images, imageProcessor } =
     useImageData(setLoading, setFinished);
@@ -75,15 +74,6 @@ function Index() {
   if (status === "authenticated") {
     const handleSaveImage = () => {
       setImageButtonClick(!imageButtonClick);
-      // const obj = {
-      //   nombre: "", // string
-      //   ambiente: "", // string
-      //   presupuesto: "", // string
-      //   estilo: "", // string
-      //   colecciones: "", // string[]
-      //   disenioIMG: "", // string (base64)
-      //   muebles: "", // object[] todo lo que me devuelve blanco
-      // }
     };
 
     const getLinks = (blob: Blob) => {
