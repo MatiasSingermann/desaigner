@@ -94,7 +94,7 @@ function Index() {
           {...motionProps}
           className="mx-[32px] mb-[52px] self-start font-coolveticaLight text-[20px] leading-none"
         >
-          Usamos Grounding DINO, Stable Diffusion y CLIP Interrogator para poder
+          Usamos Grounding DINO, Stable Diffusion y BLIP Image Captioning Large para poder
           darle vida a nuestra idea.
         </motion.h2>
       </main>

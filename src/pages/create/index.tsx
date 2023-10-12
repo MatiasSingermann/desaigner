@@ -80,8 +80,11 @@ function Index() {
       const formData = new FormData();
       formData.append("image", blob);
 
-      fetch("http://localhost:9000/", {
+      fetch("https://desaigner-image-and-links-api.hf.space/", {
         method: "POST",
+        headers: {
+          "Authorization": `Bearer ${process.env.NEXT_PUBLIC_HF_ORG_TOKEN!.toString()}`
+        },
         body: formData,
       })
         .then((response) => response.json())

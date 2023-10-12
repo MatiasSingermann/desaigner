@@ -1,12 +1,13 @@
 import Link from "next/link";
-import type { MouseEventHandler } from "react";
+// import type { MouseEventHandler } from "react";
 import TabCurve from "./TabCurve";
+import { twMerge } from 'tailwind-merge';
 
 interface TabBarButtonProps {
   name: string;
   href: string;
   image: JSX.Element;
-  handleClick: MouseEventHandler<HTMLDivElement>;
+  // handleClick: MouseEventHandler<HTMLDivElement>;
   myRoute: string;
 }
 
@@ -14,7 +15,7 @@ function TabBarButton({
   name,
   href,
   image,
-  handleClick,
+  // handleClick,
   myRoute,
 }: TabBarButtonProps) {
   const liContent = () => {
@@ -36,17 +37,18 @@ function TabBarButton({
         ? "flex"
         : "hidden";
     const curveHomeCondition =
-      (name === "House" && myRoute === "/home") ? "flex" : "hidden";
+      (name === "House" && myRoute === "/home") ? "flex" : "";
     const curveSparkleCondition =
-      (name === "Sparkle" && myRoute === "/create") ? "flex" : "hidden";
+      (name === "Sparkle" && myRoute === "/create") ? "flex" : "";
     const curveFolderCondition =
-      (name === "Folder" && myRoute === "/collections") ? "flex" : "hidden";
+      (name === "Folder" && myRoute === "/collections") ? "flex" : "";
     const curveGearCondition =
-      (name === "Gear" && myRoute === "/settings") ? "flex" : "hidden";
+      (name === "Gear" && myRoute === "/settings") ? "flex" : "";
+
     return (
       <div className="flex flex-col items-center">
         <div
-          className={`absolute -top-[24px] mb-[80px] ${curveRocketCondition} ${curveHomeCondition} ${curveSparkleCondition} ${curveFolderCondition} ${curveGearCondition}`}
+          className={twMerge(["absolute", "-top-[24px]", "hidden", curveRocketCondition, curveHomeCondition, curveSparkleCondition, curveFolderCondition, curveGearCondition])}
         >
           <TabCurve />
         </div>
@@ -54,7 +56,7 @@ function TabBarButton({
           <Link href={href} aria-label={"Ir a" + href}>
             <div
               className={`z-10 flex h-[50px] w-[50px] items-center justify-center rounded-full transition-all ${rocketCondition} ${homeCondition} ${sparkleCondition} ${folderCondition} ${gearCondition}`}
-              onClick={handleClick}
+              // onClick={handleClick}
             >
               {image}
             </div>
