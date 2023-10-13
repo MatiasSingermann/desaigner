@@ -337,6 +337,7 @@ function Index() {
           method: "POST",
           headers: {
             accept: "application/json",
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_HF_ORG_TOKEN!.toString()}`,
             "x-api-key": apiKey,
             "Content-type": "application/json",
           },
