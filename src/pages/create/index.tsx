@@ -370,7 +370,10 @@ function Index() {
 
         fetch("https://desaigner-image-creation-api.hf.space/img2img/v3", {
           method: "POST",
-          headers: { "x-api-key": apiKey },
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_HF_ORG_TOKEN!.toString()}`,
+            "x-api-key": apiKey
+          },
           body: formData,
         })
           .then((response) => response.json())
@@ -401,7 +404,10 @@ function Index() {
 
         fetch("https://desaigner-image-creation-api.hf.space/inpaint/v3", {
           method: "POST",
-          headers: { "x-api-key": apiKey },
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_HF_ORG_TOKEN!.toString()}`,
+            "x-api-key": apiKey
+          },
           body: formData,
         })
           .then((response) => response.json())
