@@ -16,7 +16,7 @@ import InpaintingEditor from "~/components/InpaintingEditor";
 import ResLoad from "~/components/ResLoad";
 import SwiperResultShow from "~/components/SwiperResultShow";
 import SaveImageButton from "~/components/SaveImageButton";
-import SaveImageInfo from "~/components/SaveImageInfo";
+// import SaveImageInfo from "~/components/SaveImageInfo";
 
 interface InputImageDataProps {
   box: [number, number, number, number];
@@ -485,7 +485,7 @@ function Index() {
                 </div>
               </div>
               <SaveImageButton handleSaveImage={handleSaveImage} />
-              {imageButtonClick && (
+              {/* {imageButtonClick && (
                 <SaveImageInfo
                   environment={environment}
                   budget={budget}
@@ -493,7 +493,7 @@ function Index() {
                   image={blob1!}
                   furniture={imageFullData} // {["", ""]}
                 />
-              )}
+              )} */}
             </div>
           ) : null}
           <ToastContainer limit={3} />
