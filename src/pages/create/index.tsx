@@ -51,7 +51,7 @@ function Index() {
   const [imageFullData, setImageFullData] = useState<FullDataImage>(
     [] as FullDataImage
   );
-  const [imageButtonClick, setImageButtonClick] = useState(false);
+  // const [imageButtonClick, setImageButtonClick] = useState(false);
 
   let inputImage: FormDataEntryValue;
   let noImage = "";
@@ -79,7 +79,7 @@ function Index() {
 
   if (status === "authenticated") {
     const handleSaveImage = () => {
-      setImageButtonClick(true);
+      // setImageButtonClick(true);
       // const obj = {
       //   nombre: "", // string
       //   ambiente: "", // string
