@@ -396,7 +396,7 @@ function Index() {
         formData.append("weather", weather);
         formData.append("disability", disability);
         formData.append("num_images", numImages.toString());
-        formData.append("steps", (1).toString());
+        formData.append("steps", (20).toString());
         formData.append("guidance_scale", (7).toString());
         formData.append("controlnet_conditioning_scale", (1).toString());
         formData.append("input_image", inputImage);
