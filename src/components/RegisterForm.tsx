@@ -19,8 +19,6 @@ function RegisterForm() {
 
     const formData = new FormData(e.currentTarget);
 
-    console.log(formData.entries());
-
     const inputData = [];
 
     for (const pair of formData.entries()) {

@@ -38,6 +38,7 @@ const SwiperSlider: React.FC = () => {
               alt="Pieza"
               height={280}
               width={280}
+              priority
             />
           </div>
           <div className="absolute bottom-0 z-10 flex h-1/2 w-full bg-gradient-to-b from-transparent to-black"></div>
@@ -50,6 +51,7 @@ const SwiperSlider: React.FC = () => {
               alt="Living"
               height={280}
               width={280}
+              priority
             />
           </div>
           <div className="absolute bottom-0 z-10 flex h-1/2 w-full bg-gradient-to-b from-transparent to-black"></div>
@@ -62,6 +64,7 @@ const SwiperSlider: React.FC = () => {
               alt="Baño"
               height={280}
               width={280}
+              priority
             />
           </div>
           <div className="absolute bottom-0 z-10 flex h-1/2 w-full bg-gradient-to-b from-transparent to-black"></div>

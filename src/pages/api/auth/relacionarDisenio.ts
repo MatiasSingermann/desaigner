@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "next-auth/react";
+import { authOptions } from "./[...nextauth]";
+import { getServerSession } from "next-auth/next";
 import { checkEmail, coleccionExists, disenioExists, userExists } from "../functions";
 
 const prisma = new PrismaClient();
@@ -13,7 +14,7 @@ interface ExtendedNextApiRequestAgregarDisenio extends NextApiRequest{
 }
 
 export default async function handler(req: ExtendedNextApiRequestAgregarDisenio, res: NextApiResponse) {
-    const session = await getSession({req});
+    const session = await getServerSession(req, res, authOptions);
     if(req.method === "PATCH"){
         const id = req.body.id;
         if(!id){

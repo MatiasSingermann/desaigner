@@ -16,6 +16,7 @@ import InpaintingEditor from "~/components/InpaintingEditor";
 import ResLoad from "~/components/ResLoad";
 import SwiperResultShow from "~/components/SwiperResultShow";
 import SaveImageButton from "~/components/SaveImageButton";
+// import SaveImageInfo from "~/components/SaveImageInfo";
 
 interface InputImageDataProps {
   box: [number, number, number, number];
@@ -50,6 +51,19 @@ function Index() {
   const [imageFullData, setImageFullData] = useState<FullDataImage>(
     [] as FullDataImage
   );
+  // const [imageButtonClick, setImageButtonClick] = useState(false);
+
+  let inputImage: FormDataEntryValue;
+  let noImage = "";
+  let budget = "";
+  let style = "";
+  let environment = "";
+  let weather = "";
+  let disability = "";
+  let numImages: number | string;
+  let maskImage: FormDataEntryValue;
+
+  const apiKey = process.env.NEXT_PUBLIC_API_KEY!.toString();
 
   const { status } = useSession({
     required: false,
@@ -65,7 +79,7 @@ function Index() {
 
   if (status === "authenticated") {
     const handleSaveImage = () => {
-      console.log("click");
+      // setImageButtonClick(true);
       // const obj = {
       //   nombre: "", // string
       //   ambiente: "", // string
@@ -75,7 +89,7 @@ function Index() {
       //   disenioIMG: "", // string (base64)
       //   muebles: "", // object[] todo lo que me devuelve blanco
       // }
-    }
+    };
 
     const linkShow = () => {
       // if (!imageFullData) return;
@@ -140,8 +154,12 @@ function Index() {
       const formData = new FormData();
       formData.append("image", blob);
 
-      fetch("http://localhost:9000/", {
+      fetch("https://desaigner-image-and-links-api.hf.space/", {
+        // http://localhost:9000/
         method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_HF_ORG_TOKEN!.toString()}`,
+        },
         body: formData,
       })
         .then((response) => response.json())
@@ -257,15 +275,15 @@ function Index() {
         inputData.push(pair);
       }
 
-      const inputImage = inputData[0] ? inputData[0][1] : "";
-      const noImage = inputData[1] ? inputData[1][1].toString() : "";
-      const budget = inputData[2] ? inputData[2][1].toString() : "";
-      const style = inputData[3] ? inputData[3][1].toString() : "";
-      const environment = inputData[4] ? inputData[4][1].toString() : "";
-      const weather = inputData[5] ? inputData[5][1].toString() : "";
-      const disability = inputData[6] ? inputData[6][1].toString() : "";
-      const numImages = inputData[7] ? Number(inputData[7][1]) : "";
-      const maskImage = inputData[8] ? inputData[8][1] : "";
+      inputImage = inputData[0] ? inputData[0][1] : "";
+      noImage = inputData[1] ? inputData[1][1].toString() : "";
+      budget = inputData[2] ? inputData[2][1].toString() : "";
+      style = inputData[3] ? inputData[3][1].toString() : "";
+      environment = inputData[4] ? inputData[4][1].toString() : "";
+      weather = inputData[5] ? inputData[5][1].toString() : "";
+      disability = inputData[6] ? inputData[6][1].toString() : "";
+      numImages = inputData[7] ? Number(inputData[7][1]) : "";
+      maskImage = inputData[8] ? inputData[8][1] : "";
 
       let requiredInputs = true;
       let isNoImage = false;
@@ -315,11 +333,12 @@ function Index() {
 
         setLoading(true);
 
-        fetch("http://localhost:8000/txt2img/v2/v1", {
+        fetch("https://desaigner-image-creation-api.hf.space/txt2img/v2/v1", {
           method: "POST",
           headers: {
             accept: "application/json",
-            "x-api-key": "lsakslaoañ209sk1",
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_HF_ORG_TOKEN!.toString()}`,
+            "x-api-key": apiKey,
             "Content-type": "application/json",
           },
           body: JSON.stringify(obj),
@@ -349,9 +368,12 @@ function Index() {
         formData.append("controlnet_conditioning_scale", (1).toString());
         formData.append("input_image", inputImage);
 
-        fetch("http://localhost:8000/img2img/v3", {
+        fetch("https://desaigner-image-creation-api.hf.space/img2img/v3", {
           method: "POST",
-          headers: { "x-api-key": "lsakslaoañ209sk1" },
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_HF_ORG_TOKEN!.toString()}`,
+            "x-api-key": apiKey
+          },
           body: formData,
         })
           .then((response) => response.json())
@@ -374,15 +396,18 @@ function Index() {
         formData.append("weather", weather);
         formData.append("disability", disability);
         formData.append("num_images", numImages.toString());
-        formData.append("steps", (1).toString());
+        formData.append("steps", (20).toString());
         formData.append("guidance_scale", (7).toString());
         formData.append("controlnet_conditioning_scale", (1).toString());
         formData.append("input_image", inputImage);
         formData.append("mask_image", maskImage);
 
-        fetch("http://localhost:8000/inpaint/v3", {
+        fetch("https://desaigner-image-creation-api.hf.space/inpaint/v3", {
           method: "POST",
-          headers: { "x-api-key": "lsakslaoañ209sk1" },
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_HF_ORG_TOKEN!.toString()}`,
+            "x-api-key": apiKey
+          },
           body: formData,
         })
           .then((response) => response.json())
@@ -399,7 +424,7 @@ function Index() {
         <Head>
           <title>Create</title>
           <meta name="description" content="Generated by DesAIgner Team" />
-          <link rel="icon" href="/DesAIgnerIco.ico" />
+          <link rel="icon" href="/favicon.ico" />
         </Head>
         <main className="flex grow flex-col items-center justify-start font-coolveticaLight">
           {loading && <ResLoad />}
@@ -461,12 +486,21 @@ function Index() {
                 className="relative mx-[32px] my-[32px] flex h-[290px] w-[290px] items-center justify-center rounded-xl object-contain shadow-md shadow-[#999] dark:shadow-[#111]"
               ></Image>
 
-              <div className="relative mb-[110px] flex h-[300px] w-[300px] flex-col items-center justify-center overflow-x-hidden overflow-y-scroll rounded-2xl border-[2px] border-[#BABABA] bg-[#E8E8E8] dark:border-none dark:bg-[#293433]">
+              <div className="relative flex h-[300px] w-[300px] flex-col items-center justify-center overflow-x-hidden overflow-y-scroll rounded-2xl border-[2px] border-[#BABABA] bg-[#E8E8E8] dark:border-none dark:bg-[#293433]">
                 <div className="absolute top-0 flex w-full flex-col">
                   {linkShow()}
                 </div>
               </div>
-              <SaveImageButton handleSaveImage={handleSaveImage}/>
+              <SaveImageButton handleSaveImage={handleSaveImage} />
+              {/* {imageButtonClick && (
+                <SaveImageInfo
+                  environment={environment}
+                  budget={budget}
+                  style={style}
+                  image={blob1!}
+                  furniture={imageFullData} // {["", ""]}
+                />
+              )} */}
             </div>
           ) : null}
           <ToastContainer limit={3} />

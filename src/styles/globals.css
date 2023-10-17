@@ -42,7 +42,7 @@
 
 @layer components {
   .tabbar-selected {
-    translate: 0 -27px;
+    translate: 0 -29px;
     background-color: #59C3C3;
   }
 }

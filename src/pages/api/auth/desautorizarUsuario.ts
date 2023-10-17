@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "next-auth/react";
+import { authOptions } from "./[...nextauth]";
+import { getServerSession } from "next-auth/next";
 import { checkEmail, disenioExists, userExists } from "../functions";
 
 const prisma = new PrismaClient();
@@ -13,8 +14,8 @@ interface ExtendedNextApiRequestNoPermitirUsuario extends NextApiRequest{
 }
 
 export default async function handler(req: ExtendedNextApiRequestNoPermitirUsuario, res: NextApiResponse) {
-    const session = await getSession({req});
-    if(req.method === "DELETE"){
+    const session = await getServerSession(req, res, authOptions);
+    if(req.method === "POST"){
         const id = req.body.id;
         if(!id){
             return res.status(400).json({message: "No se recibio el id de ningun disenio"});

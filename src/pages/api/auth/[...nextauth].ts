@@ -1,9 +1,11 @@
 import NextAuth from "next-auth";
+import type { Session, SessionStrategy, User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import DiscordProvider from "next-auth/providers/discord";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
+import type { JWT } from "next-auth/jwt";
 
 const prisma = new PrismaClient();
 
@@ -26,11 +28,11 @@ if (!DISCORD_CLIENT_SECRET) {
     throw new Error("Discord secret is missing in .env file WTH OMG :O >:(");
 }
 
-export default NextAuth ({
+export const authOptions = {
     adapter: PrismaAdapter(prisma),
     session: {
-        strategy: 'jwt',
-        maxAge: 30 * 60 
+        strategy: 'jwt' as SessionStrategy | undefined,
+        maxAge: 30 * 60
     },
     secret: process.env.JWT_SECRET,
     jwt: {
@@ -49,11 +51,11 @@ export default NextAuth ({
             type: 'credentials',
             name: 'credentials',
             credentials: {
-            email: { label: "Email", type: "email" },
-            contrasenia: { label: "Contrasenia", type: "password" }
+                email: { label: "Email", type: "email" },
+                contrasenia: { label: "Contrasenia", type: "password" }
             },
             async authorize(credentials) {
-                const {email, contrasenia}=credentials as {
+                const { email, contrasenia } = credentials as {
                     email: string;
                     contrasenia: string;
                 };
@@ -68,12 +70,12 @@ export default NextAuth ({
                     })
                 })
 
-                if(res.ok){
+                if (res.ok) {
                     return {
                         id: email,
                     };
                 }
-                else{
+                else {
                     return null;
                 }
             },
@@ -84,19 +86,27 @@ export default NextAuth ({
         signOut: "/settings",
     },
     callbacks: {
-        jwt({token, user}){
-            if(user){
+        jwt({ token, user }: {
+            token: JWT;
+            user: User;
+        }) {
+            if (user) {
                 token.email = user.id;
             }
 
             return token;
         },
-        session({ session, token }){
-            if(token){
+        session({ session, token }: {
+            session: Session;
+            token: JWT;
+        }) {
+            if (token) {
                 session.user.email = token.email as string;
             }
-            
+
             return session;
         }
     }
-});
+}
+
+export default NextAuth(authOptions);
