@@ -1,7 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "next-auth/react";
+import { getServerSession } from "next-auth/next";
 import { checkContrasenia, checkEmail } from "../functions";
+import { authOptions } from "./[...nextauth]";
 
 const prisma = new PrismaClient();
 
@@ -10,10 +11,9 @@ interface ExtendedNextApiRequest extends NextApiRequest{
         readonly contrasenia: string
     }
 }
-
 export default async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
-    const session = await getSession({req});
-    if(req.method === "DELETE"){
+    const session = await getServerSession(req, res, authOptions);
+    if(req.method === "POST"){
         if(session){
             const email = session?.user.email;
             return await deleteUsuario(req, res, email);
@@ -26,11 +26,8 @@ export default async function handler(req: ExtendedNextApiRequest, res: NextApiR
 
 async function deleteUsuario(req: ExtendedNextApiRequest, res: NextApiResponse, email: string){
     const body = req.body;
-    if (!('contrasenia' in body)) {
-        return res.status(400).json({message: "La contraseña"});
-    }
     if(!body.contrasenia || !email){
-        return res.status(400).json({message: "Algun parametro no cumple con los requisitos"});
+        return res.status(400).json({message: "Falta algun parametro"});
     }
     if(!checkContrasenia(body.contrasenia)){
         return res.status(400).json({message: "La contrasenia no es valida"});

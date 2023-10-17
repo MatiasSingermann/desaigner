@@ -1,16 +1,11 @@
-import { PrismaClient } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
-
-const prisma = new PrismaClient();
-
-const email = "uwu@gmail.com"
+import { getServerSession } from "next-auth";
+import { authOptions } from "./auth/[...nextauth]";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const colecciones = await prisma.coleccion.findMany({
-        where:{
-            duenio_id: email
-        }
-    })
-    console.log(colecciones);
-    return res.status(200).json(colecciones);
+    const session = await getServerSession(req, res, authOptions);
+    console.log(session);
+    const email = session?.user.email;
+    console.log(email);
+    return res.status(200).send(req.body);
 }

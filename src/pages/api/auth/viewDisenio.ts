@@ -1,12 +1,13 @@
 import { PrismaClient } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "next-auth/react";
+import { authOptions } from "./[...nextauth]";
+import { getServerSession } from "next-auth/next";
 import { checkEmail, disenioExists, userExists } from "../functions";
 
 const prisma = new PrismaClient();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const session = await getSession({req});
+    const session = await getServerSession(req, res, authOptions);
     if(req.method === "GET"){
         const id = parseInt(req.query.id as string);
         if(!id){
