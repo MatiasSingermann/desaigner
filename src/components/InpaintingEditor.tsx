@@ -24,15 +24,24 @@ function InpaintingEditor({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
 
+  const handleInpainting = () => {
+    const canvas = canvasRef.current;
+    if(canvas){
+      const context = canvas.getContext("2d");
+      if(context){
+        canvas.setAttribute("style", "background-color: black; opacity: 1;");
+      }
+      const inpaintingMaskImage = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+    }
+  }
+
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
 
   const canvas = canvasRef.current;
   if (canvas) {
-    console.log("canvas");
 
     const context = canvas.getContext("2d");
     if (context) {
-      console.log("context");
       context.lineCap = "round";
       context.lineJoin = "round";
       context.strokeStyle = "#59C3C3";
@@ -46,7 +55,6 @@ function InpaintingEditor({
   }: React.MouseEvent<HTMLCanvasElement>) => {
     const { offsetX, offsetY } = nativeEvent;
     if (contextRef.current) {
-      console.log(offsetX, offsetY);
       contextRef.current.beginPath();
       contextRef.current.moveTo(offsetX, offsetY);
       contextRef.current.lineTo(offsetX, offsetY);
@@ -165,7 +173,8 @@ function InpaintingEditor({
             </div>
             <button
               form="false"
-              className="absolute bottom-0 mb-[12px] flex h-[36px] w-[94px] items-center justify-center rounded-3xl bg-[#228187] font-coolveticaRegular text-[18px] text-[#FBF9FA] shadow-md shadow-[#111]"
+              className="absolute bottom-0 mb-[38px] flex h-[36px] w-[94px] items-center justify-center rounded-3xl bg-[#228187] font-coolveticaRegular text-[18px] text-[#FBF9FA] shadow-md shadow-[#111]"
+              onClick={handleInpainting}
             >
               Aceptar
             </button>
