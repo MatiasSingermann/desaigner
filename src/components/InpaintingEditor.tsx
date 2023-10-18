@@ -1,7 +1,8 @@
 import Cross from "./Cross";
 import type { Dispatch, SetStateAction } from "react";
 import Image from "next/image";
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
+import BrushSlider from "./BrushSlider";
 
 interface InpaintingEditorProps {
   setShowEdit: Dispatch<SetStateAction<boolean>>;
@@ -34,6 +35,8 @@ function InpaintingEditor({
 
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
 
+  const [slider, setSlider] = useState<number[]>([15]);
+
   const canvas = canvasRef.current;
   if (canvas) {
 
@@ -42,7 +45,7 @@ function InpaintingEditor({
       context.lineCap = "round";
       context.lineJoin = "round";
       context.strokeStyle = "#59C3C3";
-      context.lineWidth = 20;
+      context.lineWidth = Number(slider);
       contextRef.current = context;
     }
   }
@@ -146,6 +149,7 @@ function InpaintingEditor({
                 Eliminar
               </button>
             </div>
+            <BrushSlider setSlider={setSlider} slider={slider}/>
             <button
               form="false"
               className="absolute bottom-0 mb-[38px] flex h-[36px] w-[94px] items-center justify-center rounded-3xl bg-[#228187] font-coolveticaRegular text-[18px] text-[#FBF9FA] shadow-md shadow-[#111]"
