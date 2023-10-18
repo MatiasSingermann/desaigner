@@ -21,6 +21,18 @@ function InpaintingEditor({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
 
+  const handleInpainting = () => {
+    const canvas = canvasRef.current;
+    if(canvas){
+      const context = canvas.getContext("2d");
+      if(context){
+        context.strokeStyle = "black";
+        canvas.setAttribute("style", "background-color: black; opacity: 1;");
+      }
+    }
+    
+  }
+
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
 
   const canvas = canvasRef.current;
@@ -73,23 +85,23 @@ function InpaintingEditor({
     setIsDrawing(false);
   };
 
-  // const setToDraw = () => {
-  //     if (contextRef.current) {
-  //         contextRef.current.globalCompositeOperation = 'source-over';
-  //     }
-  // };
+  const setToDraw = () => {
+      if (contextRef.current) {
+          contextRef.current.globalCompositeOperation = 'source-over';
+      }
+  };
 
-  // const setToErase = () => {
-  //     if (contextRef.current) {
-  //         contextRef.current.globalCompositeOperation = 'destination-out';
-  //     }
-  // };
+  const setToErase = () => {
+      if (contextRef.current) {
+          contextRef.current.globalCompositeOperation = 'destination-out';
+      }
+  };
 
-  // const clear = () => {
-  //     if (contextRef.current && canvasRef.current) {
-  //         contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-  //     }
-  // };
+  const clear = () => {
+      if (contextRef.current && canvasRef.current) {
+          contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+      }
+  };
 
   return (
     <>
@@ -130,6 +142,7 @@ function InpaintingEditor({
             <button
               form="false"
               className="absolute bottom-0 mb-[38px] flex h-[36px] w-[94px] items-center justify-center rounded-3xl bg-[#228187] font-coolveticaRegular text-[18px] text-[#FBF9FA] shadow-md shadow-[#111]"
+              onClick={handleInpainting}
             >
               Aceptar
             </button>
