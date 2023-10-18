@@ -19,76 +19,77 @@ function InpaintingEditor({
   };
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
-    const contextRef = useRef<CanvasRenderingContext2D | null>(null);
+  const contextRef = useRef<CanvasRenderingContext2D | null>(null);
 
-    const [isDrawing, setIsDrawing] = useState<boolean>(false);
+  const [isDrawing, setIsDrawing] = useState<boolean>(false);
 
-    useEffect(() => {
-        const canvas = canvasRef.current;
-        if (canvas) {
-            canvas.width = 500;
-            canvas.height = 500;
+  const canvas = canvasRef.current;
+  if (canvas) {
+    console.log("canvas");
 
-            const context = canvas.getContext("2d");
-            if (context) {
-                context.lineCap = "round";
-                context.lineJoin = 'round';
-                context.strokeStyle = '#59C3C3';
-                context.lineWidth = 20;
-                contextRef.current = context;
-            }
-        }
-    }, []);
+    const context = canvas.getContext("2d");
+    if (context) {
+      console.log("context");
+      context.lineCap = "round";
+      context.lineJoin = "round";
+      context.strokeStyle = "#59C3C3";
+      context.lineWidth = 20;
+      contextRef.current = context;
+    }
+  }
 
-    const startDrawing = ({ nativeEvent }: React.MouseEvent<HTMLCanvasElement>) => {
-        const { offsetX, offsetY } = nativeEvent;
-        if (contextRef.current) {
-            contextRef.current.beginPath();
-            contextRef.current.moveTo(offsetX, offsetY);
-            contextRef.current.lineTo(offsetX, offsetY);
-            contextRef.current.stroke();
-        }
-        setIsDrawing(true);
-        nativeEvent.preventDefault();
-    };
+  const startDrawing = ({
+    nativeEvent,
+  }: React.MouseEvent<HTMLCanvasElement>) => {
+    const { offsetX, offsetY } = nativeEvent;
+    if (contextRef.current) {
+      console.log(offsetX, offsetY);
+      contextRef.current.beginPath();
+      contextRef.current.moveTo(offsetX, offsetY);
+      contextRef.current.lineTo(offsetX, offsetY);
+      contextRef.current.stroke();
+    }
+    setIsDrawing(true);
+    nativeEvent.preventDefault();
+  };
 
-    const draw = ({ nativeEvent }: React.MouseEvent<HTMLCanvasElement>) => {
-        if (!isDrawing) {
-            return;
-        }
+  const draw = ({ nativeEvent }: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!isDrawing) {
+      return;
+    }
 
-        const { offsetX, offsetY } = nativeEvent;
-        if (contextRef.current) {
-            contextRef.current.lineTo(offsetX, offsetY);
-            contextRef.current.stroke();
-        }
-        nativeEvent.preventDefault();
-    };
+    const { offsetX, offsetY } = nativeEvent;
+    if (contextRef.current) {
+      contextRef.current.lineTo(offsetX, offsetY);
+      contextRef.current.stroke();
+    }
+    nativeEvent.preventDefault();
+  };
 
-    const stopDrawing = () => {
-        if (contextRef.current) {
-            contextRef.current.closePath();
-        }
-        setIsDrawing(false);
-    };
+  const stopDrawing = () => {
+    if (contextRef.current) {
+      contextRef.current.closePath();
+    }
+    setIsDrawing(false);
+  };
 
-    // const setToDraw = () => {
-    //     if (contextRef.current) {
-    //         contextRef.current.globalCompositeOperation = 'source-over';
-    //     }
-    // };
+  // const setToDraw = () => {
+  //     if (contextRef.current) {
+  //         contextRef.current.globalCompositeOperation = 'source-over';
+  //     }
+  // };
 
-    // const setToErase = () => {
-    //     if (contextRef.current) {
-    //         contextRef.current.globalCompositeOperation = 'destination-out';
-    //     }
-    // };
+  // const setToErase = () => {
+  //     if (contextRef.current) {
+  //         contextRef.current.globalCompositeOperation = 'destination-out';
+  //     }
+  // };
 
-    // const clear = () => {
-    //     if (contextRef.current && canvasRef.current) {
-    //         contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-    //     }
-    // };
+  // const clear = () => {
+  //     if (contextRef.current && canvasRef.current) {
+  //         contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+  //     }
+  // };
 
   return (
     <>
@@ -111,7 +112,7 @@ function InpaintingEditor({
             </h1>
             <div className="relative flex h-[160px] w-[292px] flex-col items-center justify-center">
               <canvas
-                className="absolute z-10 my-[20px] flex h-[160px] w-[292px] items-center justify-center rounded-xl bg-transparent"
+                className="absolute opacity-[0.6] z-10 my-[20px] flex h-[160px] w-[292px] items-center justify-center rounded-xl bg-transparent"
                 ref={canvasRef}
                 onMouseDown={startDrawing}
                 onMouseMove={draw}
