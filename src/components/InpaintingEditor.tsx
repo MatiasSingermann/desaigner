@@ -124,7 +124,7 @@ function InpaintingEditor({
             </h1>
             <div className="relative flex h-[160px] w-[292px] flex-col items-center justify-center">
               <canvas
-                className="absolute opacity-[0.6] z-10 my-[20px] flex h-[160px] w-[292px] items-center justify-center rounded-xl bg-transparent"
+                className="absolute z-10 my-[20px] flex h-[160px] w-[292px] items-center justify-center rounded-xl bg-transparent opacity-[0.6]"
                 ref={canvasRef}
                 onMouseDown={startDrawing}
                 onMouseMove={draw}
@@ -138,6 +138,17 @@ function InpaintingEditor({
                 height={160}
                 alt="Imagen a editar"
               />
+            </div>
+            <div className="mt-[8px] flex h-[40px] w-full items-center justify-between">
+              <button onClick={setToDraw} className="flex h-[40px] w-[80px] items-center justify-center rounded-xl bg-red-500">
+                Dibujar
+              </button>
+              <button onClick={setToErase} className="flex h-[40px] w-[80px] items-center justify-center rounded-xl bg-red-500">
+                Borrar
+              </button>
+              <button onClick={clear} className="flex h-[40px] w-[80px] items-center justify-center rounded-xl bg-red-500">
+                Eliminar
+              </button>
             </div>
             <button
               form="false"
