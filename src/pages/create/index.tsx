@@ -52,6 +52,7 @@ function Index() {
     [] as FullDataImage
   );
   // const [imageButtonClick, setImageButtonClick] = useState(false);
+  const [image, setImage] = useState<string | null>(null);
 
   let inputImage: FormDataEntryValue;
   inputImage = "";
@@ -438,8 +439,8 @@ function Index() {
               ref={formRef}
               className="flex w-full flex-col items-center justify-center"
             >
-              <StepShow setShowEdit={setShowEdit} />
-              <InpaintingEditor setShowEdit={setShowEdit} showEdit={showEdit} inputImage={inputImage}/>
+              <StepShow setShowEdit={setShowEdit} image={image} setImage={setImage}/>
+              <InpaintingEditor setShowEdit={setShowEdit} showEdit={showEdit} image={image!}/>
             </form>
           )}
           {moreThan1 ? (

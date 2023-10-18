@@ -8,10 +8,12 @@ import ImageUploaderBlack from "./ImageUploaderBlack";
 interface Step1Props {
   setShowEdit: Dispatch<SetStateAction<boolean>>;
   counter: SetStateAction<number>;
+  image: string | null;
+  setImage: Dispatch<SetStateAction<string | null>>;
 }
 
-function Step1({ setShowEdit, counter }: Step1Props) {
-  const [image, setImage] = useState<string | null>(null);
+function Step1({ setShowEdit, counter, image, setImage}: Step1Props) {
+  // const [image, setImage] = useState<string | null>(null);
   const [imageName, setImageName] = useState("");
   const [checked, setChecked] = useState(false);
   const updateImageData = (newImage: SetStateAction<string | null>, newImageName: string) => {

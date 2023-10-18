@@ -8,13 +8,15 @@ import type { Dispatch, SetStateAction } from "react";
 
 interface StepShowProps {
   setShowEdit: Dispatch<SetStateAction<boolean>>;
+  image: string | null;
+  setImage: Dispatch<SetStateAction<string | null>>;
 }
 
-function StepShow({setShowEdit} : StepShowProps) {
+function StepShow({setShowEdit, image, setImage} : StepShowProps) {
   const [counter, setCounter] = useState(1);
   return (
     <>
-      <Step1 counter={counter} setShowEdit={setShowEdit}/>
+      <Step1 counter={counter} setShowEdit={setShowEdit} image={image} setImage={setImage}/>
       <Step2 counter={counter} />
       <Step3 counter={counter} />
       <Steps setCounter={setCounter} counter={counter} />
