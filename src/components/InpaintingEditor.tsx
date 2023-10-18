@@ -26,22 +26,19 @@ function InpaintingEditor({
     if(canvas){
       const context = canvas.getContext("2d");
       if(context){
-        context.strokeStyle = "black";
         canvas.setAttribute("style", "background-color: black; opacity: 1;");
       }
+      const inpaintingMaskImage = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
     }
-    
   }
 
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
 
   const canvas = canvasRef.current;
   if (canvas) {
-    console.log("canvas");
 
     const context = canvas.getContext("2d");
     if (context) {
-      console.log("context");
       context.lineCap = "round";
       context.lineJoin = "round";
       context.strokeStyle = "#59C3C3";
@@ -55,7 +52,6 @@ function InpaintingEditor({
   }: React.MouseEvent<HTMLCanvasElement>) => {
     const { offsetX, offsetY } = nativeEvent;
     if (contextRef.current) {
-      console.log(offsetX, offsetY);
       contextRef.current.beginPath();
       contextRef.current.moveTo(offsetX, offsetY);
       contextRef.current.lineTo(offsetX, offsetY);
