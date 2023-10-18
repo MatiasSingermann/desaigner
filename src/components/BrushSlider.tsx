@@ -9,7 +9,7 @@ interface BrushSliderProps {
 function BrushSlider({ setSlider, slider }: BrushSliderProps) {
   return (
     <>
-      <div className="flex flex-col mb-[8px] mt-[58px] p-[8px]">
+      <div className="flex flex-col mb-[16px] mt-[16px] p-[8px]">
         <Range
           step={1}
           min={1}

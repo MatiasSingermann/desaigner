@@ -25,16 +25,27 @@ function InpaintingEditor({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
 
+  const imgRef = useRef<HTMLImageElement | null>(null);
+
+  const img = imgRef.current;
+  console.log('img', img);
+  const imgOriginalWidth = img?.naturalWidth;
+  const imgOriginalHeight = img?.naturalHeight;
+  const imgAlteredWidth = img?.width;
+  const imgAlteredHeight = img?.height
+
   const handleInpainting = () => {
     const canvas = canvasRef.current;
-    if(canvas){
+    if (canvas) {
       const context = canvas.getContext("2d");
-      if(context){
+      if (context) {
         canvas.setAttribute("style", "background-color: black; opacity: 1;");
       }
-      const inpaintingMaskImage = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+      const inpaintingMaskImage = canvas
+        .toDataURL("image/png")
+        .replace("image/png", "image/octet-stream");
     }
-  }
+  };
 
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
 
@@ -42,7 +53,6 @@ function InpaintingEditor({
 
   const canvas = canvasRef.current;
   if (canvas) {
-
     const context = canvas.getContext("2d");
     if (context) {
       context.lineCap = "round";
@@ -130,12 +140,14 @@ function InpaintingEditor({
             >
               <Cross />
             </button>
-            <h1 className="mb-[20px] mt-[40px] text-center font-coolveticaRegular text-[30px] leading-none text-[#FBF9FA]">
+            <h1 className="flex mb-[20px] mt-[40px] text-center font-coolveticaRegular text-[30px] leading-none text-[#FBF9FA]">
               Dibuje sobre lo que quiere modificar
             </h1>
-            <div className="relative flex h-[160px] w-[292px] flex-col items-center justify-center">
+            <div
+              className={`relative my-[20px] flex h-[140px] w-[140px] flex-col items-center justify-center rounded-xl`}
+            >
               <canvas
-                className="absolute z-10 my-[20px] flex h-[160px] w-[292px] items-center justify-center rounded-xl bg-transparent opacity-[0.6]"
+                className={`absolute z-10 flex h-[${imgOriginalHeight!}px] w-[${imgOriginalWidth!}px] items-center justify-center bg-transparent opacity-[0.6]`}
                 ref={canvasRef}
                 onMouseDown={startDrawing}
                 onMouseMove={draw}
@@ -143,10 +155,11 @@ function InpaintingEditor({
                 onMouseLeave={stopDrawing}
               ></canvas>
               <Image
-                className="absolute my-[20px] h-[160px] w-[292px] items-center justify-center rounded-xl object-contain"
+                className={`absolute flex h-[140px] w-[140px] items-center justify-center object-contain`}
+                ref={imgRef}
                 src={image}
-                width={292}
-                height={160}
+                width={140}
+                height={140}
                 alt="Imagen a editar"
               />
             </div>
@@ -174,10 +187,10 @@ function InpaintingEditor({
                 Eliminar
               </button>
             </div>
-            <BrushSlider setSlider={setSlider} slider={slider}/>
+            <BrushSlider setSlider={setSlider} slider={slider} />
             <button
               form="false"
-              className="absolute bottom-0 mb-[38px] flex h-[36px] w-[94px] items-center justify-center rounded-3xl bg-[#228187] font-coolveticaRegular text-[18px] text-[#FBF9FA] shadow-md shadow-[#111]"
+              className="mb-[12px] flex h-[36px] w-[94px] items-center justify-center rounded-3xl bg-[#228187] font-coolveticaRegular text-[18px] text-[#FBF9FA] shadow-md shadow-[#111]"
               onClick={handleInpainting}
             >
               Aceptar
