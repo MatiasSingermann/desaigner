@@ -1,7 +1,7 @@
 import Cross from "./Cross";
 import type { Dispatch, SetStateAction } from "react";
 import Image from "next/image";
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 
 interface InpaintingEditorProps {
   setShowEdit: Dispatch<SetStateAction<boolean>>;
@@ -17,6 +17,9 @@ function InpaintingEditor({
   const handleClick = () => {
     setShowEdit(false);
   };
+
+  const [drawActivated, setDrawActivated] = useState(true);
+  const [eraseActivated, setEraseActivated] = useState(false);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
@@ -74,21 +77,30 @@ function InpaintingEditor({
   };
 
   const setToDraw = () => {
-      if (contextRef.current) {
-          contextRef.current.globalCompositeOperation = 'source-over';
-      }
+    setDrawActivated(true);
+    setEraseActivated(false);
+    if (contextRef.current) {
+      contextRef.current.globalCompositeOperation = "source-over";
+    }
   };
 
   const setToErase = () => {
-      if (contextRef.current) {
-          contextRef.current.globalCompositeOperation = 'destination-out';
-      }
+    setDrawActivated(false);
+    setEraseActivated(true);
+    if (contextRef.current) {
+      contextRef.current.globalCompositeOperation = "destination-out";
+    }
   };
 
   const clear = () => {
-      if (contextRef.current && canvasRef.current) {
-          contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-      }
+    if (contextRef.current && canvasRef.current) {
+      contextRef.current.clearRect(
+        0,
+        0,
+        canvasRef.current.width,
+        canvasRef.current.height
+      );
+    }
   };
 
   return (
@@ -128,13 +140,26 @@ function InpaintingEditor({
               />
             </div>
             <div className="mt-[8px] flex h-[40px] w-full items-center justify-between">
-              <button onClick={setToDraw} className="flex h-[40px] w-[80px] items-center justify-center rounded-xl bg-red-500">
+              <button
+                onClick={setToDraw}
+                className={`flex h-[40px] w-[80px] items-center justify-center rounded-xl ${
+                  drawActivated ? "bg-red-500" : null
+                }`}
+              >
                 Dibujar
               </button>
-              <button onClick={setToErase} className="flex h-[40px] w-[80px] items-center justify-center rounded-xl bg-red-500">
+              <button
+                onClick={setToErase}
+                className={`flex h-[40px] w-[80px] items-center justify-center rounded-xl ${
+                  eraseActivated ? "bg-red-500" : null
+                }`}
+              >
                 Borrar
               </button>
-              <button onClick={clear} className="flex h-[40px] w-[80px] items-center justify-center rounded-xl bg-red-500">
+              <button
+                onClick={clear}
+                className="flex h-[40px] w-[80px] items-center justify-center rounded-xl"
+              >
                 Eliminar
               </button>
             </div>
