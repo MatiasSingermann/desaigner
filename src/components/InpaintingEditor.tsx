@@ -73,23 +73,23 @@ function InpaintingEditor({
     setIsDrawing(false);
   };
 
-  // const setToDraw = () => {
-  //     if (contextRef.current) {
-  //         contextRef.current.globalCompositeOperation = 'source-over';
-  //     }
-  // };
+  const setToDraw = () => {
+      if (contextRef.current) {
+          contextRef.current.globalCompositeOperation = 'source-over';
+      }
+  };
 
-  // const setToErase = () => {
-  //     if (contextRef.current) {
-  //         contextRef.current.globalCompositeOperation = 'destination-out';
-  //     }
-  // };
+  const setToErase = () => {
+      if (contextRef.current) {
+          contextRef.current.globalCompositeOperation = 'destination-out';
+      }
+  };
 
-  // const clear = () => {
-  //     if (contextRef.current && canvasRef.current) {
-  //         contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-  //     }
-  // };
+  const clear = () => {
+      if (contextRef.current && canvasRef.current) {
+          contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+      }
+  };
 
   return (
     <>
@@ -112,7 +112,7 @@ function InpaintingEditor({
             </h1>
             <div className="relative flex h-[160px] w-[292px] flex-col items-center justify-center">
               <canvas
-                className="absolute opacity-[0.6] z-10 my-[20px] flex h-[160px] w-[292px] items-center justify-center rounded-xl bg-transparent"
+                className="absolute z-10 my-[20px] flex h-[160px] w-[292px] items-center justify-center rounded-xl bg-transparent opacity-[0.6]"
                 ref={canvasRef}
                 onMouseDown={startDrawing}
                 onMouseMove={draw}
@@ -127,9 +127,20 @@ function InpaintingEditor({
                 alt="Imagen a editar"
               />
             </div>
+            <div className="mt-[8px] flex h-[40px] w-full items-center justify-between">
+              <button onClick={setToDraw} className="flex h-[40px] w-[80px] items-center justify-center rounded-xl bg-red-500">
+                Dibujar
+              </button>
+              <button onClick={setToErase} className="flex h-[40px] w-[80px] items-center justify-center rounded-xl bg-red-500">
+                Borrar
+              </button>
+              <button onClick={clear} className="flex h-[40px] w-[80px] items-center justify-center rounded-xl bg-red-500">
+                Eliminar
+              </button>
+            </div>
             <button
               form="false"
-              className="absolute bottom-0 mb-[38px] flex h-[36px] w-[94px] items-center justify-center rounded-3xl bg-[#228187] font-coolveticaRegular text-[18px] text-[#FBF9FA] shadow-md shadow-[#111]"
+              className="absolute bottom-0 mb-[12px] flex h-[36px] w-[94px] items-center justify-center rounded-3xl bg-[#228187] font-coolveticaRegular text-[18px] text-[#FBF9FA] shadow-md shadow-[#111]"
             >
               Aceptar
             </button>
