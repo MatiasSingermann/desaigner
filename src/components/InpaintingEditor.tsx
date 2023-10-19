@@ -8,12 +8,14 @@ interface InpaintingEditorProps {
   setShowEdit: Dispatch<SetStateAction<boolean>>;
   showEdit: SetStateAction<boolean>;
   image: string;
+  aspectRatio169: SetStateAction<boolean>;
 }
 
 function InpaintingEditor({
   setShowEdit,
   showEdit,
   image,
+  aspectRatio169,
 }: InpaintingEditorProps) {
   const handleClick = () => {
     setShowEdit(false);
@@ -28,11 +30,19 @@ function InpaintingEditor({
   const imgRef = useRef<HTMLImageElement | null>(null);
 
   const img = imgRef.current;
-  console.log('img', img);
+  console.log("img", img);
   const imgOriginalWidth = img?.naturalWidth;
+  console.log("imgOriginalWidth", imgOriginalWidth);
   const imgOriginalHeight = img?.naturalHeight;
   const imgAlteredWidth = img?.width;
-  const imgAlteredHeight = img?.height
+  const imgAlteredHeight = img?.height;
+  let aspRatio = "4:3";
+  const aspectRatio = imgOriginalWidth! / imgOriginalHeight!;
+  if (aspectRatio > 4/3) {
+    aspRatio = "16:9";
+  }
+
+  console.log('aspRatio', aspRatio)
 
   const handleInpainting = () => {
     const canvas = canvasRef.current;
@@ -132,22 +142,26 @@ function InpaintingEditor({
             showEdit ? "fixed " : "hidden"
           }`}
         >
-          <div className="relative flex h-[380px] w-[324px] flex-col items-center justify-start rounded-2xl bg-[#22302D] px-[14px]">
+          <div className="relative flex h-[480px] w-[342px] flex-col items-center justify-start rounded-2xl bg-[#22302D] px-[14px] mb-[26px]">
             <button
               onClick={handleClick}
-              className="absolute right-0 top-0 z-10 m-[12px] flex"
+              className="absolute right-0 top-0 z-10 mt-[32px] mr-[28px] flex scale-[1.2]"
               form="false"
             >
               <Cross />
             </button>
-            <h1 className="flex mb-[20px] mt-[40px] text-center font-coolveticaRegular text-[30px] leading-none text-[#FBF9FA]">
+            <h1 className="mb-[20px] mt-[32px] flex text-center font-coolveticaRegular text-[23px] leading-none text-[#FBF9FA] w-[228px]">
               Dibuje sobre lo que quiere modificar
             </h1>
             <div
-              className={`relative my-[20px] flex h-[140px] w-[140px] flex-col items-center justify-center rounded-xl`}
+              className={`relative my-[20px] flex ${
+                aspRatio === "16:9" ? "h-[174px] w-[310px]" : "h-[228px] w-[304px]"
+              } flex-col items-center justify-center rounded-2xl`}
             >
               <canvas
-                className={`absolute z-10 flex h-[${imgOriginalHeight!}px] w-[${imgOriginalWidth!}px] items-center justify-center bg-transparent opacity-[0.6]`}
+                className={`absolute z-10 flex ${
+                  aspRatio === "16:9" ? "h-[174px] w-[310px]" : "h-[228px] w-[304px]"
+                } items-center justify-center bg-transparent opacity-[0.6] rounded-2xl`}
                 ref={canvasRef}
                 onMouseDown={startDrawing}
                 onMouseMove={draw}
@@ -155,11 +169,13 @@ function InpaintingEditor({
                 onMouseLeave={stopDrawing}
               ></canvas>
               <Image
-                className={`absolute flex h-[140px] w-[140px] items-center justify-center object-contain`}
+                className={`absolute flex ${
+                  aspRatio === "16:9" ? "h-[174px] w-[310px]" : "h-[228px] w-[304px]"
+                } items-center justify-center object-cover rounded-2xl`}
                 ref={imgRef}
                 src={image}
-                width={140}
-                height={140}
+                width={(aspRatio === "16:9" ? 310 : 304)}
+                height={(aspRatio === "16:9" ? 174 : 228)}
                 alt="Imagen a editar"
               />
             </div>
@@ -190,7 +206,7 @@ function InpaintingEditor({
             <BrushSlider setSlider={setSlider} slider={slider} />
             <button
               form="false"
-              className="mb-[12px] flex h-[36px] w-[94px] items-center justify-center rounded-3xl bg-[#228187] font-coolveticaRegular text-[18px] text-[#FBF9FA] shadow-md shadow-[#111]"
+              className="mb-[12px] flex h-[36px] w-[132px] items-center justify-center rounded-3xl bg-[#228187] font-coolveticaRegular text-[18px] text-[#FBF9FA] shadow-md shadow-[#111]"
               onClick={handleInpainting}
             >
               Aceptar

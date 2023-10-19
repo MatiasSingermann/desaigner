@@ -53,6 +53,7 @@ function Index() {
   );
   // const [imageButtonClick, setImageButtonClick] = useState(false);
   const [image, setImage] = useState<string | null>(null);
+  const [aspectRatio169, setAspectRatio169] = useState<boolean>(false);
 
   let inputImage: FormDataEntryValue;
   inputImage = "";
@@ -440,7 +441,7 @@ function Index() {
               className="flex w-full flex-col items-center justify-center"
             >
               <StepShow setShowEdit={setShowEdit} image={image} setImage={setImage}/>
-              <InpaintingEditor setShowEdit={setShowEdit} showEdit={showEdit} image={image!}/>
+              <InpaintingEditor setShowEdit={setShowEdit} showEdit={showEdit} image={image!} aspectRatio169={aspectRatio169}/>
             </form>
           )}
           {moreThan1 ? (
