@@ -145,7 +145,11 @@ function InpaintingEditor({
             showEdit ? "fixed " : "hidden"
           }`}
         >
-          <div className="relative mb-[26px] flex h-[480px] w-[342px] flex-col items-center justify-start rounded-2xl bg-[#22302D] px-[14px]">
+          <div
+            className={`relative mb-[26px] flex h-[480px] w-[342px] flex-col items-center justify-start rounded-2xl bg-[#22302D] px-[14px] ${
+              aspRatio === "16:9" ? "h-[432px]" : "h-[480px]"
+            }`}
+          >
             <button
               onClick={handleClick}
               className="absolute right-0 top-0 z-10 mr-[28px] mt-[32px] flex scale-[1.2]"
@@ -188,7 +192,7 @@ function InpaintingEditor({
                 alt="Imagen a editar"
               />
             </div>
-            <div className="mt-[8px] flex h-[40px] w-full items-center justify-between mb-[22px]">
+            <div className="mb-[22px] mt-[8px] flex h-[40px] w-full items-center justify-between">
               <button
                 onClick={setToDraw}
                 className={`flex h-[45px] w-[45px] items-center justify-center rounded-xl bg-[#C4C4C4] hover:bg-[#949494] ${
