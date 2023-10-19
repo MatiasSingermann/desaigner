@@ -9,7 +9,7 @@ interface BrushSliderProps {
 function BrushSlider({ setSlider, slider }: BrushSliderProps) {
   return (
     <>
-      <div className="flex flex-col mb-[16px] mt-[16px] p-[8px]">
+      <div className="flex flex-col p-[8px] mb-[6px]">
         <Range
           step={1}
           min={1}
@@ -19,7 +19,7 @@ function BrushSlider({ setSlider, slider }: BrushSliderProps) {
           renderTrack={({ props, children }) => (
             <div
               {...props}
-              className="flex h-[8px] w-[226px] rounded-2xl bg-[#D9D9D9]"
+              className="flex h-[5px] w-[132px] rounded-2xl bg-[#D9D9D9]"
               style={{
                 background: getTrackBackground({
                   values: slider,
@@ -35,7 +35,7 @@ function BrushSlider({ setSlider, slider }: BrushSliderProps) {
           renderThumb={({ props }) => (
             <div
               {...props}
-              className="flex h-[36px] w-[36px] rounded-full bg-[#009E95] shadow-sm shadow-[#999] dark:shadow-[#111]"
+              className="flex h-[21px] w-[21px] rounded-full bg-[#009E95] shadow-sm shadow-[#999] dark:shadow-[#111]"
             />
           )}
         />
