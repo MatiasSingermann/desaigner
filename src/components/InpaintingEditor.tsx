@@ -33,30 +33,32 @@ function InpaintingEditor({
   const imgRef = useRef<HTMLImageElement | null>(null);
 
   const img = imgRef.current;
-  console.log("img", img);
   const imgOriginalWidth = img?.naturalWidth;
-  console.log("imgOriginalWidth", imgOriginalWidth);
   const imgOriginalHeight = img?.naturalHeight;
-  const imgAlteredWidth = img?.width;
-  const imgAlteredHeight = img?.height;
+  // const imgAlteredWidth = img?.width;
+  // const imgAlteredHeight = img?.height;
   let aspRatio = "4:3";
   const aspectRatio = imgOriginalWidth! / imgOriginalHeight!;
   if (aspectRatio > 4 / 3) {
     aspRatio = "16:9";
   }
 
-  console.log("aspRatio", aspRatio);
-
   const handleInpainting = () => {
     const canvas = canvasRef.current;
     if (canvas) {
       const context = canvas.getContext("2d");
       if (context) {
-        canvas.setAttribute("style", "background-color: black; opacity: 1;");
+        canvas.setAttribute(
+          "class",
+          `bg-black opacity-[1] w-[${imgOriginalWidth}px] h-[${imgOriginalHeight}px] z-10 absolute flex`
+        );
+        // canvas.setAttribute(
+        //   "style",
+        //   `background-color: black; opacity: 1; width: ${imgOriginalWidth}; height: ${imgOriginalHeight};`
+        // );
+        const inpaintingMaskImage = canvas.toDataURL("image/png");
+        console.log("impMaskImg", inpaintingMaskImage);
       }
-      const inpaintingMaskImage = canvas
-        .toDataURL("image/png")
-        .replace("image/png", "image/octet-stream");
     }
   };
 
