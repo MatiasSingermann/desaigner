@@ -11,14 +11,14 @@ interface InpaintingEditorProps {
   setShowEdit: Dispatch<SetStateAction<boolean>>;
   showEdit: SetStateAction<boolean>;
   image: string;
-  aspectRatio169: SetStateAction<boolean>;
+  setInpaintMaskImg: Dispatch<SetStateAction<string | Blob>>;
 }
 
 function InpaintingEditor({
   setShowEdit,
   showEdit,
   image,
-  aspectRatio169,
+  setInpaintMaskImg,
 }: InpaintingEditorProps) {
   const handleClick = () => {
     setShowEdit(false);
@@ -48,16 +48,16 @@ function InpaintingEditor({
     if (canvas) {
       const context = canvas.getContext("2d");
       if (context) {
-        canvas.setAttribute(
-          "class",
-          `bg-black opacity-[1] w-[${imgOriginalWidth}px] h-[${imgOriginalHeight}px] z-10 absolute flex`
-        );
+        // canvas.width = imgOriginalWidth!;
+        // canvas.height = imgOriginalHeight!;
+
         // canvas.setAttribute(
         //   "style",
         //   `background-color: black; opacity: 1; width: ${imgOriginalWidth}; height: ${imgOriginalHeight};`
         // );
         const inpaintingMaskImage = canvas.toDataURL("image/png");
         console.log("impMaskImg", inpaintingMaskImage);
+        setInpaintMaskImg(inpaintingMaskImage);
       }
     }
   };
@@ -67,7 +67,12 @@ function InpaintingEditor({
   const [slider, setSlider] = useState<number[]>([15]);
 
   const canvas = canvasRef.current;
+
   if (canvas) {
+    if(canvas.width != 304 && canvas.height != 228) {
+      canvas.width = 304;
+      canvas.height = 228;
+    }
     const context = canvas.getContext("2d");
     if (context) {
       context.lineCap = "round";
@@ -139,6 +144,12 @@ function InpaintingEditor({
     }
   };
 
+  // ${
+  //   // aspRatio === "16:9"
+  //   //   ? "h-[174px] w-[310px]"
+  //   //   : "h-[228px] w-[304px]"
+  // }
+
   return (
     <>
       {showEdit ? (
@@ -170,11 +181,7 @@ function InpaintingEditor({
               } flex-col items-center justify-center rounded-2xl`}
             >
               <canvas
-                className={`absolute z-10 flex ${
-                  aspRatio === "16:9"
-                    ? "h-[174px] w-[310px]"
-                    : "h-[228px] w-[304px]"
-                } items-center justify-center rounded-2xl bg-transparent opacity-[0.6]`}
+                className={`absolute z-10 flex items-center h-[228px] w-[304px] justify-center rounded-2xl bg-transparent opacity-[0.6]`}
                 ref={canvasRef}
                 onMouseDown={startDrawing}
                 onMouseMove={draw}

@@ -53,7 +53,8 @@ function Index() {
   );
   // const [imageButtonClick, setImageButtonClick] = useState(false);
   const [image, setImage] = useState<string | null>(null);
-  const [aspectRatio169, setAspectRatio169] = useState<boolean>(false);
+
+  const [inpaintMaskImg, setInpaintMaskImg] = useState<string | Blob>("");
 
   let inputImage: FormDataEntryValue;
   inputImage = "";
@@ -64,7 +65,6 @@ function Index() {
   let weather = "";
   let disability = "";
   let numImages: number | string;
-  let maskImage: FormDataEntryValue;
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY!.toString();
 
@@ -286,7 +286,7 @@ function Index() {
       weather = inputData[5] ? inputData[5][1].toString() : "";
       disability = inputData[6] ? inputData[6][1].toString() : "";
       numImages = inputData[7] ? Number(inputData[7][1]) : "";
-      maskImage = inputData[8] ? inputData[8][1] : "";
+      const maskImage = inpaintMaskImg;
 
       let requiredInputs = true;
       let isNoImage = false;
@@ -316,7 +316,7 @@ function Index() {
         isNoImage = true;
       }
 
-      if (maskImage == "TEST") {
+      if (maskImage != "") {
         isNoMask = true;
       }
 
@@ -441,7 +441,7 @@ function Index() {
               className="flex w-full flex-col items-center justify-center"
             >
               <StepShow setShowEdit={setShowEdit} image={image} setImage={setImage}/>
-              <InpaintingEditor setShowEdit={setShowEdit} showEdit={showEdit} image={image!} aspectRatio169={aspectRatio169}/>
+              <InpaintingEditor setShowEdit={setShowEdit} showEdit={showEdit} image={image!} setInpaintMaskImg={setInpaintMaskImg}/>
             </form>
           )}
           {moreThan1 ? (
