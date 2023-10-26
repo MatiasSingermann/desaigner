@@ -69,9 +69,18 @@ function InpaintingEditor({
   const canvas = canvasRef.current;
 
   if (canvas) {
-    if(canvas.width != 304 && canvas.height != 228) {
-      canvas.width = 304;
-      canvas.height = 228;
+    if(aspRatio != "16:9"){
+      if(canvas.width != 304 && canvas.height != 228) {
+        console.log("43");
+        canvas.width = 304;
+        canvas.height = 228;
+      }
+    } else{
+      if(canvas.width != 310 && canvas.height != 174) {
+        console.log("169");
+        canvas.width = 310;
+        canvas.height = 174;
+      }
     }
     const context = canvas.getContext("2d");
     if (context) {
@@ -181,7 +190,7 @@ function InpaintingEditor({
               } flex-col items-center justify-center rounded-2xl`}
             >
               <canvas
-                className={`absolute z-10 flex items-center h-[228px] w-[304px] justify-center rounded-2xl bg-transparent opacity-[0.6]`}
+                className={`absolute z-10 flex items-center justify-center rounded-2xl bg-transparent opacity-[0.6]`}
                 ref={canvasRef}
                 onMouseDown={startDrawing}
                 onMouseMove={draw}
