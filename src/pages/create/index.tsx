@@ -54,7 +54,7 @@ function Index() {
   // const [imageButtonClick, setImageButtonClick] = useState(false);
   const [image, setImage] = useState<string | null>(null);
 
-  const [inpaintMaskImg, setInpaintMaskImg] = useState<string | Blob>("");
+  const [inpaintMaskImg, setInpaintMaskImg] = useState<string | Blob | File>("");
 
   let inputImage: FormDataEntryValue;
   inputImage = "";

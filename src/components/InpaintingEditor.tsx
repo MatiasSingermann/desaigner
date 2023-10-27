@@ -1,5 +1,5 @@
 import Cross from "./Cross";
-import type { Dispatch, SetStateAction } from "react";
+import type { Dispatch, SetStateAction, TouchEvent } from "react";
 import Image from "next/image";
 import { useState, useRef } from "react";
 import BrushSlider from "./BrushSlider";
@@ -11,7 +11,7 @@ interface InpaintingEditorProps {
   setShowEdit: Dispatch<SetStateAction<boolean>>;
   showEdit: SetStateAction<boolean>;
   image: string;
-  setInpaintMaskImg: Dispatch<SetStateAction<string | Blob>>;
+  setInpaintMaskImg: Dispatch<SetStateAction<string | Blob | File>>;
 }
 
 function InpaintingEditor({
@@ -22,6 +22,17 @@ function InpaintingEditor({
 }: InpaintingEditorProps) {
   const handleClick = () => {
     setShowEdit(false);
+  };
+
+  const convertDataUrlToBlob = async (dataUrl: string): Promise<Blob> => {
+    const response = await fetch(dataUrl);
+    const blob = await response.blob();
+    return blob;
+  };
+
+  const convertBlobToFile = (blob: Blob, filename: string, mimeType: string): File => {
+    const file = new File([blob], filename, { type: mimeType });
+    return file;
   };
 
   const [drawActivated, setDrawActivated] = useState(true);
@@ -43,7 +54,7 @@ function InpaintingEditor({
     aspRatio = "16:9";
   }
 
-  const handleInpainting = () => {
+  const handleInpainting = async () => {
     const canvas = canvasRef.current;
     if (canvas) {
       const context = canvas.getContext("2d");
@@ -55,9 +66,13 @@ function InpaintingEditor({
         //   "style",
         //   `background-color: black; opacity: 1; width: ${imgOriginalWidth}; height: ${imgOriginalHeight};`
         // );
-        const inpaintingMaskImage = canvas.toDataURL("image/png");
-        console.log("impMaskImg", inpaintingMaskImage);
+        const inpaintingMaskImageString = canvas.toDataURL("image/png");
+        console.log("impMaskImg", inpaintingMaskImageString);
+        const inpaintingMaskImageBlob = await convertDataUrlToBlob(inpaintingMaskImageString);
+        const inpaintingMaskImage = convertBlobToFile(inpaintingMaskImageBlob, "image.png", "image/png")
         setInpaintMaskImg(inpaintingMaskImage);
+        console.log("listo", inpaintingMaskImage);
+        setShowEdit(false);
       }
     }
   };
@@ -150,6 +165,33 @@ function InpaintingEditor({
   //   //   : "h-[228px] w-[304px]"
   // }
 
+  const startDrawingMobile = (event: TouchEvent<HTMLCanvasElement>) => {
+    setIsDrawing(true);
+    const touch = event.touches[0];
+    if(touch && canvas && contextRef.current){
+      const x = touch.clientX - canvas.offsetLeft;
+      const y = touch.clientY - canvas.offsetTop;
+      contextRef.current.beginPath();
+      contextRef.current.moveTo(x, y);
+    }
+  };
+
+  const drawMobile = (event: TouchEvent<HTMLCanvasElement>) => {
+    if (isDrawing) {
+        const touch = event.touches[0];
+        if(touch && canvas && contextRef.current){
+        const x = touch.clientX - canvas.offsetLeft;
+        const y = touch.clientY - canvas.offsetTop;
+        contextRef.current.lineTo(x, y);
+        contextRef.current.stroke();
+      }
+    }
+  };
+
+  const stopDrawingMobile = () => {
+    setIsDrawing(false);
+  };
+
   return (
     <>
       {showEdit ? (
@@ -187,6 +229,10 @@ function InpaintingEditor({
                 onMouseMove={draw}
                 onMouseUp={stopDrawing}
                 onMouseLeave={stopDrawing}
+                onTouchStart={startDrawingMobile}
+                onTouchMove={drawMobile}
+                onTouchEnd={stopDrawingMobile}
+                onTouchCancel={stopDrawingMobile}
               ></canvas>
               <Image
                 className={`absolute flex ${
