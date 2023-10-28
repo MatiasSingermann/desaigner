@@ -94,7 +94,7 @@ function InpaintingEditor({
     }
   }, [showEdit]);
 
-  const handleInpainting = async (): Promise<void> => {
+  const handleInpainting = () => {
     try{
       const canvas = canvasRef.current;
       if (canvas) {
@@ -106,17 +106,20 @@ function InpaintingEditor({
           // );
           const inpaintingMaskImageString = canvas.toDataURL("image/png");
           console.log("impMaskImg", inpaintingMaskImageString);
-          const inpaintingMaskImageBlob = await convertDataUrlToBlob(
+          convertDataUrlToBlob(
             inpaintingMaskImageString
+          ) .then(inpaintingMaskImageBlob => {
+            const inpaintingMaskImage = convertBlobToFile(
+              inpaintingMaskImageBlob,
+              "image.png",
+              "image/png"
+            );
+            setInpaintMaskImg(inpaintingMaskImage);
+            console.log("listo", inpaintingMaskImage);
+            setShowEdit(false);
+          }) .catch(
+            console.error
           );
-          const inpaintingMaskImage = convertBlobToFile(
-            inpaintingMaskImageBlob,
-            "image.png",
-            "image/png"
-          );
-          setInpaintMaskImg(inpaintingMaskImage);
-          console.log("listo", inpaintingMaskImage);
-          setShowEdit(false);
         }
     }
     } catch (error) {
