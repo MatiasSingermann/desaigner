@@ -1,7 +1,7 @@
 import Cross from "./Cross";
-import type { Dispatch, SetStateAction, TouchEvent } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import Image from "next/image";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import BrushSlider from "./BrushSlider";
 import Eraser from "./Eraser";
 import TrashCan from "./TrashCan";
@@ -30,7 +30,11 @@ function InpaintingEditor({
     return blob;
   };
 
-  const convertBlobToFile = (blob: Blob, filename: string, mimeType: string): File => {
+  const convertBlobToFile = (
+    blob: Blob,
+    filename: string,
+    mimeType: string
+  ): File => {
     const file = new File([blob], filename, { type: mimeType });
     return file;
   };
@@ -43,37 +47,80 @@ function InpaintingEditor({
 
   const imgRef = useRef<HTMLImageElement | null>(null);
 
+  const [aspRatio, setAspRatio] = useState("4:3");
+
+  const [renderCanvas, setRenderCanvas] = useState(false);
+
   const img = imgRef.current;
   const imgOriginalWidth = img?.naturalWidth;
   const imgOriginalHeight = img?.naturalHeight;
-  // const imgAlteredWidth = img?.width;
-  // const imgAlteredHeight = img?.height;
-  let aspRatio = "4:3";
   const aspectRatio = imgOriginalWidth! / imgOriginalHeight!;
+
   if (aspectRatio > 4 / 3) {
-    aspRatio = "16:9";
+    if(aspRatio != "16:9"){
+      setAspRatio("16:9");
+    }
+  } else {
+    if(aspRatio != "4:3"){
+      setAspRatio("4:3");
+    }
   }
 
-  const handleInpainting = async () => {
-    const canvas = canvasRef.current;
-    if (canvas) {
-      const context = canvas.getContext("2d");
-      if (context) {
-        // canvas.width = imgOriginalWidth!;
-        // canvas.height = imgOriginalHeight!;
+  useEffect(() => {
+    setRenderCanvas(showEdit);
+    if (canvasRef.current) {
+      const canvas = canvasRef.current;
+  
+      const touch = new Touch({
+        identifier: 0,
+        target: canvas,
+        clientX: 100,
+        clientY: 100,
+        radiusX: 2,
+        radiusY: 2,
+        rotationAngle: 10,
+        force: 0.5,
+      });
+  
+      const touchEvent = new TouchEvent('touchstart', {
+        cancelable: true,
+        bubbles: true,
+        touches: [touch],
+        targetTouches: [touch],
+        changedTouches: [touch],
+      });
+  
+      canvas.dispatchEvent(touchEvent);
+    }
+  }, [showEdit]);
 
-        // canvas.setAttribute(
-        //   "style",
-        //   `background-color: black; opacity: 1; width: ${imgOriginalWidth}; height: ${imgOriginalHeight};`
-        // );
-        const inpaintingMaskImageString = canvas.toDataURL("image/png");
-        console.log("impMaskImg", inpaintingMaskImageString);
-        const inpaintingMaskImageBlob = await convertDataUrlToBlob(inpaintingMaskImageString);
-        const inpaintingMaskImage = convertBlobToFile(inpaintingMaskImageBlob, "image.png", "image/png")
-        setInpaintMaskImg(inpaintingMaskImage);
-        console.log("listo", inpaintingMaskImage);
-        setShowEdit(false);
-      }
+  const handleInpainting = async (): Promise<void> => {
+    try{
+      const canvas = canvasRef.current;
+      if (canvas) {
+        const context = canvas.getContext("2d");
+        if (context) {
+          // canvas.setAttribute(
+          //   "style",
+          //   `background-color: black; opacity: 1; width: ${imgOriginalWidth}; height: ${imgOriginalHeight};`
+          // );
+          const inpaintingMaskImageString = canvas.toDataURL("image/png");
+          console.log("impMaskImg", inpaintingMaskImageString);
+          const inpaintingMaskImageBlob = await convertDataUrlToBlob(
+            inpaintingMaskImageString
+          );
+          const inpaintingMaskImage = convertBlobToFile(
+            inpaintingMaskImageBlob,
+            "image.png",
+            "image/png"
+          );
+          setInpaintMaskImg(inpaintingMaskImage);
+          console.log("listo", inpaintingMaskImage);
+          setShowEdit(false);
+        }
+    }
+    } catch (error) {
+      console.error("Hubo un error:", error);
     }
   };
 
@@ -83,16 +130,17 @@ function InpaintingEditor({
 
   const canvas = canvasRef.current;
 
+  let lastX : number;
+  let lastY : number;
+
   if (canvas) {
-    if(aspRatio != "16:9"){
-      if(canvas.width != 304 && canvas.height != 228) {
-        console.log("43");
+    if (aspRatio != "16:9") {
+      if (canvas.width != 304 && canvas.height != 228) {
         canvas.width = 304;
         canvas.height = 228;
       }
-    } else{
-      if(canvas.width != 310 && canvas.height != 174) {
-        console.log("169");
+    } else {
+      if (canvas.width != 310 && canvas.height != 174) {
         canvas.width = 310;
         canvas.height = 174;
       }
@@ -168,31 +216,35 @@ function InpaintingEditor({
     }
   };
 
-  // ${
-  //   // aspRatio === "16:9"
-  //   //   ? "h-[174px] w-[310px]"
-  //   //   : "h-[228px] w-[304px]"
-  // }
-
-  const startDrawingMobile = (event: TouchEvent<HTMLCanvasElement>) => {
-    setIsDrawing(true);
-    const touch = event.touches[0];
-    if(touch && canvas && contextRef.current){
-      const x = touch.clientX - canvas.offsetLeft;
-      const y = touch.clientY - canvas.offsetTop;
-      contextRef.current.beginPath();
-      contextRef.current.moveTo(x, y);
+  const startDrawingMobile = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    if (canvas) {
+      setIsDrawing(true);
+      const touch = e.touches[0];
+      if (touch) {
+        const rect = canvas.getBoundingClientRect();
+        lastX = touch.clientX - rect.left;
+        lastY = touch.clientY - rect.top;
+      }
     }
   };
 
-  const drawMobile = (event: TouchEvent<HTMLCanvasElement>) => {
-    if (isDrawing) {
-        const touch = event.touches[0];
-        if(touch && canvas && contextRef.current){
-        const x = touch.clientX - canvas.offsetLeft;
-        const y = touch.clientY - canvas.offsetTop;
-        contextRef.current.lineTo(x, y);
+  const drawMobile = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    if (!isDrawing) return;
+    if (canvas && contextRef.current) {
+      const touch = e.touches[0];
+      if (touch) {
+        const { clientX, clientY } = touch;
+        const rect = canvas.getBoundingClientRect();
+        const currentX = clientX - rect.left;
+        const currentY = clientY - rect.top;
+
+        contextRef.current.beginPath();
+        contextRef.current.moveTo(lastX, lastY);
+        contextRef.current.lineTo(currentX, currentY);
         contextRef.current.stroke();
+
+        lastX = currentX;
+        lastY = currentY;
       }
     }
   };
@@ -203,7 +255,7 @@ function InpaintingEditor({
 
   return (
     <>
-      {showEdit ? (
+      {renderCanvas && (
         <div
           className={`top-0 z-10 flex h-[100vh] w-full items-center justify-center bg-black bg-opacity-70 ${
             showEdit ? "fixed " : "hidden"
@@ -260,7 +312,7 @@ function InpaintingEditor({
               <button
                 onClick={setToDraw}
                 className={`flex h-[45px] w-[45px] items-center justify-center rounded-xl bg-[#C4C4C4] hover:bg-[#949494] ${
-                  drawActivated ? "fill-[#C35959]" : null
+                  drawActivated ? "fill-[#C35959]" : ""
                 }`}
               >
                 <BrushBig drawActivated={drawActivated} />
@@ -268,7 +320,7 @@ function InpaintingEditor({
               <button
                 onClick={setToErase}
                 className={`flex h-[45px] w-[45px] items-center justify-center rounded-xl bg-[#C4C4C4] hover:bg-[#949494] ${
-                  eraseActivated ? "fill-[#C35959]" : null
+                  eraseActivated ? "fill-[#C35959]" : ""
                 }`}
               >
                 <Eraser eraseActivated={eraseActivated} />
@@ -302,7 +354,7 @@ function InpaintingEditor({
             value="TEST"
           />
         </div>
-      ) : null}
+      )}
     </>
   );
 }

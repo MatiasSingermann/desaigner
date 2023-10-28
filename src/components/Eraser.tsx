@@ -1,4 +1,4 @@
-import { SetStateAction } from "react";
+import type { SetStateAction } from "react";
 
 interface EraserProps {
     eraseActivated: SetStateAction<boolean>
