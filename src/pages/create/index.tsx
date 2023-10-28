@@ -5,13 +5,12 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import StepShow from "~/components/StepShow";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import base64 from "base64-js";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { useRef } from "react";
 import InpaintingEditor from "~/components/InpaintingEditor";
 import ResLoad from "~/components/ResLoad";
 import SwiperResultShow from "~/components/SwiperResultShow";
@@ -55,6 +54,29 @@ function Index() {
   const [image, setImage] = useState<string | null>(null);
 
   const [inpaintMaskImg, setInpaintMaskImg] = useState<string | Blob | File>("");
+
+  
+  let isScrollDisabled = false;
+
+  if(showEdit) {
+    isScrollDisabled = true;
+  } else {
+    isScrollDisabled = false;
+  }
+
+  useEffect(() => {
+    if (isScrollDisabled) {
+      document.body.classList.add("disable-scroll");
+    } else {
+      document.body.classList.remove("disable-scroll");
+    }
+
+    return () => {
+      if (isScrollDisabled) {
+        document.body.classList.remove("disable-scroll");
+      }
+    }
+  }, [isScrollDisabled]);
 
   let inputImage: FormDataEntryValue;
   inputImage = "";
