@@ -316,7 +316,26 @@ function Index() {
         isNoImage = true;
       }
 
+      console.log('inputImage', inputImage)
+
+      if(!isNoImage && inputImage instanceof File && inputImage.size <= 0){
+        toast.error("Seleccionar si quiere subir una imagen o no", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        requiredInputs = false;
+      }
+
       if (maskImage != "") {
+        isNoMask = false;
+        setInpaintMaskImg("");
+      } else {
         isNoMask = true;
       }
 
