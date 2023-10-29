@@ -138,6 +138,7 @@ function Index() {
                     <Link
                       className="mb-[14px] underline"
                       href={furniture["links"][0]}
+                      target="_blank"
                     >
                       Link 1
                     </Link>
@@ -150,6 +151,7 @@ function Index() {
                     <Link
                       className="mb-[14px] underline"
                       href={furniture["links"][1]}
+                      target="_blank"
                     >
                       Link 2
                     </Link>
@@ -162,6 +164,7 @@ function Index() {
                     <Link
                       className="mb-[22px] underline"
                       href={furniture["links"][2]}
+                      target="_blank"
                     >
                       Link 3
                     </Link>
@@ -456,9 +459,11 @@ function Index() {
         })
           .then((response) => response.json())
           .then((data: dataImage) => {
+            console.log(data);
             imageProcessor(data);
           })
           .catch((error: Error) => {
+            console.log(error);
             imageError(error);
           });
       }
