@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Link from "next/link";
 import Footer from "~/components/Footer";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
@@ -53,12 +52,13 @@ function Index() {
   // const [imageButtonClick, setImageButtonClick] = useState(false);
   const [image, setImage] = useState<string | null>(null);
 
-  const [inpaintMaskImg, setInpaintMaskImg] = useState<string | Blob | File>("");
+  const [inpaintMaskImg, setInpaintMaskImg] = useState<string | Blob | File>(
+    ""
+  );
 
-  
   let isScrollDisabled = false;
 
-  if(showEdit) {
+  if (showEdit) {
     isScrollDisabled = true;
   } else {
     isScrollDisabled = false;
@@ -75,7 +75,7 @@ function Index() {
       if (isScrollDisabled) {
         document.body.classList.remove("disable-scroll");
       }
-    }
+    };
   }, [isScrollDisabled]);
 
   let inputImage: FormDataEntryValue;
@@ -135,36 +135,42 @@ function Index() {
                       No hay link
                     </p>
                   ) : (
-                    <Link
-                      className="mb-[22px]"
+                    <a
                       href={furniture["links"][0]}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mb-[22px] underline"
                     >
-                      <a target="_blank" rel="noopener noreferrer" className="underline">Link 1</a>
-                    </Link>
+                      Link 1
+                    </a>
                   )}
                   {furniture["links"][1] == "No hay link" ? (
                     <p className="mb-[14px] text-[#FBF9FA] no-underline">
                       No hay link
                     </p>
                   ) : (
-                    <Link
-                      className="mb-[22px]"
+                    <a
                       href={furniture["links"][1]}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mb-[22px] underline"
                     >
-                      <a target="_blank" rel="noopener noreferrer" className="underline">Link 2</a>
-                    </Link>
+                      Link 2
+                    </a>
                   )}
                   {furniture["links"][2] == "No hay link" ? (
                     <p className="mb-[22px] text-[#FBF9FA] no-underline">
                       No hay link
                     </p>
                   ) : (
-                    <Link
-                      className="mb-[22px]"
+                    <a
                       href={furniture["links"][2]}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mb-[22px] underline"
                     >
-                      <a target="_blank" rel="noopener noreferrer" className="underline">Link 3</a>
-                    </Link>
+                      Link 3
+                    </a>
                   )}
                 </div>
               </div>
@@ -338,9 +344,9 @@ function Index() {
         isNoImage = true;
       }
 
-      console.log('inputImage', inputImage)
+      console.log("inputImage", inputImage);
 
-      if(!isNoImage && inputImage instanceof File && inputImage.size <= 0){
+      if (!isNoImage && inputImage instanceof File && inputImage.size <= 0) {
         toast.error("Seleccionar si quiere subir una imagen o no", {
           position: "top-center",
           autoClose: 5000,
@@ -416,7 +422,7 @@ function Index() {
           method: "POST",
           headers: {
             Authorization: `Bearer ${process.env.NEXT_PUBLIC_HF_ORG_TOKEN!.toString()}`,
-            "x-api-key": apiKey
+            "x-api-key": apiKey,
           },
           body: formData,
         })
@@ -450,7 +456,7 @@ function Index() {
           method: "POST",
           headers: {
             Authorization: `Bearer ${process.env.NEXT_PUBLIC_HF_ORG_TOKEN!.toString()}`,
-            "x-api-key": apiKey
+            "x-api-key": apiKey,
           },
           body: formData,
         })
@@ -483,8 +489,17 @@ function Index() {
               ref={formRef}
               className="flex w-full flex-col items-center justify-center"
             >
-              <StepShow setShowEdit={setShowEdit} image={image} setImage={setImage}/>
-              <InpaintingEditor setShowEdit={setShowEdit} showEdit={showEdit} image={image!} setInpaintMaskImg={setInpaintMaskImg}/>
+              <StepShow
+                setShowEdit={setShowEdit}
+                image={image}
+                setImage={setImage}
+              />
+              <InpaintingEditor
+                setShowEdit={setShowEdit}
+                showEdit={showEdit}
+                image={image!}
+                setInpaintMaskImg={setInpaintMaskImg}
+              />
             </form>
           )}
           {moreThan1 ? (
