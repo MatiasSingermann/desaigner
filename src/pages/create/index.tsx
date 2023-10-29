@@ -139,7 +139,7 @@ function Index() {
                       className="mb-[22px]"
                       href={furniture["links"][0]}
                     >
-                      <a target="_blank" className="underline">Link 1</a>
+                      <a target="_blank" rel="noopener noreferrer" className="underline">Link 1</a>
                     </Link>
                   )}
                   {furniture["links"][1] == "No hay link" ? (
@@ -151,7 +151,7 @@ function Index() {
                       className="mb-[22px]"
                       href={furniture["links"][1]}
                     >
-                      <a target="_blank" className="underline">Link 2</a>
+                      <a target="_blank" rel="noopener noreferrer" className="underline">Link 2</a>
                     </Link>
                   )}
                   {furniture["links"][2] == "No hay link" ? (
@@ -163,7 +163,7 @@ function Index() {
                       className="mb-[22px]"
                       href={furniture["links"][2]}
                     >
-                      <a target="_blank" className="underline">Link 3</a>
+                      <a target="_blank" rel="noopener noreferrer" className="underline">Link 3</a>
                     </Link>
                   )}
                 </div>
