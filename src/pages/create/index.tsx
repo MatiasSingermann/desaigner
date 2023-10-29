@@ -136,11 +136,10 @@ function Index() {
                     </p>
                   ) : (
                     <Link
-                      className="mb-[14px] underline"
+                      className="mb-[22px]"
                       href={furniture["links"][0]}
-                      target="_blank"
                     >
-                      Link 1
+                      <a target="_blank" className="underline">Link 1</a>
                     </Link>
                   )}
                   {furniture["links"][1] == "No hay link" ? (
@@ -149,11 +148,10 @@ function Index() {
                     </p>
                   ) : (
                     <Link
-                      className="mb-[14px] underline"
+                      className="mb-[22px]"
                       href={furniture["links"][1]}
-                      target="_blank"
                     >
-                      Link 2
+                      <a target="_blank" className="underline">Link 2</a>
                     </Link>
                   )}
                   {furniture["links"][2] == "No hay link" ? (
@@ -162,11 +160,10 @@ function Index() {
                     </p>
                   ) : (
                     <Link
-                      className="mb-[22px] underline"
+                      className="mb-[22px]"
                       href={furniture["links"][2]}
-                      target="_blank"
                     >
-                      Link 3
+                      <a target="_blank" className="underline">Link 3</a>
                     </Link>
                   )}
                 </div>
