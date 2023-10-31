@@ -1,75 +1,83 @@
 // import type { FullDataImage } from "~/hooks/useImageData";
-// import base64 from "base64-js";
+import base64 from "base64-js";
 
-// interface SaveImageInfo {
-//   environment: string;
-//   budget: string;
-//   style: string;
-//   image: Blob;
-//   furniture: FullDataImage;
-// }
+interface InputImageDataProps {
+    box: [number, number, number, number];
+    prompt: string;
+    links: [string, string, string];
+}
 
-// function SaveImageInfo({
-//   environment,
-//   budget,
-//   style,
-//   image,
-//   furniture,
-// }: SaveImageInfo) {
-//   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
-//     e.preventDefault();
+interface SaveImageInfo {
+  environment: string;
+  budget: string;
+  style: string;
+  image: Blob;
+  furniture: FullDataImage;
+}
 
-//     let base64String = "";
+type FullDataImage = InputImageDataProps[];
 
-//     const reader = new FileReader();
-//     reader.onloadend = () => {
-//       const arrayBuffer = reader.result as ArrayBuffer;
-//       const byteArray = new Uint8Array(arrayBuffer);
-//       base64String = base64.fromByteArray(byteArray);
-//     };
-//     reader.readAsArrayBuffer(image);
+function SaveImageInfo({
+  environment,
+  budget,
+  style,
+  image,
+  furniture,
+}: SaveImageInfo) {
+  const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-//     const formData = new FormData(e.currentTarget);
-//     const inputData = [];
+    let base64String = "";
 
-//     for (const pair of formData.entries()) {
-//       inputData.push(pair);
-//     }
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const arrayBuffer = reader.result as ArrayBuffer;
+      const byteArray = new Uint8Array(arrayBuffer);
+      base64String = base64.fromByteArray(byteArray);
+    };
+    reader.readAsArrayBuffer(image);
 
-//     const nombre = inputData[0] ? inputData[0][1] : "";
-//     const coleccion = inputData[1] ? inputData[1][1] : "";
+    const formData = new FormData(e.currentTarget);
+    const inputData = [];
 
-//     const obj = {
-//       nombre: nombre,
-//       ambiente: environment,
-//       disenioIMG: base64String,
-//       muebles: furniture,
-//       presupuesto: budget,
-//       estilo: style,
-//       colecciones: coleccion,
-//     };
+    for (const pair of formData.entries()) {
+      inputData.push(pair);
+    }
 
-//     fetch("api/auth/createDisenio", {
-//       method: "POST",
-//       body: JSON.stringify(obj),
-//     })
-//       .then((response) => response.json())
-//       .then((data) => {
-//         console.log(data);
-//       })
-//       .catch((error: Error) => {
-//         console.log(error);
-//       });
-//   };
-//   return (
-//     <form
-//       onSubmit={handleSubmit}
-//       className="bg-red flex h-full w-full items-center justify-center rounded-xl"
-//     >
-//       <input name="Nombre" type="text" />
-//       <input name="Colecciones" type="text" />
-//     </form>
-//   );
-// }
+    const nombre = inputData[0] ? inputData[0][1] : "";
+    const coleccion = inputData[1] ? inputData[1][1] : "";
 
-// export default SaveImageInfo;
+    const obj = {
+      nombre: nombre,
+      ambiente: environment,
+      disenioIMG: base64String,
+      muebles: furniture,
+      presupuesto: budget,
+      estilo: style,
+      colecciones: coleccion,
+    };
+
+    fetch("api/auth/createDisenio", {
+      method: "POST",
+      body: JSON.stringify(obj),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error: Error) => {
+        console.log(error);
+      });
+  };
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className="bg-red flex h-full w-full items-center justify-center rounded-xl"
+    >
+      <input name="Nombre" type="text" />
+      <input name="Colecciones" type="text" />
+    </form>
+  );
+}
+
+export default SaveImageInfo;

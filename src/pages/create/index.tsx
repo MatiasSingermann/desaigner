@@ -14,7 +14,7 @@ import InpaintingEditor from "~/components/InpaintingEditor";
 import ResLoad from "~/components/ResLoad";
 import SwiperResultShow from "~/components/SwiperResultShow";
 import SaveImageButton from "~/components/SaveImageButton";
-// import SaveImageInfo from "~/components/SaveImageInfo";
+import SaveImageInfo from "~/components/SaveImageInfo";
 
 interface InputImageDataProps {
   box: [number, number, number, number];
@@ -49,7 +49,7 @@ function Index() {
   const [imageFullData, setImageFullData] = useState<FullDataImage>(
     [] as FullDataImage
   );
-  // const [imageButtonClick, setImageButtonClick] = useState(false);
+  const [imageButtonClick, setImageButtonClick] = useState(false);
   const [image, setImage] = useState<string | null>(null);
 
   const [inpaintMaskImg, setInpaintMaskImg] = useState<string | Blob | File>(
@@ -104,7 +104,7 @@ function Index() {
 
   if (status === "authenticated") {
     const handleSaveImage = () => {
-      // setImageButtonClick(true);
+      setImageButtonClick(true);
       // const obj = {
       //   nombre: "", // string
       //   ambiente: "", // string
@@ -553,7 +553,7 @@ function Index() {
                 </div>
               </div>
               <SaveImageButton handleSaveImage={handleSaveImage} />
-              {/* {imageButtonClick && (
+              {imageButtonClick && (
                 <SaveImageInfo
                   environment={environment}
                   budget={budget}
@@ -561,7 +561,7 @@ function Index() {
                   image={blob1!}
                   furniture={imageFullData} // {["", ""]}
                 />
-              )} */}
+              )}
             </div>
           ) : null}
           <ToastContainer limit={3} />
