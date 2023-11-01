@@ -72,3 +72,7 @@
   background: none !important;
   fill: none !important;
 }
+
+.disable-scroll {
+  overflow: hidden;
+}

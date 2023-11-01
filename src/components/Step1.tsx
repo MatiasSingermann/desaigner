@@ -34,7 +34,7 @@ function Step1({ setShowEdit, counter, image, setImage}: Step1Props) {
       </h2>
       <h3 className="mx-[32px] my-[20px] w-[254px] self-start font-coolveticaLight text-[15px] leading-none">
         La imagen debe ser formato .jpg (.jpeg) o .png con una resolución mínima
-        de 512x512 píxeles.
+        de 512x512 píxeles. El aspect ratio debe ser de 4:3 o de 16:9.
       </h3>
       <div className="relative flex h-[180px] w-[330px] flex-col">
         {checked ? <ImageUploaderBlack /> : null}

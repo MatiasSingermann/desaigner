@@ -1,22 +1,20 @@
 import Head from "next/head";
-import Link from "next/link";
 import Footer from "~/components/Footer";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import StepShow from "~/components/StepShow";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import base64 from "base64-js";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { useRef } from "react";
 import InpaintingEditor from "~/components/InpaintingEditor";
 import ResLoad from "~/components/ResLoad";
 import SwiperResultShow from "~/components/SwiperResultShow";
 import SaveImageButton from "~/components/SaveImageButton";
-// import SaveImageInfo from "~/components/SaveImageInfo";
+import SaveImageInfo from "~/components/SaveImageInfo";
 
 interface InputImageDataProps {
   box: [number, number, number, number];
@@ -51,8 +49,34 @@ function Index() {
   const [imageFullData, setImageFullData] = useState<FullDataImage>(
     [] as FullDataImage
   );
-  // const [imageButtonClick, setImageButtonClick] = useState(false);
+  const [imageButtonClick, setImageButtonClick] = useState(false);
   const [image, setImage] = useState<string | null>(null);
+
+  const [inpaintMaskImg, setInpaintMaskImg] = useState<string | Blob | File>(
+    ""
+  );
+
+  let isScrollDisabled = false;
+
+  if (showEdit) {
+    isScrollDisabled = true;
+  } else {
+    isScrollDisabled = false;
+  }
+
+  useEffect(() => {
+    if (isScrollDisabled) {
+      document.body.classList.add("disable-scroll");
+    } else {
+      document.body.classList.remove("disable-scroll");
+    }
+
+    return () => {
+      if (isScrollDisabled) {
+        document.body.classList.remove("disable-scroll");
+      }
+    };
+  }, [isScrollDisabled]);
 
   let inputImage: FormDataEntryValue;
   inputImage = "";
@@ -63,7 +87,6 @@ function Index() {
   let weather = "";
   let disability = "";
   let numImages: number | string;
-  let maskImage: FormDataEntryValue;
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY!.toString();
 
@@ -81,7 +104,7 @@ function Index() {
 
   if (status === "authenticated") {
     const handleSaveImage = () => {
-      // setImageButtonClick(true);
+      setImageButtonClick(true);
       // const obj = {
       //   nombre: "", // string
       //   ambiente: "", // string
@@ -112,36 +135,42 @@ function Index() {
                       No hay link
                     </p>
                   ) : (
-                    <Link
-                      className="mb-[14px] underline"
+                    <a
                       href={furniture["links"][0]}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mb-[22px] underline"
                     >
                       Link 1
-                    </Link>
+                    </a>
                   )}
                   {furniture["links"][1] == "No hay link" ? (
                     <p className="mb-[14px] text-[#FBF9FA] no-underline">
                       No hay link
                     </p>
                   ) : (
-                    <Link
-                      className="mb-[14px] underline"
+                    <a
                       href={furniture["links"][1]}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mb-[22px] underline"
                     >
                       Link 2
-                    </Link>
+                    </a>
                   )}
                   {furniture["links"][2] == "No hay link" ? (
                     <p className="mb-[22px] text-[#FBF9FA] no-underline">
                       No hay link
                     </p>
                   ) : (
-                    <Link
-                      className="mb-[22px] underline"
+                    <a
                       href={furniture["links"][2]}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mb-[22px] underline"
                     >
                       Link 3
-                    </Link>
+                    </a>
                   )}
                 </div>
               </div>
@@ -285,7 +314,7 @@ function Index() {
       weather = inputData[5] ? inputData[5][1].toString() : "";
       disability = inputData[6] ? inputData[6][1].toString() : "";
       numImages = inputData[7] ? Number(inputData[7][1]) : "";
-      maskImage = inputData[8] ? inputData[8][1] : "";
+      const maskImage = inpaintMaskImg;
 
       let requiredInputs = true;
       let isNoImage = false;
@@ -315,7 +344,26 @@ function Index() {
         isNoImage = true;
       }
 
-      if (maskImage == "TEST") {
+      console.log("inputImage", inputImage);
+
+      if (!isNoImage && inputImage instanceof File && inputImage.size <= 0) {
+        toast.error("Seleccionar si quiere subir una imagen o no", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        requiredInputs = false;
+      }
+
+      if (maskImage != "") {
+        isNoMask = false;
+        setInpaintMaskImg("");
+      } else {
         isNoMask = true;
       }
 
@@ -374,7 +422,7 @@ function Index() {
           method: "POST",
           headers: {
             Authorization: `Bearer ${process.env.NEXT_PUBLIC_HF_ORG_TOKEN!.toString()}`,
-            "x-api-key": apiKey
+            "x-api-key": apiKey,
           },
           body: formData,
         })
@@ -408,15 +456,17 @@ function Index() {
           method: "POST",
           headers: {
             Authorization: `Bearer ${process.env.NEXT_PUBLIC_HF_ORG_TOKEN!.toString()}`,
-            "x-api-key": apiKey
+            "x-api-key": apiKey,
           },
           body: formData,
         })
           .then((response) => response.json())
           .then((data: dataImage) => {
+            console.log(data);
             imageProcessor(data);
           })
           .catch((error: Error) => {
+            console.log(error);
             imageError(error);
           });
       }
@@ -439,8 +489,17 @@ function Index() {
               ref={formRef}
               className="flex w-full flex-col items-center justify-center"
             >
-              <StepShow setShowEdit={setShowEdit} image={image} setImage={setImage}/>
-              <InpaintingEditor setShowEdit={setShowEdit} showEdit={showEdit} image={image!}/>
+              <StepShow
+                setShowEdit={setShowEdit}
+                image={image}
+                setImage={setImage}
+              />
+              <InpaintingEditor
+                setShowEdit={setShowEdit}
+                showEdit={showEdit}
+                image={image!}
+                setInpaintMaskImg={setInpaintMaskImg}
+              />
             </form>
           )}
           {moreThan1 ? (
@@ -494,7 +553,7 @@ function Index() {
                 </div>
               </div>
               <SaveImageButton handleSaveImage={handleSaveImage} />
-              {/* {imageButtonClick && (
+              {imageButtonClick && (
                 <SaveImageInfo
                   environment={environment}
                   budget={budget}
@@ -502,7 +561,7 @@ function Index() {
                   image={blob1!}
                   furniture={imageFullData} // {["", ""]}
                 />
-              )} */}
+              )}
             </div>
           ) : null}
           <ToastContainer limit={3} />
