@@ -14,7 +14,7 @@ import InpaintingEditor from "~/components/InpaintingEditor";
 import ResLoad from "~/components/ResLoad";
 import SwiperResultShow from "~/components/SwiperResultShow";
 import SaveImageButton from "~/components/SaveImageButton";
-import SaveImageInfo from "~/components/SaveImageInfo";
+import FolderChooser from "~/components/FolderChooser";
 
 interface InputImageDataProps {
   box: [number, number, number, number];
@@ -103,8 +103,8 @@ function Index() {
   }
 
   if (status === "authenticated") {
-    const handleSaveImage = () => {
-      setImageButtonClick(true);
+    const handleImageSave = (e: React.ChangeEvent<HTMLFormElement>) => {
+      e.preventDefault();
       // const obj = {
       //   nombre: "", // string
       //   ambiente: "", // string
@@ -114,6 +114,9 @@ function Index() {
       //   disenioIMG: "", // string (base64)
       //   muebles: "", // object[] todo lo que me devuelve blanco
       // }
+    };
+    const handleFolders = () => {
+      setImageButtonClick(true);
     };
 
     const linkShow = () => {
@@ -418,7 +421,7 @@ function Index() {
         formData.append("controlnet_conditioning_scale", (1).toString());
         formData.append("input_image", inputImage);
 
-        fetch("https://desaigner-image-creation-api.hf.space/img2img/v3", {
+        fetch("https://desaigner-image-creation-api.hf.space/img2img/v4", {
           method: "POST",
           headers: {
             Authorization: `Bearer ${process.env.NEXT_PUBLIC_HF_ORG_TOKEN!.toString()}`,
@@ -452,7 +455,7 @@ function Index() {
         formData.append("input_image", inputImage);
         formData.append("mask_image", maskImage);
 
-        fetch("https://desaigner-image-creation-api.hf.space/inpaint/v3", {
+        fetch("https://desaigner-image-creation-api.hf.space/inpaint/v4", {
           method: "POST",
           headers: {
             Authorization: `Bearer ${process.env.NEXT_PUBLIC_HF_ORG_TOKEN!.toString()}`,
@@ -552,16 +555,25 @@ function Index() {
                   {linkShow()}
                 </div>
               </div>
-              <SaveImageButton handleSaveImage={handleSaveImage} />
-              {imageButtonClick && (
-                <SaveImageInfo
-                  environment={environment}
-                  budget={budget}
-                  style={style}
-                  image={blob1!}
-                  furniture={imageFullData} // {["", ""]}
+              <form onSubmit={handleImageSave}>
+                <input
+                  type="text"
+                  name="Nombre"
+                  placeholder="Nombre (máx. 12 caracteres)"
+                  className="my-[32px] flex h-[52px] w-[294px] items-center justify-center rounded-2xl border-[2px] border-[#BABABA] bg-[#FBF9FA] px-[20px] font-coolveticaLight text-[18px] text-[#BABABA]"
                 />
-              )}
+                <input name="Colecciones" type="text" />
+                {imageButtonClick && (
+                  <FolderChooser
+                    environment={environment}
+                    budget={budget}
+                    style={style}
+                    image={blob1!}
+                    furniture={imageFullData} // {["", ""]}
+                  />
+                )}
+              </form>
+              <SaveImageButton handleFolders={handleFolders} />
             </div>
           ) : null}
           <ToastContainer limit={3} />

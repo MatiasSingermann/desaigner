@@ -1,10 +1,13 @@
 import Head from "next/head";
 import Footer from "~/components/Footer";
+import { useState } from 'react'
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import FolderPreview from '~/components/FolderPreview';
 
 function Index() {
   const router = useRouter();
+  const [foldersInfo, setFoldersInfo] = useState<string[] | undefined>();
 
   const { status } = useSession({
     required: false,
@@ -19,6 +22,17 @@ function Index() {
   }
 
   if (status === "authenticated") {
+    fetch("api/auth/Colecciones", {
+      method: "POST",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        // setFoldersInfo(data);
+      })
+      .catch((error: Error) => {
+        console.log(error);
+      });
     return (
       <>
         <Head>
@@ -28,8 +42,10 @@ function Index() {
         </Head>
         <main className="flex grow flex-col items-center justify-start font-coolveticaLight">
           <h1 className="mx-[32px] mb-[30px] self-start font-coolveticaRegular text-[30px] leading-none text-[#22302D] dark:text-[#FBF9FA]">
-            Carpetas
+            Tus colecciones
           </h1>
+          {/* {foldersInfo.forEach()} */}
+          {/* <FolderPreview index={index}/> */}
         </main>
         <Footer />
       </>
