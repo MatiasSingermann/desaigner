@@ -45,11 +45,11 @@ function FolderCreator({
   };
   return (
     <div
-      className={`top-0 z-10 flex h-[100vh] w-full items-center justify-center bg-black bg-opacity-70 ${
+      className={`top-0 z-[1000] flex h-[100vh] w-full items-center justify-center bg-black bg-opacity-70 ${
         showFolderCreator ? "fixed " : "hidden"
       }`}
     >
-      <div className="relative flex h-[300px] w-[324px] flex-col items-center justify-start rounded-2xl bg-[#22302D] px-[14px]">
+      <div className="relative flex h-[226px] w-[324px] flex-col items-center justify-start rounded-2xl bg-[#22302D] px-[14px]">
         <button
           onClick={handleClick}
           className="absolute right-0 top-0 m-[12px] flex"
@@ -61,7 +61,7 @@ function FolderCreator({
           Nueva carpeta
         </h1>
         <form
-          className="mt-[40px] flex h-fit flex-col items-center justify-center"
+          className="flex h-fit flex-col items-center justify-center"
           action="/home"
           method="POST"
           onSubmit={createFolder}
@@ -72,11 +72,11 @@ function FolderCreator({
             type="text"
             name="folderName"
             placeholder="Nombre (máx. 12 caracteres)"
-            className="my-[32px] flex h-[42px] w-[248px] items-center justify-center rounded-2xl border-[2px] border-[#228187] bg-[#19201F] px-[20px] font-coolveticaLight text-[18px] text-[#BABABA]"
+            className="my-[24px] flex h-[42px] w-[248px] items-center justify-center rounded-2xl border-[2px] border-[#228187] bg-[#19201F] px-[20px] font-coolveticaLight text-[18px] text-[#BABABA]"
           />
           <button
             type="submit"
-            className="absolute bottom-0 mb-[38px] flex h-[36px] w-[130px] items-center justify-center rounded-3xl bg-[#228187] font-coolveticaRegular text-[18px] text-[#FBF9FA] shadow-md shadow-[#111]"
+            className="mb-[38px] flex h-[36px] w-[130px] items-center justify-center rounded-3xl bg-[#228187] font-coolveticaRegular text-[18px] text-[#FBF9FA] shadow-md shadow-[#111]"
           >
             Aceptar
           </button>

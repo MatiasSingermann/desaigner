@@ -15,6 +15,7 @@ import ResLoad from "~/components/ResLoad";
 import SwiperResultShow from "~/components/SwiperResultShow";
 import SaveImageButton from "~/components/SaveImageButton";
 import FolderChooser from "~/components/FolderChooser";
+import BlackBg from "~/components/BlackBg";
 
 interface InputImageDataProps {
   box: [number, number, number, number];
@@ -55,6 +56,8 @@ function Index() {
   const [inpaintMaskImg, setInpaintMaskImg] = useState<string | Blob | File>(
     ""
   );
+
+  const [showBlackBg, setShowBlackBg] = useState(false);
 
   let isScrollDisabled = false;
 
@@ -187,6 +190,35 @@ function Index() {
     const getLinks = (blob: Blob) => {
       const formData = new FormData();
       formData.append("image", blob);
+
+      // ---------------------- TEST ----------------------
+
+      const test_obj2: FullDataImage = [
+        {
+          box: [2, 2, 2, 2],
+          prompt: "Mueble 1",
+          links: ["No hay link", "No hay link", "No hay link"],
+        },
+        {
+          box: [2, 2, 2, 2],
+          prompt: "Mueble 2",
+          links: ["No hay link", "No hay link", "No hay link"],
+        },
+        {
+          box: [2, 2, 2, 2],
+          prompt: "Mueble 3",
+          links: ["No hay link", "No hay link", "No hay link"],
+        },
+      ];
+
+      setImageFullData(test_obj2);
+      setMoreThan1(false);
+      setResult(true);
+      setLoading(false);
+
+      return;
+
+      // ---------------------- TEST ----------------------
 
       fetch("https://desaigner-image-and-links-api.hf.space/", {
         // http://localhost:9000/
@@ -369,6 +401,23 @@ function Index() {
       } else {
         isNoMask = true;
       }
+
+      // ---------------------- TEST ----------------------
+
+      setLoading(true);
+
+      const test_obj = {
+        images: [
+          "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFUlEQVR42mP8z8BQz0AEYBxVSF+FABJADveWkH6oAAAAAElFTkSuQmCC",
+          "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFUlEQVR42mNk+M9Qz0AEYBxVSF+FAAhKDveksOjmAAAAAElFTkSuQmCC",
+        ],
+      };
+
+      imageProcessor(test_obj);
+
+      return;
+
+      // ---------------------- TEST ----------------------
 
       if (requiredInputs && isNoImage) {
         const obj = {
@@ -555,14 +604,17 @@ function Index() {
                   {linkShow()}
                 </div>
               </div>
-              <form onSubmit={handleImageSave}>
+              <form
+                className="flex flex-col items-center justify-center"
+                onSubmit={handleImageSave}
+              >
                 <input
                   type="text"
                   name="Nombre"
                   placeholder="Nombre (máx. 12 caracteres)"
-                  className="my-[32px] flex h-[52px] w-[294px] items-center justify-center rounded-2xl border-[2px] border-[#BABABA] bg-[#FBF9FA] px-[20px] font-coolveticaLight text-[18px] text-[#BABABA]"
+                  className="my-[32px] flex h-[52px] w-[294px] items-center justify-center rounded-2xl border-[2px] border-[#BABABA] bg-[#FBF9FA] px-[20px] font-coolveticaLight text-[18px] text-[#BABABA] dark:border-[#228187] dark:bg-[#19201F]"
                 />
-                <input name="Colecciones" type="text" />
+                <input name="Colecciones" type="text" className="hidden" />
                 {imageButtonClick && (
                   <FolderChooser
                     environment={environment}
@@ -571,6 +623,9 @@ function Index() {
                     image={blob1!}
                     furniture={imageFullData} // {["", ""]}
                   />
+                )}
+                {imageButtonClick && (
+                  <BlackBg setImageButtonClick={setImageButtonClick} />
                 )}
               </form>
               <SaveImageButton handleFolders={handleFolders} />

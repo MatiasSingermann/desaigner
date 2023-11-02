@@ -31,7 +31,7 @@ function FolderChooser({
   const [foldersInfo, setFoldersInfo] = useState<string[] | undefined>();
   const handleNewFolder = () => {
     setShowFolderCreator(true);
-  }
+  };
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -90,16 +90,26 @@ function FolderChooser({
     });
   return (
     <>
-    <div className="bottom-0 flex h-[388px] w-full flex-col items-center rounded-t-2xl bg-[#293433] py-[26px]">
-      <div className="h-[26px] w-[70px] rounded-xl bg-[#2A9DA5]"></div>
-      <div className="flex flex-col overflow-y-scroll">
-        {/* {foldersInfo.forEach()} */}
-        {/* <FolderSelector index={index}/> */}
+      <div className="fixed bottom-0 z-[1000] flex h-[388px] w-full flex-col items-center rounded-t-[4rem] bg-[#293433] py-[26px]">
+        <div className="h-[9px] wasdasd-[232px] w-3/5 rounded-xl bg-[#2A9DA5]"></div>
+        <div className="my-[24px] flex flex-col overflow-y-scroll">
+          {/* {foldersInfo.forEach()} */}
+          {/* <FolderSelector index={index}/> */}
+        </div>
+        <hr className="w-3/5 border-[#FBF9FA] mb-[14px]" />
+        <button
+          onClick={handleNewFolder}
+          className="text-center font-coolveticaRegular text-[25px] text-[#FBF9FA]"
+        >
+          Nueva carpeta
+        </button>
       </div>
-      <hr className="w-[223px] border-[#FBF9FA]" />
-      <button onClick={handleNewFolder} className="font-coolveticaRegular text-[25px] text-center text-[#FBF9FA]">Nueva carpeta</button>
-    </div>
-    {showFolderCreator && <FolderCreator setShowFolderCreator={setShowFolderCreator} showFolderCreator={showFolderCreator}/>}
+      {showFolderCreator && (
+        <FolderCreator
+          setShowFolderCreator={setShowFolderCreator}
+          showFolderCreator={showFolderCreator}
+        />
+      )}
     </>
   );
 }
