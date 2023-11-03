@@ -2,7 +2,7 @@
 import { useState } from "react";
 import base64 from "base64-js";
 import FolderCreator from "./FolderCreator";
-// import FolderSelector from "./FolderSelector";
+import FolderSelector from "./FolderSelector";
 
 interface InputImageDataProps {
   box: [number, number, number, number];
@@ -91,12 +91,15 @@ function FolderChooser({
   return (
     <>
       <div className="fixed bottom-0 z-[1000] flex h-[388px] w-full flex-col items-center rounded-t-[4rem] bg-[#293433] py-[26px]">
-        <div className="h-[9px] wasdasd-[232px] w-3/5 rounded-xl bg-[#2A9DA5]"></div>
-        <div className="my-[24px] flex flex-col overflow-y-scroll">
+        <div className="wasdasd-[232px] h-[9px] w-3/5 rounded-xl bg-[#2A9DA5]"></div>
+        <div className="my-[24px] flex w-[238px] flex-col overflow-y-scroll">
+          {foldersInfo?.map((_, i) => (
+            <FolderSelector index={i} />
+          ))}
           {/* {foldersInfo.forEach()} */}
           {/* <FolderSelector index={index}/> */}
         </div>
-        <hr className="w-3/5 border-[#FBF9FA] mb-[14px]" />
+        <hr className="mb-[14px] w-3/5 border-[#FBF9FA]" />
         <button
           onClick={handleNewFolder}
           className="text-center font-coolveticaRegular text-[25px] text-[#FBF9FA]"
