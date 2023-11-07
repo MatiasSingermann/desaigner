@@ -17,6 +17,8 @@ import SaveImageButton from "~/components/SaveImageButton";
 import FolderChooser from "~/components/FolderChooser";
 import BlackBg from "~/components/BlackBg";
 
+import { createPortal } from 'react-dom';
+
 interface InputImageDataProps {
   box: [number, number, number, number];
   prompt: string;
@@ -615,14 +617,14 @@ function Index() {
                   className="my-[32px] flex h-[52px] w-[294px] items-center justify-center rounded-2xl border-[2px] border-[#BABABA] bg-[#FBF9FA] px-[20px] font-coolveticaLight text-[18px] text-[#BABABA] dark:border-[#228187] dark:bg-[#19201F]"
                 />
                 <input name="Colecciones" type="text" className="hidden" />
-                {imageButtonClick && (
+                {imageButtonClick && createPortal(
                   <FolderChooser
                     environment={environment}
                     budget={budget}
                     style={style}
                     image={blob1!}
                     furniture={imageFullData} // {["", ""]}
-                  />
+                  />, document.body
                 )}
                 {imageButtonClick && (
                   <BlackBg setImageButtonClick={setImageButtonClick} />

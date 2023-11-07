@@ -23,13 +23,17 @@ function FolderCreator({
     }
 
     const nombre = inputData[0] ? inputData[0][1] : "";
+    const nombreString = nombre.toString();
 
     const obj = {
-      nombre: nombre,
+      nombre: nombreString,
       favorito: false,
     };
     fetch("api/auth/createColeccion", {
       method: "POST",
+      headers:{
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(obj),
     })
       .then((response) => response.json())
@@ -39,6 +43,7 @@ function FolderCreator({
       .catch((error: Error) => {
         console.log(error);
       });
+    setShowFolderCreator(false);
   };
   const handleClick = () => {
     setShowFolderCreator(false);

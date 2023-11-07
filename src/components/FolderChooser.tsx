@@ -80,7 +80,7 @@ function FolderChooser({
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        //console.log(data);
       })
       .catch((error: Error) => {
         console.log(error);
@@ -91,7 +91,7 @@ function FolderChooser({
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
+      //console.log(data);
       setFoldersInfo(data);
     })
     .catch((error: Error) => {
