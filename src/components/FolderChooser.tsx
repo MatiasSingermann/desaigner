@@ -20,6 +20,16 @@ interface FolderChooserProps {
 
 type FullDataImage = InputImageDataProps[];
 
+interface FolderKeys {
+  duenio_id : string,
+  favorito : boolean,
+  id : number,
+  nombre : string,
+  disenio : object[] | undefined,
+}
+
+type FolderType = FolderKeys[];
+
 function FolderChooser({
   environment,
   budget,
@@ -28,7 +38,7 @@ function FolderChooser({
   furniture,
 }: FolderChooserProps) {
   const [showFolderCreator, setShowFolderCreator] = useState(false);
-  const [foldersInfo, setFoldersInfo] = useState<string[] | undefined>();
+  const [foldersInfo, setFoldersInfo] = useState<FolderType | undefined>();
   const handleNewFolder = () => {
     setShowFolderCreator(true);
   };
@@ -83,7 +93,7 @@ function FolderChooser({
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
-      // setFoldersInfo(data);
+      setFoldersInfo(data);
     })
     .catch((error: Error) => {
       console.log(error);
@@ -91,14 +101,16 @@ function FolderChooser({
   return (
     <>
       <div className="fixed bottom-0 z-[1000] flex h-[388px] w-full flex-col items-center rounded-t-[4rem] bg-[#293433] py-[26px]">
-        <div className="wasdasd-[232px] h-[9px] w-3/5 rounded-xl bg-[#2A9DA5]"></div>
-        <div className="my-[24px] flex w-[238px] flex-col overflow-y-scroll">
-          {foldersInfo?.map((_, i) => (
-            <FolderSelector index={i} />
-          ))}
-          {/* {foldersInfo.forEach()} */}
-          {/* <FolderSelector index={index}/> */}
-        </div>
+        <div className="h-[9px] w-3/5 rounded-xl bg-[#2A9DA5]"></div>
+        {foldersInfo != undefined && (
+          <div className="my-[24px] flex w-[280px] flex-col overflow-y-scroll">
+            {foldersInfo?.map((_, i) => (
+              <FolderSelector key={i} index={i} foldersInfo={foldersInfo} />
+            ))}
+            {/* {foldersInfo.forEach()} */}
+            {/* <FolderSelector index={index}/> */}
+          </div>
+        )}
         <hr className="mb-[14px] w-3/5 border-[#FBF9FA]" />
         <button
           onClick={handleNewFolder}

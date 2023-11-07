@@ -1,26 +1,31 @@
-interface FolderSelectorProps {
-  index: number;
+import { SetStateAction } from "react";
+
+interface FolderKeys {
+  duenio_id : string,
+  favorito : boolean,
+  id : number,
+  nombre : string,
+  disenio : object[] | undefined
 }
 
-function FolderSelector({ index }: FolderSelectorProps) {
-  fetch("api/auth/Colecciones", {
-    method: "POST",
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-    })
-    .catch((error: Error) => {
-      console.log(error);
-    });
+type FolderType = FolderKeys[];
+
+interface FolderSelectorProps {
+  index: number;
+  foldersInfo: FolderType
+}
+
+function FolderSelector({ index, foldersInfo }: FolderSelectorProps) {
+  console.log(foldersInfo[0])
   return (
     <div className="flex h-[50px] w-[238px] items-center justify-between">
       <div className="flex flex-col items-start text-[#FBF9FA]">
         <p className="font-coolveticaRegular text-[25px]">
-          coleccion[index].name
+          {foldersInfo[index]!.nombre}
         </p>
         <p className="font-coolveticaLight text-[11px]">
-          coleccion[index].numDisenios
+          {"poner un if"}
+          {"foldersInfo[index]!.disenio + colecciones"}
         </p>
       </div>
       <div className="flex h-[40px] w-[40px] flex-wrap items-start">
