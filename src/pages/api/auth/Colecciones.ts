@@ -42,6 +42,8 @@ async function colecciones(req: NextApiRequest, res: NextApiResponse, email: str
                 duenio_id: email
             },
             select: {
+                nombre: true,
+                favorito: true,
                 disenios: {
                     include: {
                         disenio: {

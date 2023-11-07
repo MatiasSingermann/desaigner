@@ -21,11 +21,10 @@ interface FolderChooserProps {
 type FullDataImage = InputImageDataProps[];
 
 interface FolderKeys {
-  duenio_id : string,
   favorito : boolean,
   id : number,
   nombre : string,
-  disenio : object[] | undefined,
+  disenios : object[],
 }
 
 type FolderType = FolderKeys[];

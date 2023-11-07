@@ -1,11 +1,10 @@
 import { SetStateAction } from "react";
 
 interface FolderKeys {
-  duenio_id : string,
   favorito : boolean,
   id : number,
   nombre : string,
-  disenio : object[] | undefined
+  disenios : object[],
 }
 
 type FolderType = FolderKeys[];
@@ -24,23 +23,22 @@ function FolderSelector({ index, foldersInfo }: FolderSelectorProps) {
           {foldersInfo[index]!.nombre}
         </p>
         <p className="font-coolveticaLight text-[11px]">
-          {"poner un if"}
-          {"foldersInfo[index]!.disenio + colecciones"}
+          {foldersInfo[index]!.disenios.length == 1 ? "1 colección" : foldersInfo[index]!.disenios.length + " colecciones"}
         </p>
       </div>
       <div className="flex h-[40px] w-[40px] flex-wrap items-start">
-        {/* {coleccion[index].numDisenios > 0 && (
+        {foldersInfo[index]!.disenios.length > 0 && (
             <div className="w-[20px] h-[20px] bg-[#202020]"></div>
-        )} */}
-        {/* {coleccion[index].numDisenios > 1 && (
+        )}
+        {foldersInfo[index]!.disenios.length > 1 && (
             <div className="w-[20px] h-[20px] bg-[#FF0000]"></div>
-        )} */}
-        {/* {coleccion[index].numDisenios > 2 && (
+        )}
+        {foldersInfo[index]!.disenios.length > 2 && (
             <div className="w-[20px] h-[20px] bg-[#0000FF]"></div>
-        )} */}
-        {/* {coleccion[index].numDisenios > 3 && (
+        )}
+        {foldersInfo[index]!.disenios.length > 3 && (
             <div className="w-[20px] h-[20px] bg-[#FFC0CB]"></div>
-        )} */}
+        )}
       </div>
     </div>
   );
