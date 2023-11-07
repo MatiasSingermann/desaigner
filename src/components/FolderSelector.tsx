@@ -14,13 +14,13 @@ interface FolderSelectorProps {
 
 function FolderSelector({ index, foldersInfo }: FolderSelectorProps) {
   return (
-    <div className="flex h-[50px] w-[238px] items-center justify-between">
+    <div className="flex h-[50px] w-[238px] items-center justify-between mb-[12px]">
       <div className="flex flex-col items-start text-[#FBF9FA]">
         <p className="font-coolveticaRegular text-[25px]">
           {foldersInfo[index]!.nombre}
         </p>
         <p className="font-coolveticaLight text-[11px]">
-          {foldersInfo[index]!.disenios.length == 1 ? "1 colección" : foldersInfo[index]!.disenios.length + " colecciones"}
+          {foldersInfo[index]!.disenios.length == 1 ? "1 diseño" : foldersInfo[index]!.disenios.length + " diseños"}
         </p>
       </div>
       <div className="flex h-[40px] w-[40px] flex-wrap items-start">
