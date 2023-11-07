@@ -52,6 +52,8 @@ async function diseños(req: ExtendedNextApiRequestDisenios, res: NextApiRespons
                 nombre: body.coleccion
             },
             select: {
+                nombre: true,
+                favorito: true,
                 disenios: {
                     include: {
                         disenio: {
