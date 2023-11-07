@@ -1,5 +1,3 @@
-import { SetStateAction } from "react";
-
 interface FolderKeys {
   favorito : boolean,
   id : number,
@@ -15,7 +13,6 @@ interface FolderSelectorProps {
 }
 
 function FolderSelector({ index, foldersInfo }: FolderSelectorProps) {
-  console.log(foldersInfo[0])
   return (
     <div className="flex h-[50px] w-[238px] items-center justify-between">
       <div className="flex flex-col items-start text-[#FBF9FA]">

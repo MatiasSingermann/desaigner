@@ -102,12 +102,10 @@ function FolderChooser({
       <div className="fixed bottom-0 z-[1000] flex h-[388px] w-full flex-col items-center rounded-t-[4rem] bg-[#293433] py-[26px]">
         <div className="h-[9px] w-3/5 rounded-xl bg-[#2A9DA5]"></div>
         {foldersInfo != undefined && (
-          <div className="my-[24px] flex w-[280px] flex-col overflow-y-scroll">
+          <div className="my-[24px] items-center justify-center flex w-[280px] flex-col overflow-y-scroll">
             {foldersInfo?.map((_, i) => (
               <FolderSelector key={i} index={i} foldersInfo={foldersInfo} />
             ))}
-            {/* {foldersInfo.forEach()} */}
-            {/* <FolderSelector index={index}/> */}
           </div>
         )}
         <hr className="mb-[14px] w-3/5 border-[#FBF9FA]" />
