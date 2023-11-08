@@ -3,11 +3,29 @@ import Footer from "~/components/Footer";
 import { useState } from 'react'
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import FolderPreview from '~/components/FolderPreview';
+import ColecFolders from "~/components/collectionComps/ColecFolders";
+import ColecDesign from "~/components/collectionComps/ColecDesign";
+
+interface FolderKeys {
+  favorito : boolean,
+  id : number,
+  nombre : string,
+  disenios : object[],
+}
+
+type FolderType = FolderKeys[];
+
+interface FolderDesignsKeys {
+  coleccion : string,
+}
+
+type FolderDesigns = FolderDesignsKeys[];
 
 function Index() {
   const router = useRouter();
-  const [foldersInfo, setFoldersInfo] = useState<string[] | undefined>();
+  const [foldersInfo, setFoldersInfo] = useState<FolderType>();
+  const [showFolder, setShowFolder] = useState(false);
+  const [folderData, setFolderData] = useState<FolderDesigns | undefined>();
 
   const { status } = useSession({
     required: false,
@@ -27,8 +45,8 @@ function Index() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        // setFoldersInfo(data);
+        // console.log(data);
+        setFoldersInfo(data);
       })
       .catch((error: Error) => {
         console.log(error);
@@ -41,11 +59,8 @@ function Index() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <main className="flex grow flex-col items-center justify-start font-coolveticaLight">
-          <h1 className="mx-[32px] mb-[30px] self-start font-coolveticaRegular text-[30px] leading-none text-[#22302D] dark:text-[#FBF9FA]">
-            Tus colecciones
-          </h1>
-          {/* {foldersInfo.forEach()} */}
-          {/* <FolderPreview index={index}/> */}
+          {showFolder == false && <ColecFolders foldersInfo={foldersInfo!} setShowFolder={setShowFolder} setFolderData={setFolderData}/>}
+          {showFolder && <ColecDesign folderData={folderData}/>}
         </main>
         <Footer />
       </>

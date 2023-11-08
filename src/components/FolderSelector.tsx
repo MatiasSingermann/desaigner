@@ -14,12 +14,12 @@ interface FolderSelectorProps {
 
 function FolderSelector({ index, foldersInfo }: FolderSelectorProps) {
   return (
-    <div className="flex h-[50px] w-[238px] items-center justify-between mb-[12px]">
+    <button className="flex h-[50px] w-[238px] items-center justify-between mb-[12px]">
       <div className="flex flex-col items-start text-[#FBF9FA]">
-        <p className="font-coolveticaRegular text-[25px]">
+        <p className="font-coolveticaRegular text-[25px] leading-none mb-[2px]">
           {foldersInfo[index]!.nombre}
         </p>
-        <p className="font-coolveticaLight text-[11px]">
+        <p className="font-coolveticaLight text-[11px] leading-none">
           {foldersInfo[index]!.disenios.length == 1 ? "1 diseño" : foldersInfo[index]!.disenios.length + " diseños"}
         </p>
       </div>
@@ -37,7 +37,7 @@ function FolderSelector({ index, foldersInfo }: FolderSelectorProps) {
             <div className="w-[20px] h-[20px] bg-[#FFC0CB]"></div>
         )}
       </div>
-    </div>
+    </button>
   );
 }
 
