@@ -1,22 +1,22 @@
 import Head from "next/head";
 import Footer from "~/components/Footer";
-import { useState } from 'react'
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import ColecFolders from "~/components/collectionComps/ColecFolders";
 import ColecDesign from "~/components/collectionComps/ColecDesign";
 
 interface FolderKeys {
-  favorito : boolean,
-  id : number,
-  nombre : string,
-  disenios : object[],
+  favorito: boolean;
+  id: number;
+  nombre: string;
+  disenios: object[];
 }
 
 type FolderType = FolderKeys[];
 
 interface FolderDesignsKeys {
-  coleccion : string,
+  coleccion: string;
 }
 
 type FolderDesigns = FolderDesignsKeys[];
@@ -26,6 +26,20 @@ function Index() {
   const [foldersInfo, setFoldersInfo] = useState<FolderType>();
   const [showFolder, setShowFolder] = useState(false);
   const [folderData, setFolderData] = useState<FolderDesigns | undefined>();
+
+  useEffect(() => {
+    fetch("api/auth/Colecciones", {
+      method: "POST",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // console.log(data);
+        setFoldersInfo(data);
+      })
+      .catch((error: Error) => {
+        console.log(error);
+      });
+  }, []);
 
   const { status } = useSession({
     required: false,
@@ -40,17 +54,6 @@ function Index() {
   }
 
   if (status === "authenticated") {
-    fetch("api/auth/Colecciones", {
-      method: "POST",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // console.log(data);
-        setFoldersInfo(data);
-      })
-      .catch((error: Error) => {
-        console.log(error);
-      });
     return (
       <>
         <Head>
@@ -59,8 +62,14 @@ function Index() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <main className="flex grow flex-col items-center justify-start font-coolveticaLight">
-          {showFolder == false && <ColecFolders foldersInfo={foldersInfo!} setShowFolder={setShowFolder} setFolderData={setFolderData}/>}
-          {showFolder && <ColecDesign folderData={folderData}/>}
+          {showFolder == false && (
+            <ColecFolders
+              foldersInfo={foldersInfo!}
+              setShowFolder={setShowFolder}
+              setFolderData={setFolderData}
+            />
+          )}
+          {showFolder && <ColecDesign folderData={folderData} />}
         </main>
         <Footer />
       </>

@@ -34,6 +34,7 @@ type FullDataImage = InputImageDataProps[];
 function Index() {
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
+  const imgFormRef = useRef<HTMLFormElement>(null);
   const [showEdit, setShowEdit] = useState(false);
   const [loading, setLoading] = useState(false);
   const [finished, setFinished] = useState(false);
@@ -110,6 +111,7 @@ function Index() {
   if (status === "authenticated") {
     const handleImageSave = (e: React.ChangeEvent<HTMLFormElement>) => {
       e.preventDefault();
+      console.log("EPICO");
       // const obj = {
       //   nombre: "", // string
       //   ambiente: "", // string
@@ -607,6 +609,7 @@ function Index() {
                 </div>
               </div>
               <form
+                ref={imgFormRef}
                 className="flex flex-col items-center justify-center"
                 onSubmit={handleImageSave}
               >
@@ -619,6 +622,7 @@ function Index() {
                 <input name="Colecciones" type="text" className="hidden" />
                 {imageButtonClick && createPortal(
                   <FolderChooser
+                    imgFormRef={imgFormRef}
                     environment={environment}
                     budget={budget}
                     style={style}

@@ -1,3 +1,5 @@
+import type { RefObject } from "react";
+
 interface FolderKeys {
   favorito : boolean,
   id : number,
@@ -9,12 +11,17 @@ type FolderType = FolderKeys[];
 
 interface FolderSelectorProps {
   index: number;
-  foldersInfo: FolderType
+  foldersInfo: FolderType;
+  imgFormRef: RefObject<HTMLFormElement>;
 }
 
-function FolderSelector({ index, foldersInfo }: FolderSelectorProps) {
+function FolderSelector({ index, foldersInfo, imgFormRef }: FolderSelectorProps) {
+  const uploadImage = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    imgFormRef.current!.submit();
+  }
   return (
-    <button className="flex h-[50px] w-[238px] items-center justify-between mb-[12px]">
+    <button form="false" onClick={uploadImage} className="flex h-[50px] w-[238px] items-center justify-between mb-[12px]">
       <div className="flex flex-col items-start text-[#FBF9FA]">
         <p className="font-coolveticaRegular text-[25px] leading-none mb-[2px]">
           {foldersInfo[index]!.nombre}
