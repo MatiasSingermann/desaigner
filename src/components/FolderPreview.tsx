@@ -10,8 +10,20 @@ interface FolderKeys {
 
 type FolderType = FolderKeys[];
 
+interface InputImageDataProps {
+  box: [number, number, number, number];
+  prompt: string;
+  links: [string, string, string];
+}
+
+type FullDataImage = InputImageDataProps[];
+
 interface FolderDesignsKeys {
-  coleccion : string,
+  id: number;
+  disenio: {
+    id: number,
+    imagen: string,
+  };
 }
 
 type FolderDesigns = FolderDesignsKeys[];
@@ -21,21 +33,26 @@ interface FolderPreviewProps {
   foldersInfo: FolderType,
   setShowFolder: Dispatch<SetStateAction<boolean>>,
   setFolderData: Dispatch<SetStateAction<FolderDesigns | undefined>>,
+  setFolderName: Dispatch<SetStateAction<string>>,
 }
 
-function FolderPreview({ index, foldersInfo, setShowFolder, setFolderData }: FolderPreviewProps) {
+function FolderPreview({ index, foldersInfo, setShowFolder, setFolderData, setFolderName }: FolderPreviewProps) {
   const obj = {
     coleccion: foldersInfo[index]!.nombre,
   }
   const openFolder = () => {
     fetch("api/auth/Disenios", {
       method: "POST",
+      headers: {
+        "Content-Type":"application/json"
+      },
       body: JSON.stringify(obj),
     })
       .then((response) => response.json())
       .then((data) => {
         //console.log(data);
-        setFolderData(data);
+        setFolderData(data.disenios);
+        setFolderName(foldersInfo[index]!.nombre);
         setShowFolder(true);
       })
       .catch((error: Error) => {

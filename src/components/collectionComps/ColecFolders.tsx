@@ -10,19 +10,32 @@ interface FolderKeys {
 
 type FolderType = FolderKeys[];
 
+interface InputImageDataProps {
+  box: [number, number, number, number];
+  prompt: string;
+  links: [string, string, string];
+}
+
+type FullDataImage = InputImageDataProps[];
+
 interface FolderDesignsKeys {
-    coleccion : string,
-  }
-  
-  type FolderDesigns = FolderDesignsKeys[];
+  id: number;
+  disenio: {
+    id: number,
+    imagen: string,
+  };
+}
+
+type FolderDesigns = FolderDesignsKeys[];
 
 interface ColecFolders {
   foldersInfo: FolderType;
   setShowFolder: Dispatch<SetStateAction<boolean>>;
   setFolderData: Dispatch<SetStateAction<FolderDesigns | undefined>>;
+  setFolderName: Dispatch<SetStateAction<string>>;
 }
 
-function ColecFolders({ foldersInfo, setShowFolder, setFolderData }: ColecFolders) {
+function ColecFolders({ foldersInfo, setShowFolder, setFolderData, setFolderName }: ColecFolders) {
   return (
     <>
       <h1 className="mx-[32px] mb-[30px] self-start font-coolveticaRegular text-[30px] leading-none text-[#22302D] dark:text-[#FBF9FA]">
@@ -36,6 +49,7 @@ function ColecFolders({ foldersInfo, setShowFolder, setFolderData }: ColecFolder
             foldersInfo={foldersInfo}
             setShowFolder={setShowFolder}
             setFolderData={setFolderData}
+            setFolderName={setFolderName}
           />
         ))}
       </>

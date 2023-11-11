@@ -1,35 +1,64 @@
-import Image from "next/image";
+import type {Dispatch, SetStateAction} from 'react';
+import Arrow from "../Arrow";
+import FolderImgPreview from "../FolderImgPreview";
+
+interface ImgData {
+  nombre: string,
+  id: number,
+  colecciones: string[],
+  fecha: string,
+  imagen: string,
+  muebles: FullDataImage,
+  ambiente: string,
+  presupuesto: string,
+  estilo: string
+}
+
+interface InputImageDataProps {
+  box: [number, number, number, number];
+  prompt: string;
+  links: [string, string, string];
+}
+
+type FullDataImage = InputImageDataProps[];
 
 interface FolderDesignsKeys {
-    coleccion : string,
-  }
-  
-  type FolderDesigns = FolderDesignsKeys[];
+  id: number;
+  disenio: {
+    id: number;
+    imagen: string;
+  };
+}
+
+type FolderDesigns = FolderDesignsKeys[];
 
 interface ColecDesign {
   folderData: FolderDesigns | undefined;
+  setShowFolder: Dispatch<SetStateAction<boolean>>;
+  folderName: string;
+  setShowDesignInfo: Dispatch<SetStateAction<boolean>>;
+  setImageData: Dispatch<SetStateAction<ImgData | undefined>>;
 }
 
-function ColecDesign({ folderData }: ColecDesign) {
-    const base64ToBlob = (base64: string, fileName: string): string => {
-        const byteCharacters = atob(base64);
-        const byteNumbers = new Array(byteCharacters.length);
-        for (let i = 0; i < byteCharacters.length; i++) {
-          byteNumbers[i] = byteCharacters.charCodeAt(i);
-        }
-        const byteArray = new Uint8Array(byteNumbers);
-        const blob = new Blob([byteArray], { type: "application/octet-stream" });
-        return URL.createObjectURL(blob);
-      };
+function ColecDesign({ folderData, setShowFolder, folderName, setShowDesignInfo, setImageData }: ColecDesign) {
+  const closeFolder = () => {
+    setShowFolder(false);
+  }
   return (
     <>
-      <h1 className="mx-[32px] mb-[30px] self-start font-coolveticaRegular text-[30px] leading-none text-[#22302D] dark:text-[#FBF9FA]">
-        Nombre carpeta
-      </h1>
-      {/* {folderData?.map((base64, i) => (
-        // convertir strings de base64 a archivos y luego hacerles una url
-        <Image src={base64ToBlob(base64, `image_${i}.png`)} alt="imagen" width={100} height={100} />
-      ))} */}
+      <div className="mx-[26px] mb-[30px] flex items-center justify-center self-start">
+        <button onClick={closeFolder} className={`rotate-[90deg] scale-[1.0] fill-[#228187] stroke-[#228187] stroke-2
+        }`}>
+          <Arrow />
+        </button>
+        <h1 className="mx-[12px] flex self-start font-coolveticaRegular text-[30px] leading-none text-[#22302D] dark:text-[#FBF9FA]">
+          {folderName}
+        </h1>
+      </div>
+      {folderData != undefined &&
+        folderData?.map((folder, i) => (
+          <FolderImgPreview key={i} folderData={folder} setShowDesignInfo={setShowDesignInfo} setShowFolder={setShowFolder} setImageData={setImageData}/>
+        ))}
     </>
   );
 }

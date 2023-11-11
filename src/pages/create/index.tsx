@@ -141,7 +141,7 @@ function Index() {
                 </h3>
                 <div className="mx-[12px] flex w-11/12 flex-col items-start justify-start text-start font-coolveticaBook text-[15px] text-[#2A9DA5]">
                   {furniture["links"][0] == "No hay link" ? (
-                    <p className="mb-[14px] text-[#FBF9FA] no-underline">
+                    <p className="mb-[14px] text-[#292F2D] dark:text-[#FBF9FA] no-underline">
                       No hay link
                     </p>
                   ) : (
@@ -155,7 +155,7 @@ function Index() {
                     </a>
                   )}
                   {furniture["links"][1] == "No hay link" ? (
-                    <p className="mb-[14px] text-[#FBF9FA] no-underline">
+                    <p className="mb-[14px] text-[#292F2D] dark:text-[#FBF9FA] no-underline">
                       No hay link
                     </p>
                   ) : (
@@ -169,7 +169,7 @@ function Index() {
                     </a>
                   )}
                   {furniture["links"][2] == "No hay link" ? (
-                    <p className="mb-[22px] text-[#FBF9FA] no-underline">
+                    <p className="mb-[22px] text-[#292F2D] dark:text-[#FBF9FA] no-underline">
                       No hay link
                     </p>
                   ) : (
