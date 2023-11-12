@@ -10,14 +10,6 @@ interface FolderKeys {
 
 type FolderType = FolderKeys[];
 
-interface InputImageDataProps {
-  box: [number, number, number, number];
-  prompt: string;
-  links: [string, string, string];
-}
-
-type FullDataImage = InputImageDataProps[];
-
 interface FolderDesignsKeys {
   id: number;
   disenio: {

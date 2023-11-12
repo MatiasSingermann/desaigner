@@ -46,7 +46,7 @@ function ColecDesignInfo({
       body: JSON.stringify(obj),
     })
       .then((response) => response.json())
-      .then((data) => {
+      .then(() => {
         //console.log(data);
         setShowFolder(false);
         setShowDesignInfo(false);
@@ -69,7 +69,7 @@ function ColecDesignInfo({
               </h3>
               <div className="mx-[12px] flex w-11/12 flex-col items-start justify-start text-start font-coolveticaBook text-[15px] text-[#2A9DA5]">
                 {furniture["links"][0] == "No hay link" ? (
-                  <p className="mb-[14px] text-[#292F2D] dark:text-[#FBF9FA] no-underline">
+                  <p className="mb-[14px] text-[#292F2D] no-underline dark:text-[#FBF9FA]">
                     No hay link
                   </p>
                 ) : (
@@ -83,7 +83,7 @@ function ColecDesignInfo({
                   </a>
                 )}
                 {furniture["links"][1] == "No hay link" ? (
-                  <p className="mb-[14px] text-[#292F2D] dark:text-[#FBF9FA] no-underline">
+                  <p className="mb-[14px] text-[#292F2D] no-underline dark:text-[#FBF9FA]">
                     No hay link
                   </p>
                 ) : (
@@ -97,7 +97,7 @@ function ColecDesignInfo({
                   </a>
                 )}
                 {furniture["links"][2] == "No hay link" ? (
-                  <p className="mb-[22px] text-[#292F2D] dark:text-[#FBF9FA] no-underline">
+                  <p className="mb-[22px] text-[#292F2D] no-underline dark:text-[#FBF9FA]">
                     No hay link
                   </p>
                 ) : (
@@ -124,7 +124,7 @@ function ColecDesignInfo({
   };
   return (
     <>
-      <div className="relative mx-[26px] mb-[30px] flex items-center justify-start self-start w-[90%]">
+      <div className="mx-[26px] mb-[30px] flex w-[90%] items-center justify-start self-start">
         <button
           onClick={closeImage}
           className={`} rotate-[90deg] scale-[1.0] fill-[#228187] stroke-[#228187]
@@ -135,17 +135,17 @@ function ColecDesignInfo({
         <h1 className="mx-[12px] flex self-start font-coolveticaRegular text-[30px] leading-none text-[#22302D] dark:text-[#FBF9FA]">
           {imageData!.nombre}
         </h1>
-        <h2 className="absolute flex font-coolveticaBook text-[18px] text-[#22302D] dark:text-[#FBF9FA] self-center right-[48px] leading-none">
-          {imageData!.fecha.split("T")[0]?.replaceAll("-", "/")}
-        </h2>
       </div>
       <Image
         src={imageData!.imagen}
         alt="image"
         width={300}
         height={200}
-        className="relative mx-[32px] my-[32px] flex h-[290px] w-[290px] items-center justify-center rounded-xl object-contain shadow-md shadow-[#999] dark:shadow-[#111]"
+        className="relative mx-[32px] mb-[32px] flex h-[290px] w-[290px] items-center justify-center rounded-xl object-contain shadow-md shadow-[#999] dark:shadow-[#111]"
       />
+      <h2 className="mx-[60px] mb-[12px] flex self-start font-coolveticaBook text-[20px] text-[#22302D] dark:text-[#FBF9FA]">
+        Fecha de creación: {imageData!.fecha.split("T")[0]?.replaceAll("-", "/")}
+      </h2>
       <h2 className="mx-[60px] mb-[12px] flex self-start font-coolveticaBook text-[20px] text-[#22302D] dark:text-[#FBF9FA]">
         Presupuesto: {imageData!.presupuesto}
       </h2>

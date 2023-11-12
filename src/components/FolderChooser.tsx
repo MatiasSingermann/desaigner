@@ -46,7 +46,7 @@ function FolderChooser({
       method: "POST",
     })
       .then((response) => response.json())
-      .then((data) => {
+      .then((data: FolderType) => {
         //console.log(data);
         setFoldersInfo(data);
       })
@@ -57,59 +57,64 @@ function FolderChooser({
   const handleNewFolder = () => {
     setShowFolderCreator(true);
   };
-  const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  // const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
 
-    let base64String = "";
+  //   let base64String = "";
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const arrayBuffer = reader.result as ArrayBuffer;
-      const byteArray = new Uint8Array(arrayBuffer);
-      base64String = base64.fromByteArray(byteArray);
-    };
-    reader.readAsArrayBuffer(image);
+  //   const reader = new FileReader();
+  //   reader.onloadend = () => {
+  //     const arrayBuffer = reader.result as ArrayBuffer;
+  //     const byteArray = new Uint8Array(arrayBuffer);
+  //     base64String = base64.fromByteArray(byteArray);
+  //   };
+  //   reader.readAsArrayBuffer(image);
 
-    const formData = new FormData(e.currentTarget);
-    const inputData = [];
+  //   const formData = new FormData(e.currentTarget);
+  //   const inputData = [];
 
-    for (const pair of formData.entries()) {
-      inputData.push(pair);
-    }
+  //   for (const pair of formData.entries()) {
+  //     inputData.push(pair);
+  //   }
 
-    const nombre = inputData[0] ? inputData[0][1] : "";
-    const coleccion = inputData[1] ? inputData[1][1] : "";
+  //   const nombre = inputData[0] ? inputData[0][1] : "";
+  //   const coleccion = inputData[1] ? inputData[1][1] : "";
 
-    const obj = {
-      nombre: nombre,
-      ambiente: environment,
-      disenioIMG: base64String,
-      muebles: furniture,
-      presupuesto: budget,
-      estilo: style,
-      colecciones: coleccion,
-    };
+  //   const obj = {
+  //     nombre: nombre,
+  //     ambiente: environment,
+  //     disenioIMG: base64String,
+  //     muebles: furniture,
+  //     presupuesto: budget,
+  //     estilo: style,
+  //     colecciones: coleccion,
+  //   };
 
-    fetch("api/auth/createDisenio", {
-      method: "POST",
-      body: JSON.stringify(obj),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        //console.log(data);
-      })
-      .catch((error: Error) => {
-        console.log(error);
-      });
-  };
+  //   fetch("api/auth/createDisenio", {
+  //     method: "POST",
+  //     body: JSON.stringify(obj),
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       //console.log(data);
+  //     })
+  //     .catch((error: Error) => {
+  //       console.log(error);
+  //     });
+  // };
   return (
     <>
       <div className="fixed bottom-0 z-[1000] flex h-[388px] w-full flex-col items-center rounded-t-[4rem] bg-[#293433] py-[26px]">
         <div className="h-[9px] w-3/5 rounded-xl bg-[#2A9DA5]"></div>
         {foldersInfo != undefined && (
-          <div className="my-[24px] flex w-[280px] flex-col items-center justify-center overflow-y-scroll">
+          <div className="my-[24px] flex w-[280px] flex-col items-center justify-start overflow-y-scroll">
             {foldersInfo?.map((_, i) => (
-              <FolderSelector key={i} index={i} foldersInfo={foldersInfo} imgFormRef={imgFormRef} />
+              <FolderSelector
+                key={i}
+                index={i}
+                foldersInfo={foldersInfo}
+                imgFormRef={imgFormRef}
+              />
             ))}
           </div>
         )}

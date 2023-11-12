@@ -10,14 +10,6 @@ interface FolderKeys {
 
 type FolderType = FolderKeys[];
 
-interface InputImageDataProps {
-  box: [number, number, number, number];
-  prompt: string;
-  links: [string, string, string];
-}
-
-type FullDataImage = InputImageDataProps[];
-
 interface FolderDesignsKeys {
   id: number;
   disenio: {
@@ -68,7 +60,7 @@ function FolderPreview({ index, foldersInfo, setShowFolder, setFolderData, setFo
         <p className="font-coolveticaLight text-[20px] leading-none">
           {foldersInfo[index]!.disenios.length == 1
             ? "1 diseño"
-            : foldersInfo[index]!.disenios.length + " diseños"}
+            : foldersInfo[index]!.disenios.length.toString() + " diseños"}
         </p>
       </div>
       <FolderImg />

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Dispatch, SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from "react";
 
 interface ImgData {
   nombre: string;
@@ -29,8 +29,6 @@ interface FolderDesignsKeys {
   };
 }
 
-type FolderDesigns = FolderDesignsKeys[];
-
 interface FolderImgPreviewProps {
   folderData: FolderDesignsKeys;
   setShowDesignInfo: Dispatch<SetStateAction<boolean>>;
@@ -56,7 +54,7 @@ function FolderImgPreview({
       body: JSON.stringify(obj),
     })
       .then((response) => response.json())
-      .then((data) => {
+      .then((data : ImgData) => {
         //console.log(data);
         setImageData(data);
         setShowFolder(false);

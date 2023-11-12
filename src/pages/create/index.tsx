@@ -60,8 +60,6 @@ function Index() {
     ""
   );
 
-  const [showBlackBg, setShowBlackBg] = useState(false);
-
   let isScrollDisabled = false;
 
   if (showEdit) {
@@ -633,8 +631,8 @@ function Index() {
                 {imageButtonClick && (
                   <BlackBg setImageButtonClick={setImageButtonClick} />
                 )}
+                <SaveImageButton handleFolders={handleFolders} />
               </form>
-              <SaveImageButton handleFolders={handleFolders} />
             </div>
           ) : null}
           <ToastContainer limit={3} />
