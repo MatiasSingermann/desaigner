@@ -11,7 +11,11 @@ interface FolderKeys {
 type FolderType = FolderKeys[];
 
 interface FolderDesignsKeys {
-  coleccion : string,
+  id: number;
+  disenio: {
+    id: number,
+    imagen: string,
+  };
 }
 
 type FolderDesigns = FolderDesignsKeys[];
@@ -21,21 +25,26 @@ interface FolderPreviewProps {
   foldersInfo: FolderType,
   setShowFolder: Dispatch<SetStateAction<boolean>>,
   setFolderData: Dispatch<SetStateAction<FolderDesigns | undefined>>,
+  setFolderName: Dispatch<SetStateAction<string>>,
 }
 
-function FolderPreview({ index, foldersInfo, setShowFolder, setFolderData }: FolderPreviewProps) {
+function FolderPreview({ index, foldersInfo, setShowFolder, setFolderData, setFolderName }: FolderPreviewProps) {
   const obj = {
     coleccion: foldersInfo[index]!.nombre,
   }
   const openFolder = () => {
     fetch("api/auth/Disenios", {
       method: "POST",
+      headers: {
+        "Content-Type":"application/json"
+      },
       body: JSON.stringify(obj),
     })
       .then((response) => response.json())
       .then((data) => {
         //console.log(data);
-        setFolderData(data);
+        setFolderData(data.disenios);
+        setFolderName(foldersInfo[index]!.nombre);
         setShowFolder(true);
       })
       .catch((error: Error) => {
@@ -51,7 +60,7 @@ function FolderPreview({ index, foldersInfo, setShowFolder, setFolderData }: Fol
         <p className="font-coolveticaLight text-[20px] leading-none">
           {foldersInfo[index]!.disenios.length == 1
             ? "1 diseño"
-            : foldersInfo[index]!.disenios.length + " diseños"}
+            : foldersInfo[index]!.disenios.length.toString() + " diseños"}
         </p>
       </div>
       <FolderImg />

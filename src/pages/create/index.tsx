@@ -34,6 +34,7 @@ type FullDataImage = InputImageDataProps[];
 function Index() {
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
+  const imgFormRef = useRef<HTMLFormElement>(null);
   const [showEdit, setShowEdit] = useState(false);
   const [loading, setLoading] = useState(false);
   const [finished, setFinished] = useState(false);
@@ -58,8 +59,6 @@ function Index() {
   const [inpaintMaskImg, setInpaintMaskImg] = useState<string | Blob | File>(
     ""
   );
-
-  const [showBlackBg, setShowBlackBg] = useState(false);
 
   let isScrollDisabled = false;
 
@@ -110,6 +109,7 @@ function Index() {
   if (status === "authenticated") {
     const handleImageSave = (e: React.ChangeEvent<HTMLFormElement>) => {
       e.preventDefault();
+      console.log("EPICO");
       // const obj = {
       //   nombre: "", // string
       //   ambiente: "", // string
@@ -139,7 +139,7 @@ function Index() {
                 </h3>
                 <div className="mx-[12px] flex w-11/12 flex-col items-start justify-start text-start font-coolveticaBook text-[15px] text-[#2A9DA5]">
                   {furniture["links"][0] == "No hay link" ? (
-                    <p className="mb-[14px] text-[#FBF9FA] no-underline">
+                    <p className="mb-[14px] text-[#292F2D] dark:text-[#FBF9FA] no-underline">
                       No hay link
                     </p>
                   ) : (
@@ -153,7 +153,7 @@ function Index() {
                     </a>
                   )}
                   {furniture["links"][1] == "No hay link" ? (
-                    <p className="mb-[14px] text-[#FBF9FA] no-underline">
+                    <p className="mb-[14px] text-[#292F2D] dark:text-[#FBF9FA] no-underline">
                       No hay link
                     </p>
                   ) : (
@@ -167,7 +167,7 @@ function Index() {
                     </a>
                   )}
                   {furniture["links"][2] == "No hay link" ? (
-                    <p className="mb-[22px] text-[#FBF9FA] no-underline">
+                    <p className="mb-[22px] text-[#292F2D] dark:text-[#FBF9FA] no-underline">
                       No hay link
                     </p>
                   ) : (
@@ -607,6 +607,7 @@ function Index() {
                 </div>
               </div>
               <form
+                ref={imgFormRef}
                 className="flex flex-col items-center justify-center"
                 onSubmit={handleImageSave}
               >
@@ -619,6 +620,7 @@ function Index() {
                 <input name="Colecciones" type="text" className="hidden" />
                 {imageButtonClick && createPortal(
                   <FolderChooser
+                    imgFormRef={imgFormRef}
                     environment={environment}
                     budget={budget}
                     style={style}
@@ -629,8 +631,8 @@ function Index() {
                 {imageButtonClick && (
                   <BlackBg setImageButtonClick={setImageButtonClick} />
                 )}
+                <SaveImageButton handleFolders={handleFolders} />
               </form>
-              <SaveImageButton handleFolders={handleFolders} />
             </div>
           ) : null}
           <ToastContainer limit={3} />
