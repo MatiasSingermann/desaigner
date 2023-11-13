@@ -366,6 +366,7 @@ function Index() {
         });
         setLoading(true);
         getLinks(blob);
+        setFinalBlob(blob);
         setImageURL(URL.createObjectURL(blob));
 
         setResult(true);
