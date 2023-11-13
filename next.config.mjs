@@ -10,6 +10,7 @@ const config = {
   images:{
     loader: 'custom',
     loaderFile: './loader.js',
+    unoptimized: true,
   },
 
   /**

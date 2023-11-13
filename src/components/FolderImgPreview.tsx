@@ -79,7 +79,7 @@ function FolderImgPreview({
         alt="imagen"
         width={292}
         height={164}
-        className="rounded-3xl object-contain"
+        className="rounded-3xl object-contain shadow-md shadow-[#999] dark:shadow-[#111]"
       />
     </button>
   );

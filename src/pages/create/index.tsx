@@ -146,34 +146,35 @@ function Index() {
           },
           body: JSON.stringify(obj),
         })
-          .then((response) => response.json())
-          .then(() => {
-            toast.success("El diseño ha sido creado con éxito", {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            });
+          .then((response) => {
+            if (response.ok) {
+              toast.success("El diseño ha sido creado con éxito", {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              });
+            } else {
+              toast.error("Hubo un error al crear el diseño", {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              });
+            }
             setImageButtonClick(false);
           })
-          .catch((error: Error) => {
+          .catch((error : Error) => {
             console.log(error);
-            toast.error("Hubo un error al crear el diseño", {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            });
-            setImageButtonClick(false);
-          });
+          })
       };
       reader.readAsArrayBuffer(finalBlob!);
     };
@@ -252,30 +253,30 @@ function Index() {
 
       // ---------------------- TEST ----------------------
 
-      const test_obj2: FullDataImage = [
-        {
-          box: [2, 2, 2, 2],
-          prompt: "Mueble 1",
-          links: ["No hay link", "No hay link", "No hay link"],
-        },
-        {
-          box: [2, 2, 2, 2],
-          prompt: "Mueble 2",
-          links: ["No hay link", "No hay link", "No hay link"],
-        },
-        {
-          box: [2, 2, 2, 2],
-          prompt: "Mueble 3",
-          links: ["No hay link", "No hay link", "No hay link"],
-        },
-      ];
+      // const test_obj2: FullDataImage = [
+      //   {
+      //     box: [2, 2, 2, 2],
+      //     prompt: "Mueble 1",
+      //     links: ["No hay link", "No hay link", "No hay link"],
+      //   },
+      //   {
+      //     box: [2, 2, 2, 2],
+      //     prompt: "Mueble 2",
+      //     links: ["No hay link", "No hay link", "No hay link"],
+      //   },
+      //   {
+      //     box: [2, 2, 2, 2],
+      //     prompt: "Mueble 3",
+      //     links: ["No hay link", "No hay link", "No hay link"],
+      //   },
+      // ];
 
-      setImageFullData(test_obj2);
-      setMoreThan1(false);
-      setResult(true);
-      setLoading(false);
+      // setImageFullData(test_obj2);
+      // setMoreThan1(false);
+      // setResult(true);
+      // setLoading(false);
 
-      return;
+      // return;
 
       // ---------------------- TEST ----------------------
 
@@ -444,8 +445,6 @@ function Index() {
         isNoImage = true;
       }
 
-      console.log("inputImage", inputImage);
-
       if (!isNoImage && inputImage instanceof File && inputImage.size <= 0) {
         toast.error("Seleccionar si quiere subir una imagen o no", {
           position: "top-center",
@@ -469,18 +468,18 @@ function Index() {
 
       // ---------------------- TEST ----------------------
 
-      setLoading(true);
+      // setLoading(true);
 
-      const test_obj = {
-        images: [
-          "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFUlEQVR42mP8z8BQz0AEYBxVSF+FABJADveWkH6oAAAAAElFTkSuQmCC",
-          "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFUlEQVR42mNk+M9Qz0AEYBxVSF+FAAhKDveksOjmAAAAAElFTkSuQmCC",
-        ],
-      };
+      // const test_obj = {
+      //   images: [
+      //     "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFUlEQVR42mP8z8BQz0AEYBxVSF+FABJADveWkH6oAAAAAElFTkSuQmCC",
+      //     "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFUlEQVR42mNk+M9Qz0AEYBxVSF+FAAhKDveksOjmAAAAAElFTkSuQmCC",
+      //   ],
+      // };
 
-      imageProcessor(test_obj);
+      // imageProcessor(test_obj);
 
-      return;
+      // return;
 
       // ---------------------- TEST ----------------------
 
@@ -679,8 +678,9 @@ function Index() {
                   name="Nombre"
                   placeholder="Nombre (máx. 12 caracteres)"
                   className="my-[32px] flex h-[52px] w-[294px] items-center justify-center rounded-2xl border-[2px] border-[#BABABA] bg-[#FBF9FA] px-[20px] font-coolveticaLight text-[18px] text-[#BABABA] dark:border-[#228187] dark:bg-[#19201F]"
+                  min={1}
+                  max={12}
                 />
-                <input name="Colecciones" type="text" className="hidden" />
                 {imageButtonClick &&
                   createPortal(
                     <FolderChooser

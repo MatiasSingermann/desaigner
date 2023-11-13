@@ -56,7 +56,7 @@ function Index() {
           </h2>
           <>
         {recentImgs?.map((source, i) => (
-          <Image key={i} src={source.imagen} alt="Imagen" width={300} height={200} className="object-contain rounded-3xl flex mb-[80px]"/>
+          <Image key={i} src={source.imagen} alt="Imagen" width={300} height={200} className="object-contain rounded-3xl flex mb-[80px] shadow-md shadow-[#999] dark:shadow-[#111]"/>
         ))}
       </>
         </main>

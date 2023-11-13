@@ -127,7 +127,6 @@ function ColecDesignInfo({
     setShowDesignInfo(false);
     setShowFolder(true);
   };
-  console.log("MUEBLES: ", imageData?.muebles[0]!.descripcion);
   return (
     <>
       <div className="mx-[26px] mb-[30px] flex w-[90%] items-center justify-start self-start">
