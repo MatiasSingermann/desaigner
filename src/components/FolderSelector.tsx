@@ -1,4 +1,5 @@
 import type { RefObject } from "react";
+import type { Dispatch, SetStateAction } from "react";
 
 interface FolderKeys {
   favorito : boolean,
@@ -13,14 +14,14 @@ interface FolderSelectorProps {
   index: number;
   foldersInfo: FolderType;
   imgFormRef: RefObject<HTMLFormElement>;
+  setSelectedFolder: Dispatch<SetStateAction<string>>;
 }
 
-function FolderSelector({ index, foldersInfo, imgFormRef }: FolderSelectorProps) {
+function FolderSelector({ index, foldersInfo, imgFormRef, setSelectedFolder }: FolderSelectorProps) {
   const uploadImage = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    console.log("AYUDAAAAAAAAAAAA");
-    console.log(imgFormRef.current);
-    imgFormRef.current!.submit();
+    setSelectedFolder(foldersInfo[index]!.nombre);
+    imgFormRef.current!.requestSubmit();
   }
   return (
     <button onClick={uploadImage} className="relative flex h-[50px] w-[238px] items-center justify-between mb-[12px]">

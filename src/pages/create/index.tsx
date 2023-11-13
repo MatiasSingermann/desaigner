@@ -17,7 +17,7 @@ import SaveImageButton from "~/components/SaveImageButton";
 import FolderChooser from "~/components/FolderChooser";
 import BlackBg from "~/components/BlackBg";
 
-import { createPortal } from 'react-dom';
+import { createPortal } from "react-dom";
 
 interface InputImageDataProps {
   box: [number, number, number, number];
@@ -55,6 +55,7 @@ function Index() {
   );
   const [imageButtonClick, setImageButtonClick] = useState(false);
   const [image, setImage] = useState<string | null>(null);
+  const [selectedFolder, setSelectedFolder] = useState<string>("");
 
   const [inpaintMaskImg, setInpaintMaskImg] = useState<string | Blob | File>(
     ""
@@ -109,16 +110,47 @@ function Index() {
   if (status === "authenticated") {
     const handleImageSave = (e: React.ChangeEvent<HTMLFormElement>) => {
       e.preventDefault();
-      console.log("EPICO");
-      // const obj = {
-      //   nombre: "", // string
-      //   ambiente: "", // string
-      //   presupuesto: "", // string
-      //   estilo: "", // string
-      //   colecciones: "", // string[]
-      //   disenioIMG: "", // string (base64)
-      //   muebles: "", // object[] todo lo que me devuelve blanco
-      // }
+      const formData = new FormData(e.currentTarget);
+      const inputData = [];
+
+      for (const pair of formData.entries()) {
+        inputData.push(pair);
+      }
+      const nombre = inputData[0] ? inputData[0][1] : "";
+
+      let base64String = "";
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const arrayBuffer = reader.result as ArrayBuffer;
+        const byteArray = new Uint8Array(arrayBuffer);
+        base64String = base64.fromByteArray(byteArray);
+      };
+      reader.readAsArrayBuffer(blob1!);
+
+      const obj = {
+        nombre: nombre.toString(),
+        ambiente: environment,
+        presupuesto: budget,
+        estilo: style,
+        colecciones: [selectedFolder, ""],
+        disenioIMG: base64String,
+        muebles: imageFullData,
+      };
+      fetch("api/auth/createDisenio", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(obj),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((error: Error) => {
+          console.log(error);
+        });
     };
     const handleFolders = () => {
       setImageButtonClick(true);
@@ -139,7 +171,7 @@ function Index() {
                 </h3>
                 <div className="mx-[12px] flex w-11/12 flex-col items-start justify-start text-start font-coolveticaBook text-[15px] text-[#2A9DA5]">
                   {furniture["links"][0] == "No hay link" ? (
-                    <p className="mb-[14px] text-[#292F2D] dark:text-[#FBF9FA] no-underline">
+                    <p className="mb-[14px] text-[#292F2D] no-underline dark:text-[#FBF9FA]">
                       No hay link
                     </p>
                   ) : (
@@ -153,7 +185,7 @@ function Index() {
                     </a>
                   )}
                   {furniture["links"][1] == "No hay link" ? (
-                    <p className="mb-[14px] text-[#292F2D] dark:text-[#FBF9FA] no-underline">
+                    <p className="mb-[14px] text-[#292F2D] no-underline dark:text-[#FBF9FA]">
                       No hay link
                     </p>
                   ) : (
@@ -167,7 +199,7 @@ function Index() {
                     </a>
                   )}
                   {furniture["links"][2] == "No hay link" ? (
-                    <p className="mb-[22px] text-[#292F2D] dark:text-[#FBF9FA] no-underline">
+                    <p className="mb-[22px] text-[#292F2D] no-underline dark:text-[#FBF9FA]">
                       No hay link
                     </p>
                   ) : (
@@ -618,20 +650,19 @@ function Index() {
                   className="my-[32px] flex h-[52px] w-[294px] items-center justify-center rounded-2xl border-[2px] border-[#BABABA] bg-[#FBF9FA] px-[20px] font-coolveticaLight text-[18px] text-[#BABABA] dark:border-[#228187] dark:bg-[#19201F]"
                 />
                 <input name="Colecciones" type="text" className="hidden" />
-                {imageButtonClick && createPortal(
-                  <FolderChooser
-                    imgFormRef={imgFormRef}
-                    environment={environment}
-                    budget={budget}
-                    style={style}
-                    image={blob1!}
-                    furniture={imageFullData} // {["", ""]}
-                  />, document.body
-                )}
+                {imageButtonClick &&
+                  createPortal(
+                    <FolderChooser
+                      imgFormRef={imgFormRef}
+                      setSelectedFolder={setSelectedFolder}
+                    />,
+                    document.body
+                  )}
                 {imageButtonClick && (
                   <BlackBg setImageButtonClick={setImageButtonClick} />
                 )}
                 <SaveImageButton handleFolders={handleFolders} />
+                <button type="submit" className="hidden"></button>
               </form>
             </div>
           ) : null}
