@@ -15,6 +15,9 @@ import ResLoad from "~/components/ResLoad";
 import SwiperResultShow from "~/components/SwiperResultShow";
 import SaveImageButton from "~/components/SaveImageButton";
 import FolderChooser from "~/components/FolderChooser";
+import BlackBg from "~/components/BlackBg";
+
+import { createPortal } from "react-dom";
 
 interface InputImageDataProps {
   box: [number, number, number, number];
@@ -31,6 +34,7 @@ type FullDataImage = InputImageDataProps[];
 function Index() {
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
+  const imgFormRef = useRef<HTMLFormElement>(null);
   const [showEdit, setShowEdit] = useState(false);
   const [loading, setLoading] = useState(false);
   const [finished, setFinished] = useState(false);
@@ -46,15 +50,19 @@ function Index() {
   const [blob2, setBlob2] = useState<Blob | null>(null);
   const [blob3, setBlob3] = useState<Blob | null>(null);
   const [blob4, setBlob4] = useState<Blob | null>(null);
+  const [finalBlob, setFinalBlob] = useState<Blob | null>(null);
   const [imageFullData, setImageFullData] = useState<FullDataImage>(
     [] as FullDataImage
   );
   const [imageButtonClick, setImageButtonClick] = useState(false);
   const [image, setImage] = useState<string | null>(null);
+  const [selectedFolder, setSelectedFolder] = useState<string>("");
 
   const [inpaintMaskImg, setInpaintMaskImg] = useState<string | Blob | File>(
     ""
   );
+
+  const [imgProps, setImgProps] = useState<string[]>([""]);
 
   let isScrollDisabled = false;
 
@@ -105,15 +113,70 @@ function Index() {
   if (status === "authenticated") {
     const handleImageSave = (e: React.ChangeEvent<HTMLFormElement>) => {
       e.preventDefault();
-      // const obj = {
-      //   nombre: "", // string
-      //   ambiente: "", // string
-      //   presupuesto: "", // string
-      //   estilo: "", // string
-      //   colecciones: "", // string[]
-      //   disenioIMG: "", // string (base64)
-      //   muebles: "", // object[] todo lo que me devuelve blanco
-      // }
+      const formData = new FormData(e.currentTarget);
+      const inputData = [];
+
+      for (const pair of formData.entries()) {
+        inputData.push(pair);
+      }
+      const nombre = inputData[0] ? inputData[0][1] : "";
+
+      let base64String = "";
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const arrayBuffer = reader.result as ArrayBuffer;
+        const byteArray = new Uint8Array(arrayBuffer);
+        base64String = "data:image/jpeg;base64," + base64.fromByteArray(byteArray);
+
+        const obj = {
+          nombre: nombre.toString(),
+          ambiente: imgProps[0],
+          presupuesto: imgProps[1],
+          estilo: imgProps[2],
+          colecciones: [selectedFolder],
+          disenioIMG: base64String,
+          muebles: imageFullData,
+        };
+        
+        fetch("api/auth/createDisenio", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(obj),
+        })
+          .then((response) => {
+            if (response.ok) {
+              toast.success("El diseño ha sido creado con éxito", {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              });
+            } else {
+              toast.error("Hubo un error al crear el diseño", {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              });
+            }
+            setImageButtonClick(false);
+          })
+          .catch((error : Error) => {
+            console.log(error);
+          })
+      };
+      reader.readAsArrayBuffer(finalBlob!);
     };
     const handleFolders = () => {
       setImageButtonClick(true);
@@ -134,7 +197,7 @@ function Index() {
                 </h3>
                 <div className="mx-[12px] flex w-11/12 flex-col items-start justify-start text-start font-coolveticaBook text-[15px] text-[#2A9DA5]">
                   {furniture["links"][0] == "No hay link" ? (
-                    <p className="mb-[14px] text-[#FBF9FA] no-underline">
+                    <p className="mb-[14px] text-[#292F2D] no-underline dark:text-[#FBF9FA]">
                       No hay link
                     </p>
                   ) : (
@@ -148,7 +211,7 @@ function Index() {
                     </a>
                   )}
                   {furniture["links"][1] == "No hay link" ? (
-                    <p className="mb-[14px] text-[#FBF9FA] no-underline">
+                    <p className="mb-[14px] text-[#292F2D] no-underline dark:text-[#FBF9FA]">
                       No hay link
                     </p>
                   ) : (
@@ -162,7 +225,7 @@ function Index() {
                     </a>
                   )}
                   {furniture["links"][2] == "No hay link" ? (
-                    <p className="mb-[22px] text-[#FBF9FA] no-underline">
+                    <p className="mb-[22px] text-[#292F2D] no-underline dark:text-[#FBF9FA]">
                       No hay link
                     </p>
                   ) : (
@@ -187,6 +250,35 @@ function Index() {
     const getLinks = (blob: Blob) => {
       const formData = new FormData();
       formData.append("image", blob);
+
+      // ---------------------- TEST ----------------------
+
+      // const test_obj2: FullDataImage = [
+      //   {
+      //     box: [2, 2, 2, 2],
+      //     prompt: "Mueble 1",
+      //     links: ["No hay link", "No hay link", "No hay link"],
+      //   },
+      //   {
+      //     box: [2, 2, 2, 2],
+      //     prompt: "Mueble 2",
+      //     links: ["No hay link", "No hay link", "No hay link"],
+      //   },
+      //   {
+      //     box: [2, 2, 2, 2],
+      //     prompt: "Mueble 3",
+      //     links: ["No hay link", "No hay link", "No hay link"],
+      //   },
+      // ];
+
+      // setImageFullData(test_obj2);
+      // setMoreThan1(false);
+      // setResult(true);
+      // setLoading(false);
+
+      // return;
+
+      // ---------------------- TEST ----------------------
 
       fetch("https://desaigner-image-and-links-api.hf.space/", {
         // http://localhost:9000/
@@ -284,18 +376,22 @@ function Index() {
     const handleImageSelect = () => {
       if (selectedImage === 0) {
         getLinks(blob1!);
+        setFinalBlob(blob1);
         setImageURL(imageURL1);
       }
       if (selectedImage === 1) {
         getLinks(blob2!);
+        setFinalBlob(blob2);
         setImageURL(imageURL2);
       }
       if (selectedImage === 2) {
         getLinks(blob3!);
+        setFinalBlob(blob3);
         setImageURL(imageURL3);
       }
       if (selectedImage === 3) {
         getLinks(blob4!);
+        setFinalBlob(blob4);
         setImageURL(imageURL4);
       }
       setLoading(true);
@@ -318,6 +414,8 @@ function Index() {
       disability = inputData[6] ? inputData[6][1].toString() : "";
       numImages = inputData[7] ? Number(inputData[7][1]) : "";
       const maskImage = inpaintMaskImg;
+
+      setImgProps([environment, budget, style]);
 
       let requiredInputs = true;
       let isNoImage = false;
@@ -347,8 +445,6 @@ function Index() {
         isNoImage = true;
       }
 
-      console.log("inputImage", inputImage);
-
       if (!isNoImage && inputImage instanceof File && inputImage.size <= 0) {
         toast.error("Seleccionar si quiere subir una imagen o no", {
           position: "top-center",
@@ -369,6 +465,23 @@ function Index() {
       } else {
         isNoMask = true;
       }
+
+      // ---------------------- TEST ----------------------
+
+      // setLoading(true);
+
+      // const test_obj = {
+      //   images: [
+      //     "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFUlEQVR42mP8z8BQz0AEYBxVSF+FABJADveWkH6oAAAAAElFTkSuQmCC",
+      //     "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFUlEQVR42mNk+M9Qz0AEYBxVSF+FAAhKDveksOjmAAAAAElFTkSuQmCC",
+      //   ],
+      // };
+
+      // imageProcessor(test_obj);
+
+      // return;
+
+      // ---------------------- TEST ----------------------
 
       if (requiredInputs && isNoImage) {
         const obj = {
@@ -555,25 +668,33 @@ function Index() {
                   {linkShow()}
                 </div>
               </div>
-              <form onSubmit={handleImageSave}>
+              <form
+                ref={imgFormRef}
+                className="flex flex-col items-center justify-center"
+                onSubmit={handleImageSave}
+              >
                 <input
                   type="text"
                   name="Nombre"
                   placeholder="Nombre (máx. 12 caracteres)"
-                  className="my-[32px] flex h-[52px] w-[294px] items-center justify-center rounded-2xl border-[2px] border-[#BABABA] bg-[#FBF9FA] px-[20px] font-coolveticaLight text-[18px] text-[#BABABA]"
+                  className="my-[32px] flex h-[52px] w-[294px] items-center justify-center rounded-2xl border-[2px] border-[#BABABA] bg-[#FBF9FA] px-[20px] font-coolveticaLight text-[18px] text-[#BABABA] dark:border-[#228187] dark:bg-[#19201F]"
+                  min={1}
+                  max={12}
                 />
-                <input name="Colecciones" type="text" />
+                {imageButtonClick &&
+                  createPortal(
+                    <FolderChooser
+                      imgFormRef={imgFormRef}
+                      setSelectedFolder={setSelectedFolder}
+                    />,
+                    document.body
+                  )}
                 {imageButtonClick && (
-                  <FolderChooser
-                    environment={environment}
-                    budget={budget}
-                    style={style}
-                    image={blob1!}
-                    furniture={imageFullData} // {["", ""]}
-                  />
+                  <BlackBg setImageButtonClick={setImageButtonClick} />
                 )}
+                <SaveImageButton handleFolders={handleFolders} />
+                <button type="submit" className="hidden"></button>
               </form>
-              <SaveImageButton handleFolders={handleFolders} />
             </div>
           ) : null}
           <ToastContainer limit={3} />

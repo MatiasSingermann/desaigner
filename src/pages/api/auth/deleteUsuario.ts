@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 import { checkContrasenia, checkEmail } from "../functions";
 import { authOptions } from "./[...nextauth]";
+import crypto from "crypto";
 
 const prisma = new PrismaClient();
 
@@ -35,6 +36,23 @@ async function deleteUsuario(req: ExtendedNextApiRequest, res: NextApiResponse, 
     if(!checkEmail(email)){
         return res.status(400).json({message: "El email no es valido"});
     }
+
+    const regex = /\/v\d+\/([^/]+)\.\w{3,4}$/;
+    const getPublicIdFromUrl = (url: string) => {
+        const match = url.match(regex);
+        return match ? match[1] : null;
+    };
+
+    const generateSHA1 = (data: string) => {
+        const hash = crypto.createHash("sha1");
+        hash.update(data);
+        return hash.digest("hex");
+    }
+
+    const generateSignature = (publicId: string, apiSecret: string) => {
+        const timestamp = new Date().getTime();
+        return `public_id=${publicId}&timestamp=${timestamp}${apiSecret}`;
+    };
 
     try{
         const user = await prisma.usuario.findFirst({
@@ -71,6 +89,36 @@ async function deleteUsuario(req: ExtendedNextApiRequest, res: NextApiResponse, 
                             disenio_id: disenios[i]?.id
                         }
                     })
+
+                    const publicId = getPublicIdFromUrl(disenios[i]?.imagen as string);
+
+                    if(publicId){
+                        const timestamp = new Date().getTime();
+                        const signature = generateSHA1(generateSignature(publicId, process.env.CLOUDINARY_SECRET!));
+                        const url = `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_NAME!}/image/destroy`;
+
+                        try{
+                            const result = await fetch(url, {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify({
+                                    public_Id: publicId,
+                                    signature: signature,
+                                    api_key: process.env.CLOUDINARY_KEY,
+                                    timestamp: timestamp
+                                })
+                            })
+
+                            if(!result){
+                                return res.status(400).json({message: "El diseño de Cloudinary no pudo ser borrado"});
+                            }
+
+                        } catch(error){
+                            return res.status(500).end();
+                        }
+                    }
                 }
                 await prisma.disenio.deleteMany({
                     where:{

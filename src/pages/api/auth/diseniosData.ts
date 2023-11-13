@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { userExists, checkEmail, coleccionExists } from "../functions";
+import { userExists, checkEmail} from "../functions";
 import { authOptions } from "./[...nextauth]";
 import { getServerSession } from "next-auth/next";
 
@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 
 interface ExtendedNextApiRequestDisenios extends NextApiRequest{
     body: {
-        coleccion: string
+        id: number
     }
 }
 
@@ -31,7 +31,7 @@ export default async function handler(req: ExtendedNextApiRequestDisenios, res: 
 async function diseños(req: ExtendedNextApiRequestDisenios, res: NextApiResponse, email: string){
     const body = req.body;
 
-    if(!body.coleccion || !email){
+    if(!body.id || !email){
         return res.status(400).json({message: "Algun parametro enviado no cumple los requisitos"});
     }
     if(!checkEmail(email)){
@@ -41,32 +41,35 @@ async function diseños(req: ExtendedNextApiRequestDisenios, res: NextApiRespons
     if(!usuarioExistente){
         return res.status(400).json({message: "El usuario enviado no existe, quizas escribiste algun parametro mal"});
     }
-    if(!await coleccionExists(body.coleccion, email)){
-        return res.status(400).json({message: "La coleccion enviada no existe"});
+
+    const duenio = !!await prisma.disenio.findFirst({
+        where: {
+            id: body.id,
+            duenio_id: email 
+        }
+    })
+    if(!duenio){
+        return res.status(400).json({message: "No te pertenece este disenio"});
     }
 
     try{
-        const data = await prisma.coleccion.findFirst({
+        const data = await prisma.disenio.findFirst({
             where: {
                 duenio_id: email,
-                nombre: body.coleccion
+                id: body.id
             },
             select: {
-                disenios: {
-                    include: {
-                        disenio: {
-                            select:{
-                                id: true,
-                                imagen: true
-                            }
-                        }
-                    }
-                }
+                nombre: true,
+                id: true,
+                colecciones: true,
+                fecha: true,
+                imagen: true,
+                muebles: true,
+                ambiente: true,
+                presupuesto: true,
+                estilo: true
             }
         })
-        if(data?.disenios.length === 0){
-            return res.status(204).json({message: "La coleccion no tiene disenios"});
-        }
         if(data){
             return res.status(200).json(data);
         }

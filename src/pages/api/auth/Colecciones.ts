@@ -40,6 +40,21 @@ async function colecciones(req: NextApiRequest, res: NextApiResponse, email: str
         const data = await prisma.coleccion.findMany({
             where:{
                 duenio_id: email
+            },
+            select: {
+                id: true,
+                nombre: true,
+                favorito: true,
+                disenios: {
+                    include: {
+                        disenio: {
+                            include:{
+                                muebles: true,
+                                permitidos: true
+                            }
+                        }
+                    }
+                }
             }
         })
         if(Object.keys(data).length === 0){

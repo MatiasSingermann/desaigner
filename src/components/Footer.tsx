@@ -18,19 +18,19 @@ function Footer() {
                 </div>
                 <ul className="-ml-[2px] flex h-[34px] w-[100px] items-center justify-between 360:ml-[1px] 360:mt-[4px] 360:w-[140px] 480:ml-[4px] 720:ml-[6px] 720:mt-[8px] 720:w-[160px] 1080:w-[170px]">
                   <SocialMedia
-                    hlink="https://www.youtube.com/watch?v=mSUNnCwj1WY"
+                    hlink="https://www.x.com/"
                     alabel="Visita nuestro Twitter"
                     icon="./XLogo.svg"
                   />
 
                   <SocialMedia
-                    hlink="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                    hlink="https://www.instagram.com/"
                     alabel="Visita nuestro Instagram"
                     icon="./InstagramLogo.svg"
                   />
 
                   <SocialMedia
-                    hlink="https://www.youtube.com/watch?v=qPCf1tS_AwM"
+                    hlink="https://www.facebook.com/"
                     alabel="Visita nuestro Facebook"
                     icon="./FacebookLogo.svg"
                   />
