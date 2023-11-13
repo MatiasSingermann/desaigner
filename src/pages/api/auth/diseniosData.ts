@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { userExists, checkEmail, coleccionExists } from "../functions";
+import { userExists, checkEmail} from "../functions";
 import { authOptions } from "./[...nextauth]";
 import { getServerSession } from "next-auth/next";
 

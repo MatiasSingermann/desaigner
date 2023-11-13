@@ -90,7 +90,7 @@ async function deleteUsuario(req: ExtendedNextApiRequest, res: NextApiResponse, 
                         }
                     })
 
-                    const publicId = getPublicIdFromUrl(disenios[i]?.imagen!);
+                    const publicId = getPublicIdFromUrl(disenios[i]?.imagen as string);
 
                     if(publicId){
                         const timestamp = new Date().getTime();

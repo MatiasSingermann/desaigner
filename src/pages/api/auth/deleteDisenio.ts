@@ -122,7 +122,6 @@ async function deleteDisenio(req: NextApiRequest, res: NextApiResponse, email: s
                                     timestamp: timestamp
                                 })
                             })
-
                             if(!result){
                                 return res.status(400).json({message: "El diseño de Cloudinary no pudo ser borrado"});
                             }
@@ -132,8 +131,6 @@ async function deleteDisenio(req: NextApiRequest, res: NextApiResponse, email: s
                         }
                     }
                 }
-                
-
                 const success = await prisma.disenio.delete({
                     where: {
                         id: id
