@@ -174,6 +174,9 @@ function Index() {
             }
             setImageButtonClick(false);
           })
+          .then((data : void) => {
+            console.log(data);
+          })
           .catch((error : Error) => {
             console.log(error);
           })
