@@ -50,6 +50,7 @@ function Index() {
   const [blob2, setBlob2] = useState<Blob | null>(null);
   const [blob3, setBlob3] = useState<Blob | null>(null);
   const [blob4, setBlob4] = useState<Blob | null>(null);
+  const [finalBlob, setFinalBlob] = useState<Blob | null>(null);
   const [imageFullData, setImageFullData] = useState<FullDataImage>(
     [] as FullDataImage
   );
@@ -128,8 +129,6 @@ function Index() {
         const byteArray = new Uint8Array(arrayBuffer);
         base64String = "data:image/jpeg;base64," + base64.fromByteArray(byteArray);
 
-        console.log("base64: ", base64String);
-
         const obj = {
           nombre: nombre.toString(),
           ambiente: imgProps[0],
@@ -139,7 +138,7 @@ function Index() {
           disenioIMG: base64String,
           muebles: imageFullData,
         };
-        console.log(obj);
+        
         fetch("api/auth/createDisenio", {
           method: "POST",
           headers: {
@@ -148,14 +147,35 @@ function Index() {
           body: JSON.stringify(obj),
         })
           .then((response) => response.json())
-          .then((data) => {
-            console.log(data);
+          .then(() => {
+            toast.success("El diseño ha sido creado con éxito", {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
+            setImageButtonClick(false);
           })
           .catch((error: Error) => {
             console.log(error);
+            toast.error("Hubo un error al crear el diseño", {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
+            setImageButtonClick(false);
           });
       };
-      reader.readAsArrayBuffer(blob1!);
+      reader.readAsArrayBuffer(finalBlob!);
     };
     const handleFolders = () => {
       setImageButtonClick(true);
@@ -355,18 +375,22 @@ function Index() {
     const handleImageSelect = () => {
       if (selectedImage === 0) {
         getLinks(blob1!);
+        setFinalBlob(blob1);
         setImageURL(imageURL1);
       }
       if (selectedImage === 1) {
         getLinks(blob2!);
+        setFinalBlob(blob2);
         setImageURL(imageURL2);
       }
       if (selectedImage === 2) {
         getLinks(blob3!);
+        setFinalBlob(blob3);
         setImageURL(imageURL3);
       }
       if (selectedImage === 3) {
         getLinks(blob4!);
+        setFinalBlob(blob4);
         setImageURL(imageURL4);
       }
       setLoading(true);

@@ -29,7 +29,7 @@ export default async function handler(req: ExtendedNextApiRequest, res: NextApiR
     }
 }
 
-async function deleteDisenio(req: NextApiRequest, res: NextApiResponse, email: string){
+async function deleteDisenio(req: ExtendedNextApiRequest, res: NextApiResponse, email: string){
     const body = req.body;
     if(!email || body.id <= 0){
         return res.status(400).json({message: "El email de la sesion esta vacio o el id del disenio es inexistente"});

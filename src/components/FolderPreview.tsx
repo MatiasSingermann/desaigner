@@ -24,7 +24,7 @@ interface FolderPreviewProps {
   index: number,
   foldersInfo: FolderType,
   setShowFolder: Dispatch<SetStateAction<boolean>>,
-  setFolderData: Dispatch<SetStateAction<FolderDesigns | undefined>>,
+  setFolderData: Dispatch<SetStateAction<FolderDesigns | undefined | object[]>>,
   setFolderName: Dispatch<SetStateAction<string>>,
 }
 
@@ -41,7 +41,7 @@ function FolderPreview({ index, foldersInfo, setShowFolder, setFolderData, setFo
       body: JSON.stringify(obj),
     })
       .then((response) => response.json())
-      .then((data) => {
+      .then((data : FolderKeys) => {
         //console.log(data);
         setFolderData(data.disenios);
         setFolderName(foldersInfo[index]!.nombre);

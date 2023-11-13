@@ -38,7 +38,7 @@ interface FolderDesignsKeys {
 type FolderDesigns = FolderDesignsKeys[];
 
 interface ColecDesign {
-  folderData: FolderDesigns | undefined;
+  folderData: FolderDesigns | undefined | object[];
   setShowFolder: Dispatch<SetStateAction<boolean>>;
   folderName: string;
   setShowDesignInfo: Dispatch<SetStateAction<boolean>>;
@@ -62,7 +62,7 @@ function ColecDesign({ folderData, setShowFolder, folderName, setShowDesignInfo,
       </div>
       {folderData != undefined &&
         folderData?.map((folder, i) => (
-          <FolderImgPreview key={i} folderData={folder} setShowDesignInfo={setShowDesignInfo} setShowFolder={setShowFolder} setImageData={setImageData}/>
+          <FolderImgPreview key={i} folderData={folder as FolderDesignsKeys} setShowDesignInfo={setShowDesignInfo} setShowFolder={setShowFolder} setImageData={setImageData}/>
         ))}
     </>
   );

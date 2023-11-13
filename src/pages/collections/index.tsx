@@ -56,7 +56,7 @@ function Index() {
   const [foldersInfo, setFoldersInfo] = useState<FolderType>();
   const [showFolder, setShowFolder] = useState(false);
   const [showDesignInfo, setShowDesignInfo] = useState(false);
-  const [folderData, setFolderData] = useState<FolderDesigns | undefined>();
+  const [folderData, setFolderData] = useState<FolderDesigns | undefined | object[]>();
   const [folderName, setFolderName] = useState<string>("");
   const [imageData, setImageData] = useState<ImgData | undefined>();
 

@@ -23,7 +23,7 @@ type FolderDesigns = FolderDesignsKeys[];
 interface ColecFolders {
   foldersInfo: FolderType;
   setShowFolder: Dispatch<SetStateAction<boolean>>;
-  setFolderData: Dispatch<SetStateAction<FolderDesigns | undefined>>;
+  setFolderData: Dispatch<SetStateAction<FolderDesigns | undefined | object[]>>;
   setFolderName: Dispatch<SetStateAction<string>>;
 }
 
