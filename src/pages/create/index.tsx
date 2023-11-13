@@ -61,6 +61,8 @@ function Index() {
     ""
   );
 
+  const [imgProps, setImgProps] = useState<string[]>([""]);
+
   let isScrollDisabled = false;
 
   if (showEdit) {
@@ -124,33 +126,36 @@ function Index() {
       reader.onloadend = () => {
         const arrayBuffer = reader.result as ArrayBuffer;
         const byteArray = new Uint8Array(arrayBuffer);
-        base64String = base64.fromByteArray(byteArray);
+        base64String = "data:image/jpeg;base64," + base64.fromByteArray(byteArray);
+
+        console.log("base64: ", base64String);
+
+        const obj = {
+          nombre: nombre.toString(),
+          ambiente: imgProps[0],
+          presupuesto: imgProps[1],
+          estilo: imgProps[2],
+          colecciones: [selectedFolder],
+          disenioIMG: base64String,
+          muebles: imageFullData,
+        };
+        console.log(obj);
+        fetch("api/auth/createDisenio", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(obj),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+          })
+          .catch((error: Error) => {
+            console.log(error);
+          });
       };
       reader.readAsArrayBuffer(blob1!);
-
-      const obj = {
-        nombre: nombre.toString(),
-        ambiente: environment,
-        presupuesto: budget,
-        estilo: style,
-        colecciones: [selectedFolder, ""],
-        disenioIMG: base64String,
-        muebles: imageFullData,
-      };
-      fetch("api/auth/createDisenio", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(obj),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-        })
-        .catch((error: Error) => {
-          console.log(error);
-        });
     };
     const handleFolders = () => {
       setImageButtonClick(true);
@@ -384,6 +389,8 @@ function Index() {
       disability = inputData[6] ? inputData[6][1].toString() : "";
       numImages = inputData[7] ? Number(inputData[7][1]) : "";
       const maskImage = inpaintMaskImg;
+
+      setImgProps([environment, budget, style]);
 
       let requiredInputs = true;
       let isNoImage = false;
