@@ -138,6 +138,8 @@ function Index() {
           disenioIMG: base64String,
           muebles: imageFullData,
         };
+
+        console.log(obj);
         
         fetch("api/auth/createDisenio", {
           method: "POST",
@@ -147,7 +149,6 @@ function Index() {
           body: JSON.stringify(obj),
         })
           .then((response) => {
-            console.log(response);
             if (response.ok) {
               toast.success("El diseño ha sido creado con éxito", {
                 position: "top-center",
