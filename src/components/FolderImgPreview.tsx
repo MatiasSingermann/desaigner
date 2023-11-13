@@ -1,25 +1,30 @@
 import Image from "next/image";
 import type { Dispatch, SetStateAction } from "react";
 
+type furnitureType = {
+  id: number,
+  url1: string,
+  url2: string,
+  url3: string,
+  disenio_id: number,
+  descripcion: string,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+}[];
+
 interface ImgData {
   nombre: string;
   id: number;
   colecciones: string[];
   fecha: string;
   imagen: string;
-  muebles: FullDataImage;
+  muebles: furnitureType;
   ambiente: string;
   presupuesto: string;
   estilo: string;
 }
-
-interface InputImageDataProps {
-  box: [number, number, number, number];
-  prompt: string;
-  links: [string, string, string];
-}
-
-type FullDataImage = InputImageDataProps[];
 
 interface FolderDesignsKeys {
   id: number;
@@ -70,7 +75,7 @@ function FolderImgPreview({
       className="mb-[32px] flex flex-col items-center justify-center"
     >
       <Image
-        src={folderData!.disenio.imagen}
+        src={folderData.disenio.imagen}
         alt="imagen"
         width={292}
         height={164}

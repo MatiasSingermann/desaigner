@@ -9,25 +9,30 @@ interface ColecDesignProps {
   imageData: ImgData | undefined;
 }
 
+type furnitureType = {
+  id: number,
+  url1: string,
+  url2: string,
+  url3: string,
+  disenio_id: number,
+  descripcion: string,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+}[];
+
 interface ImgData {
   nombre: string;
   id: number;
   colecciones: string[];
   fecha: string;
   imagen: string;
-  muebles: FullDataImage;
+  muebles: furnitureType;
   ambiente: string;
   presupuesto: string;
   estilo: string;
 }
-
-interface InputImageDataProps {
-  box: [number, number, number, number];
-  prompt: string;
-  links: [string, string, string];
-}
-
-type FullDataImage = InputImageDataProps[];
 
 function ColecDesignInfo({
   setShowFolder,
@@ -65,16 +70,16 @@ function ColecDesignInfo({
           >
             <div className="flex w-11/12 flex-col items-start justify-start">
               <h3 className="mx-[12px] mb-[14px] mt-[26px] flex w-11/12 items-start justify-start text-start font-coolveticaRegular text-[20px] text-[#292F2D] dark:text-[#FBF9FA]">
-                {furniture["prompt"]}
+                {furniture.descripcion}
               </h3>
               <div className="mx-[12px] flex w-11/12 flex-col items-start justify-start text-start font-coolveticaBook text-[15px] text-[#2A9DA5]">
-                {furniture["links"][0] == "No hay link" ? (
+                {furniture.url1 == "No hay link" ? (
                   <p className="mb-[14px] text-[#292F2D] no-underline dark:text-[#FBF9FA]">
                     No hay link
                   </p>
                 ) : (
                   <a
-                    href={furniture["links"][0]}
+                    href={furniture.url1}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mb-[22px] underline"
@@ -82,13 +87,13 @@ function ColecDesignInfo({
                     Link 1
                   </a>
                 )}
-                {furniture["links"][1] == "No hay link" ? (
+                {furniture.url2 == "No hay link" ? (
                   <p className="mb-[14px] text-[#292F2D] no-underline dark:text-[#FBF9FA]">
                     No hay link
                   </p>
                 ) : (
                   <a
-                    href={furniture["links"][1]}
+                    href={furniture.url2}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mb-[22px] underline"
@@ -96,13 +101,13 @@ function ColecDesignInfo({
                     Link 2
                   </a>
                 )}
-                {furniture["links"][2] == "No hay link" ? (
+                {furniture.url3 == "No hay link" ? (
                   <p className="mb-[22px] text-[#292F2D] no-underline dark:text-[#FBF9FA]">
                     No hay link
                   </p>
                 ) : (
                   <a
-                    href={furniture["links"][2]}
+                    href={furniture.url3}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mb-[22px] underline"
@@ -122,6 +127,7 @@ function ColecDesignInfo({
     setShowDesignInfo(false);
     setShowFolder(true);
   };
+  console.log("MUEBLES: ", imageData?.muebles[0]!.descripcion);
   return (
     <>
       <div className="mx-[26px] mb-[30px] flex w-[90%] items-center justify-start self-start">

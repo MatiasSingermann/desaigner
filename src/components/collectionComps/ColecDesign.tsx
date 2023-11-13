@@ -2,25 +2,30 @@ import type {Dispatch, SetStateAction} from 'react';
 import Arrow from "../Arrow";
 import FolderImgPreview from "../FolderImgPreview";
 
-interface ImgData {
-  nombre: string,
+type furnitureType = {
   id: number,
-  colecciones: string[],
-  fecha: string,
-  imagen: string,
-  muebles: FullDataImage,
-  ambiente: string,
-  presupuesto: string,
-  estilo: string
-}
+  url1: string,
+  url2: string,
+  url3: string,
+  disenio_id: number,
+  descripcion: string,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+}[];
 
-interface InputImageDataProps {
-  box: [number, number, number, number];
-  prompt: string;
-  links: [string, string, string];
+interface ImgData {
+  nombre: string;
+  id: number;
+  colecciones: string[];
+  fecha: string;
+  imagen: string;
+  muebles: furnitureType;
+  ambiente: string;
+  presupuesto: string;
+  estilo: string;
 }
-
-type FullDataImage = InputImageDataProps[];
 
 interface FolderDesignsKeys {
   id: number;

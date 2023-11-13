@@ -5,18 +5,10 @@ import type { RefObject } from "react";
 import FolderCreator from "./FolderCreator";
 import FolderSelector from "./FolderSelector";
 
-interface InputImageDataProps {
-  box: [number, number, number, number];
-  prompt: string;
-  links: [string, string, string];
-}
-
 interface FolderChooserProps {
   imgFormRef: RefObject<HTMLFormElement>;
   setSelectedFolder: Dispatch<SetStateAction<string>>;
 }
-
-type FullDataImage = InputImageDataProps[];
 
 interface FolderKeys {
   favorito: boolean;

@@ -30,7 +30,7 @@ function FolderSelector({ index, foldersInfo, imgFormRef, setSelectedFolder }: F
           {foldersInfo[index]!.nombre}
         </p>
         <p className="font-coolveticaLight text-[11px] leading-none">
-          {foldersInfo[index]!.disenios.length == 1 ? "1 diseño" : foldersInfo[index]!.disenios.length + " diseños"}
+          {foldersInfo[index]!.disenios.length == 1 ? "1 diseño" : foldersInfo[index]!.disenios.length.toString() + " diseños"}
         </p>
       </div>
       <div className="flex h-[40px] w-[40px] flex-wrap items-start">

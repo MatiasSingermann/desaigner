@@ -18,7 +18,7 @@ function Index() {
       method: "GET",
     })
       .then((response) => response.json())
-      .then((data) => {
+      .then((data : recentImg) => {
         // console.log(data);
         setRecentImgs(data);
       })

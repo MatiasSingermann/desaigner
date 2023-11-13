@@ -7,16 +7,29 @@ import ColecFolders from "~/components/collectionComps/ColecFolders";
 import ColecDesign from "~/components/collectionComps/ColecDesign";
 import ColecDesignInfo from "~/components/collectionComps/ColecDesignInfo";
 
-interface ImgData {
-  nombre: string,
+type furnitureType = {
   id: number,
-  colecciones: string[],
-  fecha: string,
-  imagen: string,
-  muebles: FullDataImage,
-  ambiente: string,
-  presupuesto: string,
-  estilo: string
+  url1: string,
+  url2: string,
+  url3: string,
+  disenio_id: number,
+  descripcion: string,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+}[];
+
+interface ImgData {
+  nombre: string;
+  id: number;
+  colecciones: string[];
+  fecha: string;
+  imagen: string;
+  muebles: furnitureType;
+  ambiente: string;
+  presupuesto: string;
+  estilo: string;
 }
 
 interface FolderKeys {
@@ -27,14 +40,6 @@ interface FolderKeys {
 }
 
 type FolderType = FolderKeys[];
-
-interface InputImageDataProps {
-  box: [number, number, number, number];
-  prompt: string;
-  links: [string, string, string];
-}
-
-type FullDataImage = InputImageDataProps[];
 
 interface FolderDesignsKeys {
   id: number;
