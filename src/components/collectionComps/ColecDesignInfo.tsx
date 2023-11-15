@@ -146,7 +146,7 @@ function ColecDesignInfo({
         alt="image"
         width={300}
         height={200}
-        className="relative mx-[32px] mb-[32px] flex h-[290px] w-[290px] items-center justify-center rounded-xl object-contain shadow-md shadow-[#999] dark:shadow-[#111]"
+        className="relative mx-[32px] mb-[32px] flex h-[290px] w-[290px] items-center justify-center rounded-3xl object-contain shadow-md shadow-[#999] dark:shadow-[#111]"
       />
       <h2 className="mx-[60px] mb-[12px] flex self-start font-coolveticaBook text-[20px] text-[#22302D] dark:text-[#FBF9FA]">
         Fecha de creación: {imageData!.fecha.split("T")[0]?.replaceAll("-", "/")}
